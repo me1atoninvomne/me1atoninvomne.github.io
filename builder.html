@@ -1,0 +1,2562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PC Builder · Denis Avlastimov</title>
+<meta name="description" content="Build a PC from 134 real components, assemble it step by step in 3D and run an estimated benchmark.">
+<meta property="og:title" content="PC Builder · Denis Avlastimov">
+<meta property="og:description" content="Build a PC from 134 real components, assemble it step by step in 3D and run an estimated benchmark.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='6' width='36' height='52' rx='6' fill='%2313171C'/%3E%3Ccircle cx='32' cy='22' r='9' fill='none' stroke='%23FF7A33' stroke-width='4'/%3E%3Crect x='22' y='40' width='20' height='4' rx='2' fill='%23FF7A33'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Noto+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Pixelify+Sans:wght@400;500;700&display=swap">
+<style>
+/* Layout: a "workbench" page. Hero = spec text + live 3D PC on an inspection stand,
+   then a grid of bench widgets (configurator, terminal, sensors, RGB), then projects and contact. */
+:root {
+  --bg: #EDF0F3;          /* brushed aluminium */
+  --surface: #FFFFFF;
+  --surface-2: #E2E7EC;
+  --stage: #DCE2E8;       /* 3D inspection stand */
+  --ink: #13171C;
+  --ink-soft: #3D4651;
+  --muted: #66707C;
+  --line: #CFD6DE;
+  --accent: #E2560B;      /* power-button orange */
+  --accent-ink: #B4430A;
+  --accent-soft: #FCE4D6;
+  --good: #1E8449;
+  --good-soft: #DDF2E5;
+  --warn: #A86A12;
+  --warn-soft: #FAEED9;
+  --bad: #C2312F;
+  --bad-soft: #FBE3E2;
+  --font-display: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1115; --surface: #161B21; --surface-2: #1D242C; --stage: #12171D;
+    --ink: #E7EBF0; --ink-soft: #B6C0CB; --muted: #8692A1; --line: #29323C;
+    --accent: #FF7A33; --accent-ink: #FF9C63; --accent-soft: #3A2316;
+    --good: #4CC47E; --good-soft: #15291D; --warn: #E3A73B; --warn-soft: #2D2413;
+    --bad: #F06A66; --bad-soft: #2F1717;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1115; --surface: #161B21; --surface-2: #1D242C; --stage: #12171D;
+  --ink: #E7EBF0; --ink-soft: #B6C0CB; --muted: #8692A1; --line: #29323C;
+  --accent: #FF7A33; --accent-ink: #FF9C63; --accent-soft: #3A2316;
+  --good: #4CC47E; --good-soft: #15291D; --warn: #E3A73B; --warn-soft: #2D2413;
+  --bad: #F06A66; --bad-soft: #2F1717;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding-block: 0 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: var(--accent-ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+.mono { font-family: var(--font-mono); }
+
+/* ---------- top bar ---------- */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding-block: 18px; border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: 0.02em; }
+.led { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft), 0 0 10px var(--accent); }
+.nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.nav a {
+  font-family: var(--font-mono); font-size: 12.5px; text-decoration: none; color: var(--ink-soft);
+  padding: 6px 10px; border-radius: 7px; border: 1px solid transparent;
+}
+.nav a:hover { border-color: var(--line); color: var(--ink); }
+
+/* ---------- hero ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; align-items: center; padding-block: 40px 28px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+.hero h1 { font-size: clamp(34px, 5.4vw, 58px); line-height: 1.02; letter-spacing: -0.01em; }
+.hero h1 .role { display: block; color: var(--accent); font-size: 0.5em; margin-top: 10px; letter-spacing: 0.01em; }
+.lead { color: var(--ink-soft); font-size: 16.5px; max-width: 46ch; margin: 18px 0 0; }
+.spec { margin: 22px 0 0; display: grid; gap: 0; border-top: 1px solid var(--line); max-width: 460px; }
+.spec div { display: grid; grid-template-columns: 112px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.spec dt { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding-top: 2px; }
+.spec dd { margin: 0; color: var(--ink); min-width: 0; }
+.cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+.btn {
+  font: 600 14px var(--font-body); border-radius: 9px; padding: 10px 16px; cursor: pointer; text-decoration: none;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink); display: inline-flex; align-items: center; gap: 8px;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { filter: brightness(1.06); }
+.btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-ink); }
+
+/* 3D stage */
+.stage {
+  position: relative; background: var(--stage); border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
+  aspect-ratio: 5 / 4; max-width: 100%;
+  background-image: radial-gradient(circle at 50% 120%, var(--surface-2), transparent 60%);
+}
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; cursor: grab; }
+.stage canvas.dragging { cursor: grabbing; }
+.stage-tag { position: absolute; left: 14px; top: 12px; font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); letter-spacing: 0.05em; pointer-events: none; }
+.stage-tip {
+  position: absolute; right: 14px; top: 12px; max-width: 60%; text-align: right;
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; padding: 6px 9px; pointer-events: none; opacity: 0; transition: opacity .15s;
+}
+.stage-tip.show { opacity: 1; }
+.stage-tip b { color: var(--accent-ink); font-weight: 700; display: block; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; }
+.stage-bar { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.chip-btn {
+  font: 500 12.5px var(--font-mono); background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+  border-radius: 8px; padding: 6px 10px; cursor: pointer;
+}
+.chip-btn:hover { border-color: var(--accent); }
+.chip-btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-ink); }
+.stage-hint { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); margin-left: auto; }
+.stage-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: var(--muted); font-size: 14px; }
+.stage-fallback[hidden], .inspect-card[hidden], .part-bar[hidden], .stage-bar[hidden] { display: none; }
+
+/* ---------- sections ---------- */
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 52px 0 18px; }
+.section-head h2 { font-size: clamp(24px, 3vw, 32px); }
+.section-head p { margin: 0; color: var(--muted); font-size: 14px; max-width: 56ch; }
+.label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+.bench { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.widget { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.widget-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.widget-head h3 { font-size: 18px; }
+.w-sensor { grid-column: span 7; }
+.w-rgb { grid-column: span 5; }
+.w-term { grid-column: span 7; }
+.w-build { grid-column: span 5; }
+
+/* configurator */
+.cfg-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+select {
+  font: 500 14px var(--font-body); color: var(--ink); background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 8px; padding: 8px 10px; width: 100%; min-width: 0;
+}
+.cfg-out { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.kpi { background: var(--surface-2); padding: 10px 12px; min-width: 0; }
+.kpi .v { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 20px; font-weight: 700; }
+.kpi .k { font-size: 11.5px; color: var(--muted); }
+.meter { display: grid; gap: 6px; }
+.meter-track { height: 12px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; position: relative; }
+.meter-fill { height: 100%; border-radius: 6px; transition: width .35s ease, background-color .35s; }
+.meter-cap { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.checks li { display: grid; grid-template-columns: 58px 1fr; gap: 10px; align-items: baseline; font-size: 13.5px; }
+.pill { font: 700 10.5px var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 0; border-radius: 5px; text-align: center; }
+.pill.ok { color: var(--good); background: var(--good-soft); }
+.pill.warn { color: var(--warn); background: var(--warn-soft); }
+.pill.bad { color: var(--bad); background: var(--bad-soft); }
+.note { font-size: 12px; color: var(--muted); margin: 0; }
+
+/* terminal */
+.term {
+  background: #0B0E12; color: #D5DDE6; border-radius: 10px; padding: 12px 14px; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.55;
+  height: 340px; overflow: auto; display: flex; flex-direction: column;
+}
+.term-out { white-space: pre-wrap; overflow-wrap: anywhere; flex: 1; }
+.term .p { color: #FF9C63; }
+.term .dim { color: #7D8896; }
+.term .hl { color: #7FD7A4; }
+.term-line { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
+.term-line input { flex: 1; min-width: 0; background: transparent; border: 0; color: #E7EBF0; font: inherit; outline: none; padding: 2px 0; }
+.term-keys { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* sensors */
+.sensor-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.gauge { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; min-width: 0; }
+.gauge .v { font-family: var(--font-mono); font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.gauge .k { font-size: 12px; color: var(--muted); }
+.gauge.hot .v { color: var(--bad); }
+.gauge.warm .v { color: var(--warn); }
+.chart-box { border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); padding: 8px; }
+.chart-box canvas { width: 100%; height: 150px; display: block; }
+.legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+.legend i { display: inline-block; width: 10px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+.controls { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.range { display: grid; gap: 4px; flex: 1; min-width: 180px; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+/* rgb */
+.swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+.swatch { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--line); cursor: pointer; }
+.swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--accent); }
+.modes { display: flex; gap: 6px; flex-wrap: wrap; }
+.rgb-preview { height: 54px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); position: relative; overflow: hidden; }
+.rgb-preview span { position: absolute; left: 10%; right: 10%; top: 50%; height: 6px; border-radius: 3px; transform: translateY(-50%); }
+
+/* projects */
+.projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 1000px) { .projects { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .projects { grid-template-columns: 1fr; } }
+.proj-filter { margin: -6px 0 14px; }
+.proj { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: inherit; min-width: 0; }
+.proj:hover { border-color: var(--accent); }
+.proj h3 { font-family: var(--font-mono); font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
+.proj p { margin: 0; color: var(--ink-soft); font-size: 13.5px; flex: 1; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { font: 500 11px var(--font-mono); color: var(--accent-ink); background: var(--accent-soft); border-radius: 5px; padding: 2px 7px; }
+
+/* contact */
+.contact { display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+.contact .addr { font-family: var(--font-mono); font-size: 16px; user-select: all; overflow-wrap: anywhere; }
+footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--font-mono); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+.stage-col { min-width: 0; }
+.asm { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: grid; gap: 10px; }
+.asm[hidden] { display: none; }
+.asm-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.asm-head h4 { margin: 0; font: 700 17px var(--font-display); }
+.asm-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; }
+.asm-steps li { font-size: 12.5px; border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; color: var(--muted); background: var(--surface-2); min-width: 0; }
+.asm-steps li b { display: block; font: 600 12.5px var(--font-body); color: var(--ink-soft); }
+.asm-steps li span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-mono); font-size: 11px; }
+.asm-steps li.current { border-color: var(--accent); background: var(--accent-soft); }
+.asm-steps li.current b { color: var(--accent-ink); }
+.asm-steps li.done b::before { content: "✓ "; color: var(--good); }
+.asm-hint { margin: 0; font-size: 14px; color: var(--ink-soft); max-width: 70ch; }
+.asm-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.part-bar { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+.part-bar .label { margin-right: 4px; }
+.inspect-card {
+  position: absolute; left: 12px; top: 12px; width: min(280px, calc(100% - 24px));
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+  box-shadow: 0 10px 28px -16px rgba(0,0,0,.5);
+}
+.inspect-card h4 { margin: 0 0 6px; font: 700 15px var(--font-display); }
+.inspect-card dl { margin: 0; display: grid; gap: 3px; }
+.inspect-card dl div { display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px; }
+.inspect-card dt { color: var(--muted); flex: none; }
+.inspect-card dd { margin: 0; font-family: var(--font-mono); text-align: right; min-width: 0; overflow-wrap: anywhere; }
+.inspect-card .row { display: flex; gap: 8px; margin-top: 9px; align-items: center; flex-wrap: wrap; }
+.inspect-card .hint { font-size: 11.5px; color: var(--muted); }
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .w-term, .w-sensor, .w-rgb, .w-build { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  .cfg-grid { grid-template-columns: 1fr; }
+  .kpi { padding: 9px 10px; }
+  .kpi .v { font-size: 16px; }
+  .sensor-grid { grid-template-columns: 1fr 1fr; }
+  .spec div { grid-template-columns: 92px 1fr; }
+  .stage { aspect-ratio: 1 / 1; }
+  .stage-hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .meter-fill, .stage-tip { transition: none; }
+}
+
+/* ================= v2 additions ================= */
+[hidden] { display: none !important; }
+a.brand { color: var(--ink); text-decoration: none; }
+.nav a.nav-cta { color: var(--accent-ink); border-color: var(--accent); background: var(--accent-soft); }
+.chip-btn.chip-accent, a.chip-btn { text-decoration: none; display: inline-flex; align-items: center; }
+.chip-btn.chip-accent { border-color: var(--accent); color: var(--accent-ink); background: var(--accent-soft); }
+.chip-btn.chip-accent[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.btn:disabled { opacity: 0.55; cursor: progress; }
+
+/* your build */
+.build-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.build-list li { display: grid; grid-template-columns: 64px 1fr; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 13px; align-items: baseline; }
+.build-list li span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.w-build .btn { justify-content: center; }
+
+/* project previews */
+.pv { height: 178px; border-radius: 10px; background: #0b0e12; border: 1px solid var(--line); margin-bottom: 6px; overflow: hidden; position: relative; color: #d5dde6; font-family: var(--font-mono); font-size: 11.5px; }
+.proj:hover .pv { border-color: var(--accent); }
+.flow-svg { width: 100%; height: 104px; display: block; margin-top: 4px; }
+.flow-edge { fill: none; stroke: #3a4552; stroke-width: 2; }
+.flow-node rect { fill: #161c24; stroke: #3a4552; }
+.flow-node text { fill: #d5dde6; font: 600 9.5px var(--font-mono); text-anchor: middle; }
+.flow-node.ai rect { stroke: #ff9c63; fill: #2a1a10; }
+.flow-node.hot rect { stroke: #f06a66; }
+.flow-dot { fill: #ff9c63; }
+.flow-ticket { position: absolute; left: 10px; right: 10px; bottom: 8px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 8px; align-items: baseline; }
+.flow-ticket span { flex: 1 1 100%; }
+.flow-ticket span { color: #b6c0cb; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.flow-ticket b { color: #7fd7a4; white-space: nowrap; font-weight: 600; }
+.flow-ticket b.hot { color: #ff9c63; }
+.pv-term { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.pvt-head { display: flex; justify-content: space-between; gap: 8px; color: #7d8896; }
+.pvt-head span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pvt-head b { color: #ff9c63; font-weight: 600; }
+.pvt-rows { display: grid; gap: 7px; margin-top: 4px; }
+.pvt-row { display: grid; grid-template-columns: 64px 1fr 38px; gap: 8px; align-items: center; }
+.pvt-row i { height: 8px; background: #1b222b; border-radius: 4px; overflow: hidden; }
+.pvt-row em { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #ff7a33, #ffb27f); border-radius: 4px; transition: width .9s ease; }
+.pvt-row b { text-align: right; font-weight: 600; }
+.pvt-foot { color: #5f6b78; font-size: 10.5px; margin-top: auto; }
+.pv-api { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.api-req { display: flex; gap: 8px; align-items: center; }
+.api-req b { font-size: 10.5px; padding: 2px 6px; border-radius: 4px; background: #2a1a10; color: #ff9c63; }
+.api-req b.get { background: #10241a; color: #7fd7a4; }
+.api-res { margin: 0; flex: 1; color: #b6c0cb; font: 11px/1.45 var(--font-mono); white-space: pre; overflow: hidden; }
+.api-foot { display: flex; gap: 8px; align-items: center; color: #7fd7a4; }
+.api-foot.bad { color: #f06a66; }
+.ok-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 6px currentColor; }
+.api-tests { margin-left: auto; color: #5f6b78; }
+.pv-diff { padding: 10px 14px; font-size: 11px; }
+.diff-row { display: grid; grid-template-columns: 1.4fr 0.5fr 0.5fr 1.4fr; gap: 6px; padding: 1.5px 4px; border-radius: 3px; color: #5f6b78; transition: background .2s, color .2s; }
+.diff-row span:nth-child(2), .diff-row span:nth-child(3) { text-align: right; }
+.diff-row.head { color: #7d8896; font-weight: 700; }
+.diff-row.seen { color: #b6c0cb; }
+.diff-row.seen.bad span:last-child { color: #f06a66; }
+.diff-row.seen:not(.bad) span:last-child { color: #7fd7a4; }
+.diff-row.scan { background: #1b222b; color: #e7ebf0; }
+.diff-foot { margin-top: 4px; color: #ff9c63; padding: 0 4px; }
+
+/* Bug Hunter */
+.bh { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 14px; }
+.bh-hud { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.bh-stat { background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px; padding: 6px 12px; min-width: 84px; }
+.bh-stat b { display: block; font: 700 20px var(--font-mono); font-variant-numeric: tabular-nums; }
+.bh-hud .btn { margin-left: auto; }
+.bh-board { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 14px; }
+.bh-shop-wrap { position: relative; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #fbfcfd; color: #1d2329; min-width: 0; }
+.bh-chrome { display: flex; gap: 6px; align-items: center; padding: 7px 10px; background: #e9edf1; border-bottom: 1px solid #d6dce2; font: 11px var(--font-mono); color: #66707c; }
+.bh-chrome i { width: 9px; height: 9px; border-radius: 50%; background: #c9d0d7; }
+.bh-chrome span { margin-left: 8px; background: #fff; border-radius: 5px; padding: 2px 8px; }
+.bh-shop { padding: 12px; font-family: var(--font-body); }
+.bh-t { font: inherit; color: inherit; background: none; border: 1px dashed transparent; border-radius: 4px; padding: 1px 3px; margin: -1px -3px; cursor: crosshair; text-align: left; }
+.bh-t:hover { border-color: #b8c2cc; background: #f1f4f7; }
+.bh-t.bh-found { border: 2px solid #c2312f; background: #fbe3e2; color: #8a1f1d; position: relative; }
+.bh-t.bh-found::after { content: "BUG"; position: absolute; top: -9px; right: -6px; font: 700 8.5px var(--font-mono); background: #c2312f; color: #fff; border-radius: 3px; padding: 0 3px; }
+.bh-t.bh-missed { border: 2px dashed #a86a12; background: #faeed9; }
+.bh-t.bh-wrong { animation: bh-shake .35s; }
+@keyframes bh-shake { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+.bh-top { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.bh-logo { font-weight: 700; font-size: 15px; }
+.bh-search { flex: 1; min-width: 120px; border: 1px solid #d6dce2 !important; border-radius: 7px !important; padding: 5px 9px !important; margin: 0 !important; color: #8a94a0; font-size: 12.5px; }
+.bh-promo { font-size: 11.5px; color: #1e8449; font-weight: 600; }
+.bh-main { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 12px; }
+.bh-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.bh-card { border: 1px solid #e1e6eb; border-radius: 9px; padding: 8px; display: flex; flex-direction: column; gap: 3px; font-size: 12px; min-width: 0; background: #fff; }
+.bh-img { height: 52px; border-radius: 7px; background: #f1f4f7; display: grid; place-items: center; font-size: 28px; position: relative; }
+.bh-badge { position: absolute !important; top: 4px; left: 4px; margin: 0 !important; font: 700 10px var(--font-mono) !important; background: #e2560b !important; color: #fff !important; border-radius: 4px !important; padding: 1px 4px !important; }
+.bh-name { font-weight: 600; font-size: 12.5px; }
+.bh-meta { display: flex; justify-content: space-between; gap: 4px; color: #66707c; font-size: 11px; }
+.bh-price { display: flex; gap: 6px; align-items: baseline; }
+.bh-now { font-weight: 700; font-size: 13.5px; }
+.bh-old { color: #8a94a0; text-decoration: line-through; font-size: 11px; }
+.bh-stock { color: #1e8449; font-size: 11px; }
+.bh-add { margin: 3px 0 0 !important; text-align: center !important; background: #13171c !important; color: #fff !important; border-radius: 6px !important; padding: 4px 0 !important; font-size: 11.5px; font-weight: 600; }
+.bh-cart { border: 1px solid #e1e6eb; border-radius: 9px; padding: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 12px; background: #fff; align-self: start; }
+.bh-line { display: flex; justify-content: space-between; gap: 6px; align-items: baseline; }
+.bh-lname { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bh-line.sum { border-top: 1px solid #e1e6eb; padding-top: 6px; }
+.bh-line.tot { font-weight: 700; font-size: 13.5px; }
+.bh-date { color: #66707c; font-size: 11px; }
+.bh-pay { margin: 4px 0 0 !important; text-align: center !important; background: #e2560b !important; color: #fff !important; border-radius: 7px !important; padding: 7px 0 !important; font-weight: 700; }
+.bh-overlay { position: absolute; inset: 31px 0 0; display: grid; place-items: center; background: rgba(14,17,21,0.62); backdrop-filter: blur(2px); text-align: center; padding: 16px; }
+.bh-overlay > div { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; max-width: 340px; display: grid; gap: 8px; justify-items: center; }
+.bh-overlay b { font: 700 18px var(--font-display); }
+.bh-overlay p { margin: 0; color: var(--ink-soft); font-size: 13.5px; }
+.bh-overlay.result { background: rgba(14,17,21,0.35); inset: auto 12px 12px auto; place-items: end; padding: 0; }
+.bh-toast { position: absolute; left: 50%; bottom: 12px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; font: 600 12.5px var(--font-body); padding: 7px 12px; border-radius: 8px; color: #fff; transition: opacity .15s, transform .15s; white-space: nowrap; }
+.bh-toast.show { opacity: 1; transform: translate(-50%, 0); }
+.bh-toast.good { background: #1e8449; }
+.bh-toast.bad { background: #c2312f; }
+.bh-log { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; min-width: 0; display: flex; flex-direction: column; }
+.bh-log h4 { margin: 0 0 8px; font: 700 15px var(--font-display); }
+.bh-log ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; overflow: auto; max-height: 360px; align-content: start; }
+.bh-log li { font-size: 12.5px; background: var(--surface); border: 1px solid var(--line); border-radius: 7px; padding: 6px 8px; }
+.bh-log li.empty { color: var(--muted); background: none; border-style: dashed; }
+.bh-log li.missed { opacity: 0.7; }
+.bh-log li b { font-family: var(--font-mono); font-size: 11.5px; margin-right: 4px; }
+.sev { float: right; font: 700 9.5px var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; border-radius: 4px; padding: 1px 5px; }
+.sev.crit { background: var(--bad-soft); color: var(--bad); }
+.sev.major { background: var(--warn-soft); color: var(--warn); }
+.sev.minor { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+
+/* builder page */
+.wrap.wide { max-width: 1320px; }
+.bld-intro { padding: 30px 0 18px; }
+.bld-intro h1 { font-size: clamp(28px, 4vw, 44px); line-height: 1.05; }
+.bld { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 18px; align-items: start; }
+.bld-stage { min-width: 0; position: sticky; top: 12px; }
+.stage.stage-tall { aspect-ratio: 6 / 5; }
+.presets { display: flex; gap: 6px; flex-wrap: wrap; }
+.asm-progress { height: 6px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.asm-progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .4s ease; }
+.bm { gap: 14px; }
+.bm-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.bm-screen { position: relative; aspect-ratio: 16 / 5; min-height: 200px; border-radius: 12px; overflow: hidden; background: #06080b; border: 1px solid var(--line); }
+.bm-screen canvas { width: 100%; height: 100%; display: block; }
+.bm-hud { position: absolute; inset: 0; padding: 12px 14px; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; color: #e7ebf0; font-family: var(--font-mono); }
+.bm-hud > div:first-child { display: flex; align-items: baseline; gap: 10px; justify-content: flex-end; text-shadow: 0 1px 6px rgba(0,0,0,.7); }
+.bm-hud span { margin-right: auto; font-size: 12px; letter-spacing: 0.06em; color: #b6c0cb; }
+.bm-hud b { font-size: 34px; font-variant-numeric: tabular-nums; }
+.bm-hud em { font-style: normal; font-size: 11px; color: #b6c0cb; }
+.bm-bar { height: 4px; background: rgba(255,255,255,.12); border-radius: 2px; overflow: hidden; }
+.bm-bar i { display: block; height: 100%; width: 0; background: #ff7a33; }
+.bm-results { display: grid; gap: 14px; }
+.bm-verdict { display: grid; gap: 2px; border: 1px solid var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 10px 14px; }
+.bm-verdict b { font: 700 18px var(--font-display); color: var(--accent-ink); }
+.bm-verdict span { font-size: 13.5px; color: var(--ink-soft); }
+.bm-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 18px; }
+.bm-grid h4 { margin: 0 0 8px; font: 700 15px var(--font-display); display: flex; gap: 8px; align-items: baseline; }
+.bm-grid h4.mt { margin-top: 14px; }
+.bm-games { display: grid; gap: 10px; }
+.bm-row { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) 70px; gap: 10px; align-items: center; font-size: 13px; }
+.bm-row .bm-name { min-width: 0; }
+.bm-row small { display: block; color: var(--muted); font-size: 11.5px; }
+.bm-row i { height: 10px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+.bm-row em { display: block; height: 100%; background: var(--ink-soft); border-radius: 5px; }
+.bm-row.high em { background: var(--good); }
+.bm-row.low em { background: var(--bad); }
+.bm-row.you em { background: var(--accent); }
+.bm-row.you .bm-name { font-weight: 700; color: var(--accent-ink); }
+.bm-row b { font: 700 13px var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+.bm-tag { font: 700 9.5px var(--font-mono); text-transform: uppercase; border-radius: 4px; padding: 0 4px; margin-left: 4px; border: 1px solid var(--line); }
+.bm-tag.gpu { color: var(--accent-ink); }
+.bm-tag.cpu { color: var(--ink-soft); }
+.bm-tag.warn { color: var(--warn); background: var(--warn-soft); border-color: transparent; }
+.bm-scores { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.bm-compare { display: grid; gap: 7px; }
+.bm-compare .bm-row { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 60px; }
+
+@media (max-width: 1000px) {
+  .bld { grid-template-columns: 1fr; }
+  .bld-stage { position: static; }
+  .bm-grid { grid-template-columns: 1fr; }
+  .bh-board { grid-template-columns: 1fr; }
+  .bh-log ol { max-height: 200px; }
+}
+@media (max-width: 640px) {
+  .bh-main { grid-template-columns: 1fr; }
+  .bh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bm-row { grid-template-columns: minmax(0, 1fr) 70px; }
+  .bm-row i { grid-column: 1 / -1; grid-row: 2; }
+  .bm-screen { aspect-ratio: 16 / 9; }
+  .bh-hud .btn { margin-left: 0; }
+  .stage.stage-tall { aspect-ratio: 1 / 1; }
+}
+
+/* more project previews */
+.pv-video { padding: 8px 12px 10px; }
+.vt-ruler { display: flex; justify-content: space-between; margin-left: 46px; color: #5f6b78; font-size: 10px; border-bottom: 1px solid #1b222b; padding-bottom: 4px; }
+.vt-lane { position: relative; height: 26px; margin-top: 7px; margin-left: 46px; }
+.vt-lane em { position: absolute; left: -46px; top: 6px; font-style: normal; color: #7d8896; font-size: 10px; }
+.vt-lane i { position: absolute; top: 0; bottom: 0; border-radius: 5px; background: #2a1a10; border: 1px solid #ff9c63; color: #ffb27f; font-style: normal; font-size: 10px; padding: 5px 6px; white-space: nowrap; overflow: hidden; }
+.vt-lane.voice i { background: #10241a; border-color: #7fd7a4; color: #7fd7a4; }
+.vt-lane.music i { background: #161c2a; border-color: #6d8bd6; color: #9fb6ff; }
+.vt-head { position: absolute; top: 24px; bottom: 30px; width: 2px; background: #fff; box-shadow: 0 0 6px #fff; left: 46px; }
+.vt-foot { position: absolute; left: 12px; right: 12px; bottom: 8px; display: flex; justify-content: space-between; color: #7d8896; }
+.vt-foot span:last-child { color: #7fd7a4; font-variant-numeric: tabular-nums; }
+.pv-matrix { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.mx-head, .mx-foot { display: flex; justify-content: space-between; gap: 8px; color: #7d8896; flex-wrap: wrap; }
+.mx-head b { color: #ff9c63; font-weight: 600; }
+.mx-grid { display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px; }
+.mx-grid i { aspect-ratio: 1; border-radius: 3px; background: #1b222b; transition: background .2s; }
+.mx-grid i.pass { background: #2f8f5b; }
+.mx-grid i.fail { background: #c2312f; }
+.mx-foot { margin-top: auto; }
+.mx-foot > span:first-child { color: #b6c0cb; }
+.mx-bugs { display: flex; gap: 4px; }
+.mx-bugs b { font-weight: 600; font-size: 9.5px; background: #2d2413; color: #e3a73b; border-radius: 3px; padding: 1px 4px; }
+.mx-bugs b.crit { background: #2f1717; color: #f06a66; }
+.pv-pw { padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+.pw-row { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 0.7fr)); gap: 6px; align-items: center; padding: 3px 0; }
+.pw-row span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #b6c0cb; }
+.pw-row.head span { color: #7d8896; font-size: 10px; text-align: center; }
+.pw-row.head span:first-child { text-align: left; color: #ff9c63; }
+.pw-row b { text-align: center; color: #5f6b78; font-weight: 700; border-radius: 4px; background: #141a21; padding: 2px 0; }
+.pw-row b.run { color: #e3a73b; }
+.pw-row b.ok { color: #7fd7a4; background: #10241a; }
+.pw-foot { margin-top: auto; color: #7d8896; }
+.pv-sql { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.sql-head { display: flex; gap: 8px; color: #7d8896; white-space: nowrap; overflow: hidden; }
+.sql-head b { color: #ff9c63; font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+.sql-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+.sql-grid i { font-style: normal; font-size: 10px; text-align: center; padding: 5px 2px; border-radius: 5px; border: 1px solid #263039; color: #5f6b78; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all .3s; }
+.sql-grid i.on { border-color: #7fd7a4; color: #d5f5e3; background: #10241a; box-shadow: 0 0 10px -4px #7fd7a4; }
+.sql-foot { margin-top: auto; color: #5f6b78; font-size: 10.5px; }
+.pv-cpp { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.cpp-head { color: #7d8896; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cpp-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 12px; flex: 1; min-height: 0; }
+.cpp-bars { display: flex; align-items: flex-end; gap: 6px; height: 92px; }
+.cpp-bars div { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 2px; position: relative; }
+.cpp-bars em { width: 100%; border-radius: 3px 3px 0 0; background: linear-gradient(180deg, #ffb27f, #ff7a33); transition: height .9s ease; max-height: 70%; }
+.cpp-bars b { font-size: 9.5px; color: #b6c0cb; order: -1; }
+.cpp-bars span { font-size: 9px; color: #5f6b78; }
+.cpp-top { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; align-content: center; counter-reset: top; }
+.cpp-top li { display: flex; justify-content: space-between; gap: 6px; font-size: 10.5px; counter-increment: top; }
+.cpp-top li span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #b6c0cb; }
+.cpp-top li span::before { content: counter(top) ". "; color: #ff9c63; }
+.cpp-top li b { color: #e7ebf0; font-weight: 600; }
+.cpp-foot { color: #7fd7a4; font-size: 10.5px; }
+
+.pv-newman { padding: 9px 12px; display: flex; flex-direction: column; gap: 3px; font-size: 10.5px; line-height: 1.35; }
+.nm-head { color: #ff9c63; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nm-rows { display: grid; gap: 1px; margin-top: 2px; }
+.nm-row { display: grid; grid-template-columns: minmax(0, 1fr) 34px 54px; gap: 6px; color: #3f4954; transition: color .2s; }
+.nm-row span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nm-row b { font-weight: 600; text-align: right; }
+.nm-row em { font-style: normal; color: transparent; letter-spacing: 1px; }
+.nm-row.done { color: #b6c0cb; }
+.nm-row.done b { color: #e3a73b; }
+.nm-row.done em { color: #7fd7a4; }
+.nm-foot { margin-top: auto; color: #7fd7a4; }
+
+</style>
+<style>
+/* PC Builder in the Avlastimov XP palette (also used inside the XP window) */
+:root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
+  --bg: #ECE9D8; --surface: #FFFFFF; --surface-2: #F3F2EC; --stage: #0B1424;
+  --ink: #1B1F24; --ink-soft: #3A4350; --muted: #6B7380; --line: #D3CEBB;
+  --accent: #245EDC; --accent-ink: #1846B8; --accent-soft: #DCE8FD;
+  --good: #1E8A3A; --good-soft: #DDF3E2; --warn: #A86A12; --warn-soft: #FAEED9; --bad: #C2312F; --bad-soft: #FBE3E2;
+  --font-display: "Noto Sans", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Noto Sans", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+body { background: #ECE9D8; }
+.stage { background: radial-gradient(circle at 50% 115%, #12304a, #0B1424 62%) !important; border-color: #A8A28D; }
+.stage-tag { color: #8FB4E8; }
+.btn, .chip-btn { font-family: Tahoma, "Segoe UI", Verdana, sans-serif; border: 1px solid #003C74; border-radius: 3px; color: #000; background: linear-gradient(180deg, #FFFFFF 0%, #F0F0EA 60%, #D6D0C5 100%); }
+.btn:hover, .chip-btn:hover { box-shadow: inset 0 0 0 2px #F8B636; border-color: #003C74; }
+.chip-btn[aria-pressed="true"] { background: linear-gradient(180deg, #DCE8FD, #C3D6FA); color: #0A246A; }
+.btn.primary, .chip-btn.chip-accent { color: #fff; border-color: #0B3FB0; background: linear-gradient(180deg, #5C9BFF 0%, #2F6BE8 45%, #1E55D6 55%, #2C66E6 100%); text-shadow: 0 1px 1px rgba(0,0,0,.35); }
+.chip-btn.chip-accent[aria-pressed="true"] { background: linear-gradient(180deg, #1E55D6, #1846B8); color: #fff; }
+.widget { border-color: #C9C2AA; }
+.led { background: #245EDC; box-shadow: 0 0 0 3px #DCE8FD, 0 0 10px #245EDC; }
+.nav a.nav-cta { color: #1846B8; border-color: #245EDC; background: #DCE8FD; }
+.bm-bar i { background: #38BDF8; }
+.embedded .topbar, .embedded footer { display: none; }
+.embedded .bld-intro { padding-top: 14px; }
+.embedded .wrap { padding-bottom: 24px; }
+
+</style>
+</head>
+<body>
+<div class="wrap wide">
+  <header class="topbar">
+    <a class="brand" href="./"><span class="led" aria-hidden="true"></span>DENIS AVLASTIMOV</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#build">build</a>
+      <a href="#benchmark">benchmark</a>
+      <a class="nav-cta" href="./">← home</a>
+    </nav>
+  </header>
+
+  <div class="bld-intro">
+    <p class="eyebrow">// pc builder · 134 real parts</p>
+    <h1>Build a PC, assemble it, test it.</h1>
+    <p class="lead">Pick real components, check that they fit, put them together step by step, down to the thermal paste and the cables, then run an estimated benchmark. Your build is saved in this browser and shows up on the home page too.</p>
+  </div>
+
+  <section class="bld" id="build">
+    <div class="bld-stage">
+      <div class="stage stage-tall" id="stage">
+        <canvas id="pc" aria-label="Interactive 3D model of the PC you are building. Drag to rotate, click a part to pull it out."></canvas>
+        <span class="stage-tag" id="stageTag">MODEL // DRAG TO ROTATE</span>
+        <div class="stage-tip" id="tip" aria-live="polite"></div>
+        <div class="inspect-card" id="inspectCard" hidden>
+          <h4 id="inspTitle"></h4>
+          <dl id="inspRows"></dl>
+          <div class="row"><button class="chip-btn" id="btnPutBack">Put back</button><span class="hint">drag to rotate the part</span></div>
+        </div>
+        <div class="stage-bar">
+          <button class="chip-btn chip-accent" id="btnAssemble" aria-pressed="false">Build it step by step</button>
+          <button class="chip-btn" id="btnExplode" aria-pressed="false">Explode view</button>
+          <button class="chip-btn" id="btnSpin" aria-pressed="true">Auto-rotate</button>
+          <button class="chip-btn" id="btnReset">Reset view</button>
+        </div>
+        <div class="stage-fallback" id="fallback" hidden></div>
+      </div>
+      <div class="part-bar" id="partBar" role="group" aria-label="Pull out a part"><span class="label">pull out:</span></div>
+      <section class="asm" id="asmPanel" hidden aria-labelledby="asmTitle">
+        <div class="asm-head">
+          <h4 id="asmTitle">Assembly</h4>
+          <span class="label" id="asmCount">0 / 11</span>
+        </div>
+        <div class="asm-progress"><i id="asmProgress"></i></div>
+        <p class="asm-hint" id="asmHint" aria-live="polite"></p>
+        <div class="asm-actions">
+          <button class="btn primary" id="asmNext">Install next part</button>
+          <button class="btn" id="asmExit">Exit</button>
+        </div>
+        <ol class="asm-steps" id="asmSteps"></ol>
+      </section>
+    </div>
+
+    <aside class="widget bld-panel" aria-labelledby="cfgTitle">
+      <div class="widget-head">
+        <h3 id="cfgTitle">Components</h3>
+        <span class="label">example prices · EUR</span>
+      </div>
+      <div class="presets" role="group" aria-label="Ready-made builds">
+        <button class="chip-btn" data-preset="budget">Budget 1080p</button>
+        <button class="chip-btn" data-preset="sweet">Sweet spot 1440p</button>
+        <button class="chip-btn" data-preset="white">All white</button>
+        <button class="chip-btn" data-preset="flagship">Flagship 4K</button>
+      </div>
+      <div class="cfg-grid">
+        <div class="field"><label for="selCpu">CPU</label><select id="selCpu"></select></div>
+        <div class="field"><label for="selCooler">CPU cooler</label><select id="selCooler"></select></div>
+        <div class="field"><label for="selMobo">Motherboard</label><select id="selMobo"></select></div>
+        <div class="field"><label for="selGpu">Graphics card</label><select id="selGpu"></select></div>
+        <div class="field"><label for="selRam">Memory</label><select id="selRam"></select></div>
+        <div class="field"><label for="selSsd">Storage</label><select id="selSsd"></select></div>
+        <div class="field"><label for="selPsu">Power supply</label><select id="selPsu"></select></div>
+        <div class="field"><label for="selCase">Case</label><select id="selCase"></select></div>
+      </div>
+      <div class="cfg-out">
+        <div class="kpi"><div class="v" id="kpiPrice">0</div><div class="k">total price, €</div></div>
+        <div class="kpi"><div class="v" id="kpiLoad">0 W</div><div class="k">estimated peak load</div></div>
+        <div class="kpi"><div class="v" id="kpiRec">0 W</div><div class="k">recommended PSU</div></div>
+      </div>
+      <div class="meter">
+        <div class="meter-cap"><span>PSU load at peak</span><span id="meterVal">0%</span></div>
+        <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
+      </div>
+      <ul class="checks" id="checks"></ul>
+      <p class="note">Peak load = CPU max power + GPU board power + 60 W. Sizes are approximate; the 3D model follows the real products in shape and colour.</p>
+    </aside>
+  </section>
+
+  <!-- ===================== BENCHMARK ===================== -->
+  <div class="section-head" id="benchmark">
+    <h2>Benchmark</h2>
+    <p>Runs five games and three synthetic tests on the build above. The numbers are <b>estimates</b> from rough relative performance figures, not real measurements.</p>
+  </div>
+  <section class="widget bm">
+    <div class="bm-controls">
+      <div class="modes" role="group" aria-label="Resolution">
+        <button class="chip-btn" data-res="1080" aria-pressed="false">1080p</button>
+        <button class="chip-btn" data-res="1440" aria-pressed="true">1440p</button>
+        <button class="chip-btn" data-res="2160" aria-pressed="false">4K</button>
+      </div>
+      <button class="btn primary" id="bmRun">Run benchmark</button>
+      <span class="label" id="bmState">ready</span>
+    </div>
+    <div class="bm-screen">
+      <canvas id="bmCanvas" aria-label="Animated benchmark scene"></canvas>
+      <div class="bm-hud" aria-hidden="true">
+        <div><span id="bmTest">BENCH // idle</span><b id="bmFps">--</b><em>fps (est.)</em></div>
+        <div class="bm-bar"><i id="bmBar"></i></div>
+      </div>
+    </div>
+    <div class="bm-results" id="bmResults" hidden>
+      <div class="bm-verdict" id="bmVerdict"></div>
+      <div class="bm-grid">
+        <div>
+          <h4>Games <span class="label" id="bmResLabel">1440p</span></h4>
+          <div class="bm-games" id="bmGames"></div>
+        </div>
+        <div>
+          <h4>Synthetic</h4>
+          <div class="bm-scores" id="bmScores"></div>
+          <h4 class="mt">Compared with</h4>
+          <div class="bm-compare" id="bmCompare"></div>
+        </div>
+      </div>
+      <p class="note">Max settings, no upscaling, no frame generation. Real results depend on the exact game version, drivers, settings and the scene.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>denis@bench · pc builder</span>
+    <a href="./">← back to the home page</a>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* Shared code for index.html and builder.html:
+   parts catalogue, the current build (saved in the browser), compatibility checks,
+   performance estimates and the procedural 3D PC model (three.js r128). */
+(() => {
+  "use strict";
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = (id) => document.getElementById(id);
+
+  const NV50 = "NVIDIA GeForce RTX 50", NV40 = "NVIDIA GeForce RTX 40", RX9 = "AMD Radeon RX 9000", RX7 = "AMD Radeon RX 7000", ARC = "Intel Arc B-series";
+  const FAN_BLACK = { frame: 0x1b1e22, blade: 0x15171a, hub: 0x23262b };
+  const FAN_WHITE = { frame: 0xe9ebee, blade: 0xf2f3f5, hub: 0xdfe2e6 };
+  const FAN_NOCTUA = { frame: 0xcdb79a, blade: 0x6e3b2c, hub: 0xcdb79a };
+  const PARTS = {
+    cpu: [
+      { id: "9600x", group: "AMD Ryzen 9000 · AM5", name: "AMD Ryzen 5 9600X", cores: 6, socket: "AM5", watts: 88, price: 199, tier: 1 },
+      { id: "9700x", group: "AMD Ryzen 9000 · AM5", name: "AMD Ryzen 7 9700X", cores: 8, socket: "AM5", watts: 88, price: 289, tier: 2 },
+      { id: "9800x3d", group: "AMD Ryzen 9000 · AM5", name: "AMD Ryzen 7 9800X3D", cores: 8, socket: "AM5", watts: 162, price: 469, tier: 3 },
+      { id: "9900x", group: "AMD Ryzen 9000 · AM5", name: "AMD Ryzen 9 9900X", cores: 12, socket: "AM5", watts: 162, price: 379, tier: 3 },
+      { id: "9900x3d", group: "AMD Ryzen 9000 · AM5", name: "AMD Ryzen 9 9900X3D", cores: 12, socket: "AM5", watts: 162, price: 549, tier: 3 },
+      { id: "9950x", group: "AMD Ryzen 9000 · AM5", name: "AMD Ryzen 9 9950X", cores: 16, socket: "AM5", watts: 230, price: 529, tier: 3 },
+      { id: "9950x3d", group: "AMD Ryzen 9000 · AM5", name: "AMD Ryzen 9 9950X3D", cores: 16, socket: "AM5", watts: 230, price: 679, tier: 4 },
+      { id: "7500f", group: "AMD Ryzen 7000/8000 · AM5", name: "AMD Ryzen 5 7500F", cores: 6, socket: "AM5", watts: 88, price: 129, tier: 1 },
+      { id: "7600", group: "AMD Ryzen 7000/8000 · AM5", name: "AMD Ryzen 5 7600", cores: 6, socket: "AM5", watts: 88, price: 179, tier: 1 },
+      { id: "7700x", group: "AMD Ryzen 7000/8000 · AM5", name: "AMD Ryzen 7 7700X", cores: 8, socket: "AM5", watts: 142, price: 249, tier: 2 },
+      { id: "7800x3d", group: "AMD Ryzen 7000/8000 · AM5", name: "AMD Ryzen 7 7800X3D", cores: 8, socket: "AM5", watts: 162, price: 379, tier: 3 },
+      { id: "7950x", group: "AMD Ryzen 7000/8000 · AM5", name: "AMD Ryzen 9 7950X", cores: 16, socket: "AM5", watts: 230, price: 449, tier: 3 },
+      { id: "8700g", group: "AMD Ryzen 7000/8000 · AM5", name: "AMD Ryzen 7 8700G", cores: 8, socket: "AM5", watts: 88, price: 249, tier: 2 },
+      { id: "245k", group: "Intel Core Ultra 200S · LGA1851", name: "Intel Core Ultra 5 245K", cores: 14, socket: "LGA1851", watts: 159, price: 249, tier: 1 },
+      { id: "265k", group: "Intel Core Ultra 200S · LGA1851", name: "Intel Core Ultra 7 265K", cores: 20, socket: "LGA1851", watts: 250, price: 319, tier: 2 },
+      { id: "285k", group: "Intel Core Ultra 200S · LGA1851", name: "Intel Core Ultra 9 285K", cores: 24, socket: "LGA1851", watts: 250, price: 569, tier: 3 },
+      { id: "14400f", group: "Intel Core 14th gen · LGA1700", name: "Intel Core i5-14400F", cores: 10, socket: "LGA1700", watts: 148, price: 129, tier: 1 },
+      { id: "14600k", group: "Intel Core 14th gen · LGA1700", name: "Intel Core i5-14600K", cores: 14, socket: "LGA1700", watts: 181, price: 219, tier: 2 },
+      { id: "14700k", group: "Intel Core 14th gen · LGA1700", name: "Intel Core i7-14700K", cores: 20, socket: "LGA1700", watts: 253, price: 339, tier: 2 },
+      { id: "14900k", group: "Intel Core 14th gen · LGA1700", name: "Intel Core i9-14900K", cores: 24, socket: "LGA1700", watts: 253, price: 459, tier: 3 },
+    ],
+    cooler: [
+      { id: "ak400", group: "Air · single tower", name: "DeepCool AK400", type: "tower", h: 155, cap: 200, price: 35,
+        look: { towers: 1, fans: ["front"], fanMm: 120, fan: FAN_BLACK, fin: 0xc8cdd3, top: 0x1d2024, pipe: 0xc0c5cb, logo: "DEEPCOOL" } },
+      { id: "freezer36", group: "Air · single tower", name: "ARCTIC Freezer 36", type: "tower", h: 159, cap: 210, price: 35,
+        look: { towers: 1, fans: ["front", "back"], fanMm: 120, fan: FAN_BLACK, fin: 0xc3c8ce, top: 0x16181b, pipe: 0xc0c5cb, logo: "ARCTIC" } },
+      { id: "nhu12a", group: "Air · single tower", name: "Noctua NH-U12A", type: "tower", h: 158, cap: 220, price: 129,
+        look: { towers: 1, fans: ["front", "back"], fanMm: 120, fan: FAN_NOCTUA, fin: 0xd2d6db, top: 0xd2d6db, pipe: 0xd9dde1, logo: "NOCTUA" } },
+      { id: "pa120se", group: "Air · dual tower", name: "Thermalright Peerless Assassin 120 SE", type: "tower", h: 155, cap: 245, price: 39,
+        look: { towers: 2, fans: ["front", "mid"], fanMm: 120, fan: FAN_BLACK, fin: 0xc6cbd1, top: 0x2a2d31, pipe: 0xc8ccd1, logo: "THERMALRIGHT" } },
+      { id: "pa120w", group: "Air · dual tower", name: "Thermalright Peerless Assassin 120 White ARGB", type: "tower", h: 155, cap: 245, price: 49,
+        look: { towers: 2, fans: ["front", "mid"], fanMm: 120, fan: FAN_WHITE, rgb: true, fin: 0xeceef1, top: 0xf4f5f7, pipe: 0xe6e8eb, logo: "THERMALRIGHT" } },
+      { id: "drp5", group: "Air · dual tower", name: "be quiet! Dark Rock Pro 5", type: "tower", h: 168, cap: 270, price: 95,
+        look: { towers: 2, fans: ["front", "mid"], fanMm: 135, fan: FAN_BLACK, fin: 0x1c1e21, top: 0x111214, pipe: 0x24272b, logo: "be quiet!" } },
+      { id: "nhd15g2", group: "Air · dual tower", name: "Noctua NH-D15 G2", type: "tower", h: 168, cap: 275, price: 149,
+        look: { towers: 2, fans: ["front", "mid"], fanMm: 140, fan: FAN_NOCTUA, fin: 0xd2d6db, top: 0xd2d6db, pipe: 0xd9dde1, logo: "NOCTUA" } },
+      { id: "nhd15b", group: "Air · dual tower", name: "Noctua NH-D15 chromax.black", type: "tower", h: 165, cap: 260, price: 119,
+        look: { towers: 2, fans: ["front", "mid"], fanMm: 140, fan: FAN_BLACK, fin: 0x1d1f22, top: 0x16181a, pipe: 0x24272b, logo: "NOCTUA" } },
+      { id: "kraken240", group: "Liquid (AIO)", name: "NZXT Kraken 240", type: "aio", rad: 240, cap: 250, price: 139,
+        look: { pump: "round", pumpColor: 0x1b1d21, screen: true, fan: FAN_BLACK, radColor: 0x1a1c1f, tube: 0x16181b, logo: "NZXT" } },
+      { id: "krakenelite360w", group: "Liquid (AIO)", name: "NZXT Kraken Elite 360 RGB White", type: "aio", rad: 360, cap: 320, price: 299,
+        look: { pump: "round", pumpColor: 0xeceef1, screen: true, fan: FAN_WHITE, rgb: true, radColor: 0xe6e8eb, tube: 0xeceef0, logo: "NZXT" } },
+      { id: "lf3pro360", group: "Liquid (AIO)", name: "ARCTIC Liquid Freezer III Pro 360", type: "aio", rad: 360, thick: 38, cap: 320, price: 89,
+        look: { pump: "square", pumpColor: 0x16181b, vrmFan: true, fan: FAN_BLACK, radColor: 0x15171a, tube: 0x111214, logo: "ARCTIC" } },
+      { id: "h150i", group: "Liquid (AIO)", name: "Corsair iCUE H150i ELITE LCD XT", type: "aio", rad: 360, cap: 320, price: 229,
+        look: { pump: "round", pumpColor: 0x1a1c1f, screen: true, fan: FAN_BLACK, rgb: true, radColor: 0x17191c, tube: 0x141518, logo: "CORSAIR" } },
+      { id: "lt720", group: "Liquid (AIO)", name: "DeepCool LT720", type: "aio", rad: 360, cap: 320, price: 119,
+        look: { pump: "round", pumpColor: 0x15171a, mirror: true, fan: FAN_BLACK, radColor: 0x15171a, tube: 0x111214, logo: "DEEPCOOL" } },
+      { id: "galahad2w", group: "Liquid (AIO)", name: "Lian Li Galahad II Trinity 360 White", type: "aio", rad: 360, cap: 320, price: 159,
+        look: { pump: "square", pumpColor: 0xeceef1, mirror: true, fan: FAN_WHITE, rgb: true, radColor: 0xe6e8eb, tube: 0xeceef0, logo: "LIAN LI" } },
+      { id: "ryujin3", group: "Liquid (AIO)", name: "ASUS ROG Ryujin III 360", type: "aio", rad: 360, cap: 330, price: 299,
+        look: { pump: "square", pumpColor: 0x1b1d21, screen: true, fan: FAN_BLACK, radColor: 0x17191c, tube: 0x141518, logo: "ROG" } },
+    ],
+    mobo: [
+      { id: "a620m", group: "AM5", name: "ASRock A620M Pro RS", socket: "AM5", form: "mATX", price: 89, look: { pcb: 0x1b1d20, hs: 0x80868d, accent: 0xb9bfc6, slot: 0x2a2d31, series: "PRO RS" } },
+      { id: "b650ma", group: "AM5", name: "MSI PRO B650M-A WiFi", socket: "AM5", form: "mATX", price: 139, look: { pcb: 0x23272c, hs: 0x5d636a, accent: 0xb5bcc4, slot: 0x2a2d31, series: "PRO" } },
+      { id: "b650tom", group: "AM5", name: "MSI MAG B650 Tomahawk WiFi", socket: "AM5", form: "ATX", price: 179, look: { pcb: 0x15171a, hs: 0x3b4046, accent: 0x9aa1a8, slot: 0x2a2d31, series: "MAG" } },
+      { id: "b850tuf", group: "AM5", name: "ASUS TUF Gaming B850-Plus WiFi", socket: "AM5", form: "ATX", price: 199, look: { pcb: 0x1a1b1d, hs: 0x2c2e31, accent: 0xe3b320, slot: 0x2a2d31, series: "TUF GAMING" } },
+      { id: "b850ice", group: "AM5", name: "Gigabyte B850 AORUS Elite WiFi7 ICE", socket: "AM5", form: "ATX", price: 239, look: { pcb: 0xd9dce0, hs: 0xeef0f2, accent: 0x7fb6ff, slot: 0xf0f1f3, rgb: true, series: "AORUS" } },
+      { id: "x870tom", group: "AM5", name: "MSI MAG X870 Tomahawk WiFi", socket: "AM5", form: "ATX", price: 279, look: { pcb: 0x15171a, hs: 0x41464c, accent: 0xa3aab1, slot: 0x2a2d31, series: "MAG" } },
+      { id: "x870a", group: "AM5", name: "ASUS ROG Strix X870-A Gaming WiFi", socket: "AM5", form: "ATX", price: 319, look: { pcb: 0x1c1d20, hs: 0xd6dade, accent: 0xff3355, slot: 0xe4e6e9, rgb: true, series: "ROG STRIX" } },
+      { id: "x870ee", group: "AM5", name: "ASUS ROG Strix X870E-E Gaming WiFi", socket: "AM5", form: "ATX", price: 449, look: { pcb: 0x141518, hs: 0x26282c, accent: 0xff2a3d, slot: 0x2a2d31, rgb: true, series: "ROG STRIX" } },
+      { id: "x870ehero", group: "AM5", name: "ASUS ROG Crosshair X870E Hero", socket: "AM5", form: "ATX", price: 649, look: { pcb: 0x111214, hs: 0x1e2023, accent: 0xc9ced4, slot: 0x2a2d31, rgb: true, series: "ROG CROSSHAIR" } },
+      { id: "b860ma", group: "LGA1851", name: "MSI PRO B860M-A WiFi", socket: "LGA1851", form: "mATX", price: 149, look: { pcb: 0x23272c, hs: 0x5d636a, accent: 0xb5bcc4, slot: 0x2a2d31, series: "PRO" } },
+      { id: "b860tom", group: "LGA1851", name: "MSI MAG B860 Tomahawk WiFi", socket: "LGA1851", form: "ATX", price: 209, look: { pcb: 0x15171a, hs: 0x3b4046, accent: 0x9aa1a8, slot: 0x2a2d31, series: "MAG" } },
+      { id: "z890elite", group: "LGA1851", name: "Gigabyte Z890 AORUS Elite WiFi7", socket: "LGA1851", form: "ATX", price: 279, look: { pcb: 0x16181b, hs: 0x2d3034, accent: 0xff8a1f, slot: 0x2a2d31, rgb: true, series: "AORUS" } },
+      { id: "z890a", group: "LGA1851", name: "ASUS ROG Strix Z890-A Gaming WiFi", socket: "LGA1851", form: "ATX", price: 369, look: { pcb: 0x1c1d20, hs: 0xd6dade, accent: 0xff3355, slot: 0xe4e6e9, rgb: true, series: "ROG STRIX" } },
+      { id: "z890carbon", group: "LGA1851", name: "MSI MPG Z890 Carbon WiFi", socket: "LGA1851", form: "ATX", price: 479, look: { pcb: 0x111214, hs: 0x1d1f22, accent: 0x55595f, slot: 0x2a2d31, rgb: true, series: "MPG CARBON" } },
+      { id: "b760ma", group: "LGA1700", name: "MSI PRO B760M-A WiFi", socket: "LGA1700", form: "mATX", price: 129, look: { pcb: 0x23272c, hs: 0x5d636a, accent: 0xb5bcc4, slot: 0x2a2d31, series: "PRO" } },
+      { id: "b760tuf", group: "LGA1700", name: "ASUS TUF Gaming B760-Plus WiFi", socket: "LGA1700", form: "ATX", price: 169, look: { pcb: 0x1a1b1d, hs: 0x2c2e31, accent: 0xe3b320, slot: 0x2a2d31, series: "TUF GAMING" } },
+      { id: "z790a", group: "LGA1700", name: "ASUS ROG Strix Z790-A Gaming WiFi II", socket: "LGA1700", form: "ATX", price: 319, look: { pcb: 0x1c1d20, hs: 0xd6dade, accent: 0xff3355, slot: 0xe4e6e9, rgb: true, series: "ROG STRIX" } },
+      { id: "z790e", group: "LGA1700", name: "ASUS ROG Strix Z790-E Gaming WiFi II", socket: "LGA1700", form: "ATX", price: 429, look: { pcb: 0x141518, hs: 0x26282c, accent: 0xff2a3d, slot: 0x2a2d31, rgb: true, series: "ROG STRIX" } },
+    ],
+    gpu: [
+      { id: "5090fe", group: NV50, name: "NVIDIA GeForce RTX 5090 Founders Edition", short: "RTX 5090", watts: 575, price: 2329, tier: 4, len: 304, slots: 2, h: 137,
+        look: { style: "fe50", shroud: 0x303337, back: 0x26292d, fans: 2, fanPos: [0.17, 0.83], plug: "12v" } },
+      { id: "5090astral", group: NV50, name: "ASUS ROG Astral GeForce RTX 5090", short: "RTX 5090", watts: 600, price: 3199, tier: 4, len: 358, slots: 3.8, h: 150,
+        look: { style: "partner", shroud: 0x1c1e22, accent: 0xa7b0ba, back: 0x2a2d32, fans: 3, topFan: true, rgb: true, series: "ROG ASTRAL", plug: "12v" } },
+      { id: "5080fe", group: NV50, name: "NVIDIA GeForce RTX 5080 Founders Edition", short: "RTX 5080", watts: 360, price: 1169, tier: 3, len: 304, slots: 2, h: 137,
+        look: { style: "fe50", shroud: 0x303337, back: 0x26292d, fans: 2, fanPos: [0.17, 0.83], plug: "12v" } },
+      { id: "5080tuf", group: NV50, name: "ASUS TUF Gaming GeForce RTX 5080", short: "RTX 5080", watts: 360, price: 1349, tier: 3, len: 348, slots: 3.6, h: 146,
+        look: { style: "partner", shroud: 0x2c2f33, accent: 0x8e969e, back: 0x232528, fans: 3, series: "TUF GAMING", plug: "12v" } },
+      { id: "5070tituf", group: NV50, name: "ASUS TUF Gaming GeForce RTX 5070 Ti", short: "RTX 5070 Ti", watts: 300, price: 949, tier: 3, len: 329, slots: 3.1, h: 140,
+        look: { style: "partner", shroud: 0x2c2f33, accent: 0x8e969e, back: 0x232528, fans: 3, series: "TUF GAMING", plug: "12v" } },
+      { id: "5070tiventus", group: NV50, name: "MSI GeForce RTX 5070 Ti Ventus 3X OC", short: "RTX 5070 Ti", watts: 300, price: 869, tier: 3, len: 303, slots: 2.5, h: 121,
+        look: { style: "partner", shroud: 0x1e2023, accent: 0x5d636a, back: 0x2a2d31, fans: 3, series: "VENTUS 3X", plug: "12v" } },
+      { id: "5070fe", group: NV50, name: "NVIDIA GeForce RTX 5070 Founders Edition", short: "RTX 5070", watts: 250, price: 649, tier: 2, len: 242, slots: 2, h: 112,
+        look: { style: "fe50", shroud: 0x303337, back: 0x26292d, fans: 2, fanPos: [0.2, 0.8], plug: "12v" } },
+      { id: "5070aero", group: NV50, name: "Gigabyte GeForce RTX 5070 AERO OC (white)", short: "RTX 5070", watts: 250, price: 689, tier: 2, len: 304, slots: 2.5, h: 126,
+        look: { style: "partner", shroud: 0xe9ebee, accent: 0xaeb6bf, back: 0xdfe2e6, fans: 3, rgb: true, series: "AERO", plug: "12v" } },
+      { id: "5060tidual", group: NV50, name: "ASUS Dual GeForce RTX 5060 Ti 16 GB", short: "RTX 5060 Ti", watts: 180, price: 449, tier: 1, len: 229, slots: 2.5, h: 123,
+        look: { style: "partner", shroud: 0x24272b, accent: 0xb8bec5, back: 0x2c2f33, fans: 2, series: "DUAL", plug: "8pin1" } },
+      { id: "5060ventus", group: NV50, name: "MSI GeForce RTX 5060 Ventus 2X OC 8 GB", short: "RTX 5060", watts: 145, price: 309, tier: 1, len: 197, slots: 2, h: 120,
+        look: { style: "partner", shroud: 0x1e2023, accent: 0x5d636a, back: 0x2a2d31, fans: 2, series: "VENTUS 2X", plug: "8pin1" } },
+      { id: "5050wf", group: NV50, name: "Gigabyte GeForce RTX 5050 Windforce OC 8 GB", short: "RTX 5050", watts: 130, price: 259, tier: 1, len: 192, slots: 2, h: 118,
+        look: { style: "partner", shroud: 0x202225, accent: 0x6f767e, back: 0x2a2d31, fans: 2, series: "WINDFORCE", plug: "8pin1" } },
+      { id: "4090fe", group: NV40, name: "NVIDIA GeForce RTX 4090 Founders Edition", short: "RTX 4090", watts: 450, price: 1799, tier: 4, len: 304, slots: 3, h: 137,
+        look: { style: "fe40", shroud: 0xb9bdc2, back: 0x1d2024, fans: 1, fanPos: [0.27], topFan: true, plug: "12v" } },
+      { id: "4080sfe", group: NV40, name: "NVIDIA GeForce RTX 4080 SUPER Founders Edition", short: "RTX 4080 SUPER", watts: 320, price: 1049, tier: 3, len: 304, slots: 3, h: 137,
+        look: { style: "fe40", shroud: 0x2b2d30, back: 0x1d2024, fans: 1, fanPos: [0.27], topFan: true, plug: "12v" } },
+      { id: "4070sfe", group: NV40, name: "NVIDIA GeForce RTX 4070 SUPER Founders Edition", short: "RTX 4070 SUPER", watts: 220, price: 589, tier: 2, len: 244, slots: 2, h: 112,
+        look: { style: "fe40", shroud: 0x2b2d30, back: 0x1d2024, fans: 1, fanPos: [0.3], topFan: true, plug: "12v" } },
+      { id: "4060ventus", group: NV40, name: "MSI GeForce RTX 4060 Ventus 2X 8 GB", short: "RTX 4060", watts: 115, price: 279, tier: 1, len: 199, slots: 2, h: 120,
+        look: { style: "partner", shroud: 0x1e2023, accent: 0x5d636a, back: 0x2a2d31, fans: 2, series: "VENTUS 2X", plug: "8pin1" } },
+      { id: "9070xtnitro", group: RX9, name: "Sapphire Nitro+ Radeon RX 9070 XT", short: "RX 9070 XT", watts: 340, price: 769, tier: 3, len: 320, slots: 3.1, h: 128,
+        look: { style: "partner", shroud: 0x1a1b1e, accent: 0x9aa1a9, back: 0x26282b, fans: 3, rgb: true, series: "NITRO+", plug: "hidden" } },
+      { id: "9070xthh", group: RX9, name: "PowerColor Hellhound Radeon RX 9070 XT Spectral White", short: "RX 9070 XT", watts: 304, price: 719, tier: 3, len: 332, slots: 3, h: 132,
+        look: { style: "partner", shroud: 0xeeeff1, accent: 0xc8ccd2, back: 0xe5e7ea, fans: 3, rgb: true, series: "HELLHOUND", plug: "8pin2" } },
+      { id: "9070pulse", group: RX9, name: "Sapphire Pulse Radeon RX 9070", short: "RX 9070", watts: 220, price: 599, tier: 2, len: 280, slots: 2.5, h: 125,
+        look: { style: "partner", shroud: 0x1f2124, accent: 0xc0272d, back: 0x26282b, fans: 3, series: "PULSE", plug: "8pin2" } },
+      { id: "9060xt", group: RX9, name: "Sapphire Pulse Radeon RX 9060 XT 16 GB", short: "RX 9060 XT", watts: 160, price: 379, tier: 1, len: 240, slots: 2, h: 120,
+        look: { style: "partner", shroud: 0x1f2124, accent: 0xc0272d, back: 0x26282b, fans: 2, series: "PULSE", plug: "8pin1" } },
+      { id: "7900xtx", group: RX7, name: "AMD Radeon RX 7900 XTX (reference)", short: "RX 7900 XTX", watts: 355, price: 899, tier: 3, len: 287, slots: 2.5, h: 123,
+        look: { style: "partner", shroud: 0x1b1c1f, accent: 0xd2232a, back: 0x202226, fans: 3, series: "RADEON", plug: "8pin2" } },
+      { id: "7800xt", group: RX7, name: "AMD Radeon RX 7800 XT (reference)", short: "RX 7800 XT", watts: 263, price: 469, tier: 2, len: 267, slots: 2.5, h: 111,
+        look: { style: "partner", shroud: 0x1b1c1f, accent: 0xd2232a, back: 0x202226, fans: 2, series: "RADEON", plug: "8pin2" } },
+      { id: "b580le", group: ARC, name: "Intel Arc B580 Limited Edition", short: "ARC B580", watts: 190, price: 279, tier: 1, len: 272, slots: 2, h: 115,
+        look: { style: "partner", shroud: 0x1f2226, accent: 0xe9ecef, back: 0x2a2d31, fans: 2, series: "INTEL ARC", plug: "8pin1" } },
+      { id: "b570", group: ARC, name: "ASRock Intel Arc B570 Challenger OC", short: "ARC B570", watts: 150, price: 229, tier: 1, len: 250, slots: 2, h: 120,
+        look: { style: "partner", shroud: 0x1d1f22, accent: 0x7a828b, back: 0x2a2d31, fans: 2, series: "CHALLENGER", plug: "8pin1" } },
+    ],
+    ram: [
+      { id: "fury32", group: "32 GB (2 × 16 GB)", name: "Kingston FURY Beast DDR5-6000 32 GB", gb: 32, price: 129, look: { body: 0x1b1d20, band: 0x2a2d31, text: "FURY BEAST", h: 35 } },
+      { id: "furyrgbw32", group: "32 GB (2 × 16 GB)", name: "Kingston FURY Beast RGB White DDR5-6000 32 GB", gb: 32, price: 139, look: { body: 0xeceef1, band: 0xd6dade, text: "FURY BEAST", h: 42, rgb: true } },
+      { id: "veng32", group: "32 GB (2 × 16 GB)", name: "Corsair Vengeance DDR5-6000 32 GB", gb: 32, price: 125, look: { body: 0x16181b, band: 0x24272b, text: "VENGEANCE", h: 34 } },
+      { id: "vengrgb32", group: "32 GB (2 × 16 GB)", name: "Corsair Vengeance RGB DDR5-6000 32 GB", gb: 32, price: 139, look: { body: 0x1a1c1f, band: 0x2c2f33, text: "VENGEANCE RGB", h: 44, rgb: true } },
+      { id: "vengrgbw32", group: "32 GB (2 × 16 GB)", name: "Corsair Vengeance RGB DDR5-6000 32 GB (white)", gb: 32, price: 145, look: { body: 0xeceef1, band: 0xd9dce0, text: "VENGEANCE RGB", h: 44, rgb: true } },
+      { id: "tz5neo32", group: "32 GB (2 × 16 GB)", name: "G.Skill Trident Z5 Neo RGB DDR5-6000 CL30 32 GB", gb: 32, price: 149, look: { body: 0x1c1e21, band: 0xa8adb3, text: "TRIDENT Z5 NEO", h: 44, rgb: true, split: true } },
+      { id: "flarex5", group: "32 GB (2 × 16 GB)", name: "G.Skill Flare X5 DDR5-6000 32 GB", gb: 32, price: 125, look: { body: 0x16181b, band: 0x2a2d31, text: "FLARE X5", h: 33 } },
+      { id: "deltaw32", group: "32 GB (2 × 16 GB)", name: "TEAMGROUP T-Force Delta RGB DDR5-6400 32 GB (white)", gb: 32, price: 145, look: { body: 0xf0f1f3, band: 0xdcdfe3, text: "T-FORCE DELTA", h: 47, rgb: true } },
+      { id: "tz5rgb64", group: "64 GB (2 × 32 GB)", name: "G.Skill Trident Z5 RGB DDR5-6400 64 GB", gb: 64, price: 269, look: { body: 0xb9bec4, band: 0x1c1e21, text: "TRIDENT Z5", h: 44, rgb: true, split: true } },
+      { id: "renegade64", group: "64 GB (2 × 32 GB)", name: "Kingston FURY Renegade RGB DDR5-6400 64 GB", gb: 64, price: 259, look: { body: 0xb3b8be, band: 0x1a1c1f, text: "FURY RENEGADE", h: 44, rgb: true, split: true } },
+      { id: "vengrgb64", group: "64 GB (2 × 32 GB)", name: "Corsair Vengeance RGB DDR5-6000 64 GB", gb: 64, price: 239, look: { body: 0x1a1c1f, band: 0x2c2f33, text: "VENGEANCE RGB", h: 44, rgb: true } },
+      { id: "domti64", group: "64 GB (2 × 32 GB)", name: "Corsair Dominator Titanium RGB DDR5-6400 64 GB", gb: 64, price: 319, look: { body: 0x25272a, band: 0x5a5f65, text: "DOMINATOR", h: 56, rgb: true, split: true } },
+      { id: "tz5neo96", group: "96 GB (2 × 48 GB)", name: "G.Skill Trident Z5 Neo RGB DDR5-6000 96 GB", gb: 96, price: 389, look: { body: 0x1c1e21, band: 0xa8adb3, text: "TRIDENT Z5 NEO", h: 44, rgb: true, split: true } },
+      { id: "veng96", group: "96 GB (2 × 48 GB)", name: "Corsair Vengeance DDR5-5600 96 GB", gb: 96, price: 339, look: { body: 0x16181b, band: 0x24272b, text: "VENGEANCE", h: 34 } },
+    ],
+    ssd: [
+      { id: "nv3_1", group: "PCIe 4.0", name: "Kingston NV3 1 TB", tb: 1, gen: 4, price: 69, look: { pcb: 0x1b2440, label: 0x1b2440, text: 0xffffff, brand: "KINGSTON NV3" } },
+      { id: "nv3_2", group: "PCIe 4.0", name: "Kingston NV3 2 TB", tb: 2, gen: 4, price: 119, look: { pcb: 0x1b2440, label: 0x1b2440, text: 0xffffff, brand: "KINGSTON NV3" } },
+      { id: "t500_2", group: "PCIe 4.0", name: "Crucial T500 2 TB", tb: 2, gen: 4, price: 139, look: { pcb: 0x15171a, label: 0x1a2a4a, text: 0xffffff, brand: "CRUCIAL T500" } },
+      { id: "sn850x_1", group: "PCIe 4.0", name: "WD_BLACK SN850X 1 TB", tb: 1, gen: 4, price: 89, look: { pcb: 0x111214, label: 0x111214, text: 0xffffff, brand: "WD_BLACK SN850X" } },
+      { id: "sn850x_2", group: "PCIe 4.0", name: "WD_BLACK SN850X 2 TB", tb: 2, gen: 4, price: 149, look: { pcb: 0x111214, label: 0x111214, text: 0xffffff, brand: "WD_BLACK SN850X" } },
+      { id: "sn850x_4", group: "PCIe 4.0", name: "WD_BLACK SN850X 4 TB", tb: 4, gen: 4, price: 289, look: { pcb: 0x111214, label: 0x111214, text: 0xffffff, brand: "WD_BLACK SN850X" } },
+      { id: "sn850xhs_2", group: "PCIe 4.0", name: "WD_BLACK SN850X 2 TB with heatsink", tb: 2, gen: 4, price: 169, look: { pcb: 0x111214, label: 0x111214, text: 0xffffff, brand: "WD_BLACK", hs: 0x1b1d20, rgb: true } },
+      { id: "990pro_1", group: "PCIe 4.0", name: "Samsung 990 PRO 1 TB", tb: 1, gen: 4, price: 109, look: { pcb: 0x111214, label: 0x15171a, text: 0xf26b21, brand: "SAMSUNG 990 PRO" } },
+      { id: "990pro_2", group: "PCIe 4.0", name: "Samsung 990 PRO 2 TB", tb: 2, gen: 4, price: 169, look: { pcb: 0x111214, label: 0x15171a, text: 0xf26b21, brand: "SAMSUNG 990 PRO" } },
+      { id: "990pro_4", group: "PCIe 4.0", name: "Samsung 990 PRO 4 TB", tb: 4, gen: 4, price: 309, look: { pcb: 0x111214, label: 0x15171a, text: 0xf26b21, brand: "SAMSUNG 990 PRO" } },
+      { id: "990prohs_2", group: "PCIe 4.0", name: "Samsung 990 PRO 2 TB with heatsink", tb: 2, gen: 4, price: 189, look: { pcb: 0x111214, label: 0x15171a, text: 0xf26b21, brand: "SAMSUNG", hs: 0x1d1f22, rgb: true } },
+      { id: "9100pro_2", group: "PCIe 5.0", name: "Samsung 9100 PRO 2 TB", tb: 2, gen: 5, price: 239, look: { pcb: 0x111214, label: 0x15171a, text: 0xf26b21, brand: "SAMSUNG 9100 PRO" } },
+      { id: "9100pro_4", group: "PCIe 5.0", name: "Samsung 9100 PRO 4 TB", tb: 4, gen: 5, price: 429, look: { pcb: 0x111214, label: 0x15171a, text: 0xf26b21, brand: "SAMSUNG 9100 PRO" } },
+      { id: "sn8100_2", group: "PCIe 5.0", name: "WD_BLACK SN8100 2 TB", tb: 2, gen: 5, price: 249, look: { pcb: 0x111214, label: 0x111214, text: 0xffffff, brand: "WD_BLACK SN8100" } },
+      { id: "t705_2", group: "PCIe 5.0", name: "Crucial T705 2 TB with heatsink", tb: 2, gen: 5, price: 259, look: { pcb: 0x15171a, label: 0x1a2a4a, text: 0xffffff, brand: "CRUCIAL T705", hs: 0x1b1d20 } },
+    ],
+    psu: [
+      { id: "a650bn", group: "650–750 W", name: "MSI MAG A650BN", watts: 650, eff: "80 PLUS Bronze", price: 59, look: { color: 0x1b1d20, len: 140, brand: "MSI" } },
+      { id: "rm750e", group: "650–750 W", name: "Corsair RM750e", watts: 750, eff: "80 PLUS Gold", price: 99, look: { color: 0x17191c, len: 140, brand: "CORSAIR" } },
+      { id: "focusgx750", group: "650–750 W", name: "Seasonic FOCUS GX-750", watts: 750, eff: "80 PLUS Gold", price: 109, look: { color: 0x1b1d20, len: 140, brand: "SEASONIC" } },
+      { id: "pp12m750", group: "650–750 W", name: "be quiet! Pure Power 12 M 750W", watts: 750, eff: "80 PLUS Gold", price: 99, look: { color: 0x141518, len: 160, brand: "be quiet!" } },
+      { id: "rm850x", group: "850–1000 W", name: "Corsair RM850x", watts: 850, eff: "80 PLUS Gold", price: 139, look: { color: 0x17191c, len: 160, brand: "CORSAIR" } },
+      { id: "rm850xw", group: "850–1000 W", name: "Corsair RM850x White", watts: 850, eff: "80 PLUS Gold", price: 149, look: { color: 0xeceef1, len: 160, brand: "CORSAIR" } },
+      { id: "a850gl", group: "850–1000 W", name: "MSI MAG A850GL PCIE5", watts: 850, eff: "80 PLUS Gold", price: 109, look: { color: 0x1b1d20, len: 140, brand: "MSI" } },
+      { id: "vertex1000", group: "850–1000 W", name: "Seasonic VERTEX GX-1000", watts: 1000, eff: "80 PLUS Gold", price: 179, look: { color: 0x1b1d20, len: 160, brand: "SEASONIC" } },
+      { id: "rm1000x", group: "850–1000 W", name: "Corsair RM1000x", watts: 1000, eff: "80 PLUS Gold", price: 189, look: { color: 0x17191c, len: 180, brand: "CORSAIR" } },
+      { id: "dp13_1000", group: "850–1000 W", name: "be quiet! Dark Power 13 1000W", watts: 1000, eff: "80 PLUS Titanium", price: 259, look: { color: 0x141518, len: 175, brand: "be quiet!" } },
+      { id: "thor1200", group: "1200 W and more", name: "ASUS ROG Thor 1200W Platinum III", watts: 1200, eff: "80 PLUS Platinum", price: 349, look: { color: 0x17181b, len: 190, brand: "ROG THOR", oled: true } },
+      { id: "hx1500i", group: "1200 W and more", name: "Corsair HX1500i", watts: 1500, eff: "80 PLUS Platinum", price: 349, look: { color: 0x17191c, len: 180, brand: "CORSAIR" } },
+      { id: "primetx1600", group: "1200 W and more", name: "Seasonic PRIME TX-1600", watts: 1600, eff: "80 PLUS Titanium", price: 489, look: { color: 0x1b1d20, len: 210, brand: "SEASONIC" } },
+    ],
+    case: [
+      { id: "h5b", group: "Mesh front", name: "NZXT H5 Flow (2024) Black", form: "ATX", gpuMax: 365, coolerMax: 165, price: 99, look: { color: "black", front: "mesh", fans: 2, fanMm: 120, fan: FAN_BLACK } },
+      { id: "h5w", group: "Mesh front", name: "NZXT H5 Flow (2024) White", form: "ATX", gpuMax: 365, coolerMax: 165, price: 99, look: { color: "white", front: "mesh", fans: 2, fanMm: 120, fan: FAN_WHITE } },
+      { id: "4000db", group: "Mesh front", name: "Corsair 4000D Airflow Black", form: "ATX", gpuMax: 360, coolerMax: 170, price: 99, look: { color: "black", front: "mesh", fans: 2, fanMm: 120, fan: FAN_BLACK } },
+      { id: "4000dw", group: "Mesh front", name: "Corsair 4000D Airflow White", form: "ATX", gpuMax: 360, coolerMax: 170, price: 99, look: { color: "white", front: "mesh", fans: 2, fanMm: 120, fan: FAN_WHITE } },
+      { id: "lancool216", group: "Mesh front", name: "Lian Li Lancool 216 RGB", form: "ATX", gpuMax: 392, coolerMax: 180, price: 99, look: { color: "black", front: "mesh", fans: 2, fanMm: 160, fan: FAN_BLACK, rgb: true } },
+      { id: "500dx", group: "Mesh front", name: "be quiet! Pure Base 500DX", form: "ATX", gpuMax: 369, coolerMax: 190, price: 109, look: { color: "black", front: "mesh", fans: 2, fanMm: 140, fan: FAN_BLACK, strip: true } },
+      { id: "air903", group: "Mesh front", name: "Montech AIR 903 MAX", form: "ATX", gpuMax: 400, coolerMax: 180, price: 89, look: { color: "black", front: "mesh", fans: 3, fanMm: 140, fan: FAN_BLACK } },
+      { id: "torrent", group: "Mesh front", name: "Fractal Design Torrent", form: "ATX", gpuMax: 461, coolerMax: 188, price: 199, look: { color: "black", front: "mesh", fans: 2, fanMm: 180, fan: FAN_BLACK } },
+      { id: "q300l", group: "Mesh front", name: "Cooler Master MasterBox Q300L (Micro-ATX)", form: "mATX", gpuMax: 360, coolerMax: 159, price: 49, look: { color: "black", front: "mesh", fans: 2, fanMm: 120, fan: FAN_BLACK, note: "fans bought separately" } },
+      { id: "northc", group: "Wood front", name: "Fractal Design North Charcoal Black (walnut)", form: "ATX", gpuMax: 355, coolerMax: 170, price: 149, look: { color: "black", front: "wood", wood: 0x5a3a26, fans: 2, fanMm: 140, fan: FAN_BLACK } },
+      { id: "northw", group: "Wood front", name: "Fractal Design North Chalk White (oak)", form: "ATX", gpuMax: 355, coolerMax: 170, price: 149, look: { color: "white", front: "wood", wood: 0xc8a477, fans: 2, fanMm: 140, fan: FAN_WHITE } },
+      { id: "h6flow", group: "Glass front", name: "NZXT H6 Flow", form: "ATX", gpuMax: 365, coolerMax: 163, price: 119, look: { color: "black", front: "glass", fans: 3, fanMm: 120, fan: FAN_BLACK } },
+      { id: "3500x", group: "Glass front", name: "Corsair 3500X ARGB", form: "ATX", gpuMax: 410, coolerMax: 170, price: 119, look: { color: "black", front: "glass", fans: 3, fanMm: 120, fan: FAN_BLACK, rgb: true } },
+      { id: "o11evo", group: "Glass front", name: "Lian Li O11 Dynamic EVO Black", form: "ATX", gpuMax: 422, coolerMax: 167, price: 159, look: { color: "black", front: "glass", fans: 3, fanMm: 120, fan: FAN_BLACK, rgb: true, note: "fans bought separately" } },
+      { id: "o11evow", group: "Glass front", name: "Lian Li O11 Dynamic EVO White", form: "ATX", gpuMax: 422, coolerMax: 167, price: 159, look: { color: "white", front: "glass", fans: 3, fanMm: 120, fan: FAN_WHITE, rgb: true, note: "fans bought separately" } },
+      { id: "y60", group: "Glass front", name: "HYTE Y60", form: "ATX", gpuMax: 375, coolerMax: 160, price: 189, look: { color: "black", front: "glass", fans: 3, fanMm: 120, fan: FAN_BLACK } },
+    ],
+  };
+  const DEFAULTS = { cpu: "9800x3d", cooler: "pa120se", mobo: "b650tom", gpu: "5070fe", ram: "vengrgb32", ssd: "990pro_2", psu: "rm850x", case: "lancool216" };
+  const KINDS = ["cpu", "cooler", "mobo", "gpu", "ram", "ssd", "psu", "case"];
+  const KIND_LABEL = { cpu: "CPU", cooler: "Cooler", mobo: "Board", gpu: "GPU", ram: "RAM", ssd: "SSD", psu: "PSU", case: "Case" };
+
+  /* Rough relative performance. It only feeds the benchmark ESTIMATES, it is not measured data.
+     CPU: [gaming index (9800X3D = 100), single-thread index, multi-thread index (9950X = 100)]
+     GPU: [raster index (RTX 5090 Founders Edition = 100), VRAM in GB] */
+  const CPU_PERF = {
+    "9600x": [79, 96, 43], "9700x": [83, 98, 54], "9800x3d": [100, 92, 52], "9900x": [83, 99, 77], "9900x3d": [93, 97, 74],
+    "9950x": [85, 100, 100], "9950x3d": [99, 99, 98], "7500f": [72, 82, 37], "7600": [74, 84, 38], "7700x": [78, 88, 50],
+    "7800x3d": [90, 82, 42], "7950x": [82, 92, 95], "8700g": [62, 84, 45], "245k": [74, 92, 60], "265k": [80, 98, 84],
+    "285k": [82, 102, 96], "14400f": [66, 78, 42], "14600k": [78, 92, 60], "14700k": [83, 96, 82], "14900k": [85, 100, 88],
+  };
+  const GPU_PERF = {
+    "5090fe": [100, 32], "5090astral": [103, 32], "5080fe": [62, 16], "5080tuf": [64, 16], "5070tituf": [53, 16],
+    "5070tiventus": [52, 16], "5070fe": [42, 12], "5070aero": [43, 12], "5060tidual": [30, 16], "5060ventus": [25, 8],
+    "5050wf": [19, 8], "4090fe": [76, 24], "4080sfe": [58, 16], "4070sfe": [40, 12], "4060ventus": [21, 8],
+    "9070xtnitro": [54, 16], "9070xthh": [52, 16], "9070pulse": [46, 16], "9060xt": [30, 16], "7900xtx": [58, 24],
+    "7800xt": [36, 16], "b580le": [24, 12], "b570": [20, 10],
+  };
+  for (const c of PARTS.cpu) [c.g, c.st, c.mt] = CPU_PERF[c.id];
+  for (const g of PARTS.gpu) [g.idx, g.vram] = GPU_PERF[g.id];
+
+  /* ---------- the current build, shared by both pages ---------- */
+  const STORE = "denis.pcbuild.v1";
+  const build = {};
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STORE) || "{}") || {}; } catch (e) { saved = {}; }
+  for (const k of KINDS) build[k] = PARTS[k].some((p) => p.id === saved[k]) ? saved[k] : DEFAULTS[k];
+  const part = (kind) => PARTS[kind].find((p) => p.id === build[kind]);
+  const save = () => { try { localStorage.setItem(STORE, JSON.stringify(build)); } catch (e) { /* storage blocked: build lives for this visit only */ } };
+  let autoNote = "";
+
+  // Picking a CPU for another socket swaps in a matching board, like a shop configurator would.
+  function setPart(kind, id) {
+    build[kind] = id;
+    autoNote = "";
+    const changed = [kind];
+    if (kind === "cpu" && part("mobo").socket !== part("cpu").socket) {
+      const cur = part("mobo"), socket = part("cpu").socket;
+      const fit = PARTS.mobo.find((m) => m.socket === socket && m.form === cur.form) || PARTS.mobo.find((m) => m.socket === socket);
+      if (fit) {
+        build.mobo = fit.id;
+        changed.push("mobo");
+        autoNote = `Board switched to the ${fit.name} to match the ${socket} socket.`;
+      }
+    }
+    save();
+    return changed;
+  }
+  function resetBuild() {
+    for (const k of KINDS) build[k] = DEFAULTS[k];
+    autoNote = "";
+    save();
+    return KINDS.slice();
+  }
+
+  function analyse() {
+    const cpu = part("cpu"), mobo = part("mobo"), gpu = part("gpu"), psu = part("psu"), cooler = part("cooler"), box = part("case");
+    const price = KINDS.reduce((s, k) => s + part(k).price, 0);
+    const load = cpu.watts + gpu.watts + 60;
+    const recommended = Math.ceil((load * 1.3) / 50) * 50;
+    const usage = load / psu.watts;
+    const checks = [];
+    if (autoNote) checks.push(["ok", autoNote]);
+    if (cpu.socket === mobo.socket) checks.push(["ok", `Socket match: ${cpu.socket} CPU on an ${cpu.socket} board.`]);
+    else checks.push(["bad", `Socket mismatch: the ${cpu.name} needs ${cpu.socket}, the ${mobo.name} is ${mobo.socket}.`]);
+    if (mobo.form === "ATX" && box.form === "mATX") checks.push(["bad", `The ${box.name} only takes Micro-ATX boards; the ${mobo.name} is full ATX.`]);
+    if (gpu.len > box.gpuMax) checks.push(["bad", `GPU does not fit: about ${gpu.len} mm long, the case takes up to about ${box.gpuMax} mm.`]);
+    else checks.push(["ok", `GPU fits: about ${gpu.len} mm of about ${box.gpuMax} mm space.`]);
+    if (cooler.type === "tower" && cooler.h > box.coolerMax) checks.push(["bad", `Cooler too tall: about ${cooler.h} mm, the case allows about ${box.coolerMax} mm.`]);
+    if (cpu.watts > cooler.cap + 15) checks.push(["warn", `The ${cooler.name} is on the small side for ${cpu.watts} W; expect throttling under long all-core loads.`]);
+    else checks.push(["ok", `Cooler is strong enough for the CPU's ${cpu.watts} W peak.`]);
+    if (psu.watts < load) checks.push(["bad", `Power supply too weak: ${psu.watts} W for a ${load} W peak.`]);
+    else if (psu.watts < recommended) checks.push(["warn", `Low headroom: works, but ${recommended} W or more is safer.`]);
+    else checks.push(["ok", `Power supply has ${Math.round((1 - usage) * 100)}% headroom at peak.`]);
+    if (gpu.tier - cpu.tier >= 2) checks.push(["warn", `The CPU may hold back the ${gpu.short} at high frame rates.`]);
+    else if (cpu.tier - gpu.tier >= 2) checks.push(["warn", "Strong CPU for this GPU: fine for work, less so for gaming value."]);
+    else checks.push(["ok", "CPU and GPU are in a balanced class."]);
+    return { price, load, recommended, usage, checks };
+  }
+
+  /* ---------- performance ESTIMATES (max settings, no upscaling, no frame generation) ---------- */
+  const GAMES = [
+    { name: "Cyberpunk 2077", short: "Cyberpunk", preset: "Ultra, ray tracing off", gpu: { 1080: 210, 1440: 160, 2160: 85 }, cpu: 230, heavy: true },
+    { name: "Counter-Strike 2", short: "CS2", preset: "High", gpu: { 1080: 900, 1440: 700, 2160: 420 }, cpu: 650 },
+    { name: "Fortnite", short: "Fortnite", preset: "Epic, ray tracing off", gpu: { 1080: 300, 1440: 220, 2160: 120 }, cpu: 320 },
+    { name: "Red Dead Redemption 2", short: "RDR2", preset: "Ultra", gpu: { 1080: 230, 1440: 175, 2160: 105 }, cpu: 240, heavy: true },
+    { name: "Baldur's Gate 3", short: "BG3", preset: "Ultra", gpu: { 1080: 240, 1440: 190, 2160: 115 }, cpu: 170, heavy: true },
+  ];
+  const RES = { 1080: "1080p", 1440: "1440p", 2160: "4K" };
+  const throttled = () => part("cpu").watts > part("cooler").cap + 15;
+  function estimate(res) {
+    const cpu = part("cpu"), gpu = part("gpu");
+    const exp = res === 1080 ? 0.85 : res === 1440 ? 0.93 : 1;          // slower cards lose less at low resolution
+    const gi = (Math.pow(gpu.idx, exp) * Math.pow(100, 1 - exp)) / 100;
+    const ci = (cpu.g / 100) * (throttled() ? 0.95 : 1);
+    const need = res === 2160 ? 12 : res === 1440 ? 10 : 8;
+    return GAMES.map((gm) => {
+      let g = gm.gpu[res] * gi;
+      const lowVram = gm.heavy && gpu.vram < need;
+      if (lowVram) g *= 0.72;
+      const c = gm.cpu * ci;
+      const fps = Math.round(1 / Math.pow(Math.pow(g, -6) + Math.pow(c, -6), 1 / 6));
+      return { name: gm.name, short: gm.short, preset: gm.preset, fps, limit: g < c ? "GPU" : "CPU", lowVram };
+    });
+  }
+  function scores(o = {}) {
+    const cpu = o.cpu || part("cpu"), gpu = o.gpu || part("gpu"), cooler = o.cooler || part("cooler");
+    const t = cpu.watts > cooler.cap + 15 ? 0.9 : 1;
+    return {
+      single: Math.round(cpu.st * 21),
+      multi: Math.round(cpu.mt * 430 * t),
+      graphics: Math.round(gpu.idx * 385),
+      overall: Math.round((gpu.idx * 0.6 + cpu.g * 0.25 + cpu.mt * t * 0.15) * 100),
+    };
+  }
+
+  /* ---------- lighting + fan state shared with the page widgets ---------- */
+  const rgb = { color: window.THREE ? new THREE.Color("#ff6a1a") : null, hex: "#ff6a1a", mode: "static" };
+  const rgbState = { hue: 0, intensity: 1 };
+  const sim = { fan: 0.45, stress: false, rpm: 0 };
+  function rgbTick(ts) {
+    requestAnimationFrame(rgbTick);
+    const t = (ts || 0) / 1000;
+    let intensity = 1;
+    if (rgb.mode === "rainbow") rgbState.hue = (t * (reduceMotion ? 0.03 : 0.08)) % 1;
+    if (rgb.mode === "breathe") intensity = 0.15 + 0.85 * (0.5 + 0.5 * Math.sin(t * (reduceMotion ? 1 : 2.2)));
+    if (rgb.mode === "off") intensity = 0;
+    rgbState.intensity = intensity;
+  }
+  requestAnimationFrame(rgbTick);
+
+  /* ================= 3D PC MODEL ================= */
+  function seeded(seed) {
+    return () => {
+      seed = (seed + 0x6d2b79f5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  const hex = (n) => "#" + (n & 0xffffff).toString(16).padStart(6, "0");
+  const isLight = (n) => ((n >> 16) & 255) * 0.3 + ((n >> 8) & 255) * 0.59 + (n & 255) * 0.11 > 150;
+  function shade(n, f) {
+    const to = f < 0 ? 0 : 255, k = Math.abs(f);
+    const ch = (s) => Math.round(((n >> s) & 255) + (to - ((n >> s) & 255)) * k);
+    return (ch(16) << 16) | (ch(8) << 8) | ch(0);
+  }
+  const eur = (v) => `€${v.toLocaleString("en-US")}`;
+  const caseShort = () => part("case").name.replace(/\s*\(.*\)$/, "");
+
+  const PART_INFO = {
+    chip: { title: "Processor", rows: () => { const c = part("cpu"); return [["Model", c.name], ["Cores", String(c.cores)], ["Socket", c.socket], ["Max power", `${c.watts} W`], ["Price", eur(c.price)]]; } },
+    cooler: { title: "CPU cooler", rows: () => {
+      const k = part("cooler");
+      return [["Model", k.name], ["Type", k.type === "aio" ? `${k.rad} mm liquid AIO` : `air, ${k.look.towers === 2 ? "dual" : "single"} tower`],
+        [k.type === "aio" ? "Radiator" : "Height", k.type === "aio" ? "under the top panel" : `≈ ${k.h} mm`], ["Fans", k.type === "aio" ? `${k.rad / 120} × 120 mm` : `${k.look.fans.length} × ${k.look.fanMm} mm`], ["Price", eur(k.price)]];
+    } },
+    gpu: { title: "Graphics card", rows: () => { const g = part("gpu"); return [["Model", g.name], ["Board power", `${g.watts} W`], ["Memory", `${g.vram} GB`], ["Size", `≈ ${g.len} mm · ${g.slots} slots`], ["Price", eur(g.price)]]; } },
+    ram: { title: "Memory", rows: () => { const r = part("ram"); return [["Kit", r.name], ["Capacity", `${r.gb} GB in 2 sticks`], ["Lighting", r.look.rgb ? "RGB light bar" : "none"], ["Height", `≈ ${r.look.h} mm`], ["Price", eur(r.price)]]; } },
+    mobo: { title: "Motherboard", rows: () => { const m = part("mobo"); return [["Board", m.name], ["Socket", m.socket], ["Form factor", m.form === "ATX" ? "ATX (305 × 244 mm)" : "Micro-ATX (244 × 244 mm)"], ["Mounting", `${m.form === "ATX" ? 9 : 6} screws`], ["Price", eur(m.price)]]; } },
+    psu: { title: "Power supply", rows: () => { const p = part("psu"); return [["Unit", p.name], ["Power", `${p.watts} W · ${p.eff}`], ["Load at peak", `${Math.round(analyse().usage * 100)}%`], ["Price", eur(p.price)]]; } },
+    ssd: { title: "Storage", rows: () => { const s = part("ssd"); return [["Drive", s.name], ["Capacity", `${s.tb} TB`], ["Interface", `M.2 NVMe · PCIe ${s.gen}.0`], ["Heatsink", s.look.hs ? "yes" : "no"], ["Price", eur(s.price)]]; } },
+    front: { title: "Case + fans", rows: () => {
+      const c = part("case"), lk = c.look;
+      const front = { mesh: "mesh panel", wood: "wood slats + mesh", glass: "tempered glass" }[lk.front];
+      return [["Case", c.name], ["Front", front], ["Fans", `${lk.fans} × ${lk.fanMm} mm front${lk.note ? ` (${lk.note})` : ""}, 1 × 120 mm rear`], ["Fan speed", `${(sim.rpm || 0).toLocaleString("en-US")} RPM`], ["Fits", `GPU ≈ ${c.gpuMax} mm · cooler ≈ ${c.coolerMax} mm`], ["Price", eur(c.price)]];
+    } },
+  };
+  const PART_ORDER = ["chip", "cooler", "gpu", "ram", "mobo", "ssd", "psu", "front"];
+  const PART_BTN = { chip: "CPU", cooler: "Cooler", gpu: "GPU", ram: "RAM", mobo: "Motherboard", psu: "PSU", ssd: "SSD", front: "Case fans" };
+
+  function init3D() {
+    const canvas = $("pc");
+    if (!canvas) return null;
+    const fail = (msg) => {
+      const f = $("fallback");
+      f.textContent = msg;
+      f.hidden = false;
+      canvas.hidden = true;
+      if ($("partBar")) $("partBar").hidden = true;
+      document.querySelector(".stage-bar").hidden = true;
+      return null;
+    };
+    if (!window.THREE) return fail("The 3D model could not load because the 3D library was blocked. Everything else on this page works.");
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    } catch (e) {
+      return fail("The 3D model needs WebGL, which is turned off in this browser. Everything else on this page works.");
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(32, 1.25, 0.1, 100);
+    const hemi = new THREE.HemisphereLight(0xe4ebf2, 0x1a1d22, 1.0);
+    scene.add(hemi);
+    const key = new THREE.DirectionalLight(0xffffff, 1.15);
+    key.position.set(6, 9, 8);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0x9fb6ff, 0.4);
+    rim.position.set(-8, 4, -6);
+    scene.add(rim);
+    const glow = new THREE.PointLight(0xff6a1a, 1.2, 9, 2);
+    glow.position.set(0.3, 0.6, 0.6);
+    scene.add(glow);
+
+    /* ---------- procedural textures (drawn on canvas, no image files) ---------- */
+    const maxAniso = renderer.capabilities.getMaxAnisotropy ? renderer.capabilities.getMaxAnisotropy() : 1;
+    function tex(w, h, draw) {
+      const c = document.createElement("canvas");
+      c.width = w; c.height = h;
+      draw(c.getContext("2d"), w, h);
+      const t = new THREE.CanvasTexture(c);
+      t.encoding = THREE.sRGBEncoding;
+      t.anisotropy = Math.min(8, maxAniso);
+      return t;
+    }
+    function brushed(g, w, h, base, seed) {
+      g.fillStyle = base;
+      g.fillRect(0, 0, w, h);
+      const r = seeded(seed);
+      for (let i = 0; i < 160; i++) {
+        g.fillStyle = r() > 0.5 ? `rgba(255,255,255,${0.012 + r() * 0.025})` : `rgba(0,0,0,${0.02 + r() * 0.035})`;
+        g.fillRect(0, r() * h, w, 1 + r());
+      }
+    }
+    function label(g, text, x, y, size, color, align = "left", weight = "bold") {
+      g.fillStyle = color;
+      g.font = `${weight} ${Math.max(8, Math.round(size))}px sans-serif`;
+      g.textAlign = align;
+      g.textBaseline = "middle";
+      g.fillText(text, x, y);
+    }
+
+    // Soft studio reflections for the metal parts. If the GPU cannot do it, lights alone are used.
+    try {
+      const envTex = tex(256, 128, (g, w, h) => {
+        const grd = g.createLinearGradient(0, 0, 0, h);
+        grd.addColorStop(0, "#eef2f6"); grd.addColorStop(0.42, "#8e99a6"); grd.addColorStop(0.58, "#3a4048"); grd.addColorStop(1, "#15181c");
+        g.fillStyle = grd; g.fillRect(0, 0, w, h);
+        g.fillStyle = "rgba(255,255,255,0.85)";
+        g.fillRect(w * 0.08, h * 0.12, w * 0.14, h * 0.16);
+        g.fillRect(w * 0.58, h * 0.08, w * 0.22, h * 0.1);
+      });
+      envTex.mapping = THREE.EquirectangularReflectionMapping;
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromEquirectangular(envTex).texture;
+      pmrem.dispose();
+      envTex.dispose();
+      hemi.intensity = 0.55;
+      key.intensity = 0.95;
+    } catch (e) { /* lights only */ }
+
+    /* ---------- materials + small helpers ---------- */
+    // plain colours are written as sRGB hex, like the textures, so convert them before lighting
+    const M = (color, o = {}) => {
+      const m = new THREE.MeshStandardMaterial({ color, roughness: 0.5, metalness: 0.35, ...o });
+      m.color.convertSRGBToLinear();
+      return m;
+    };
+    const T = (map, o = {}) => new THREE.MeshStandardMaterial({ map, roughness: 0.55, metalness: 0.3, ...o });
+    const glassMat = (op) => {
+      const m = new THREE.MeshStandardMaterial({ color: 0xb8c7d6, transparent: true, opacity: op, roughness: 0.05, metalness: 0.1, depthWrite: false });
+      m.userData.baseOpacity = op;
+      m.userData.baseTransparent = true;
+      return m;
+    };
+    const rgbMat = (ctx) => {
+      const m = new THREE.MeshStandardMaterial({ color: 0x111111, emissive: 0xff6a1a, emissiveIntensity: 1.6, roughness: 0.4 });
+      ctx.rgb.push(m);
+      return m;
+    };
+    // six materials for a box, order +x, -x, +y, -y, +z, -z; `special` replaces some faces
+    const faces = (base, special = {}) => {
+      const arr = [base, base, base, base, base, base];
+      for (const [i, m] of Object.entries(special)) arr[i] = m;
+      return arr;
+    };
+    const box = (w, h, d, mat, x = 0, y = 0, z = 0) => {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+      m.position.set(x, y, z);
+      return m;
+    };
+    const cylZ = (r, len, mat, x, y, z, seg = 16) => {
+      const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, seg), mat);
+      m.rotation.x = Math.PI / 2;
+      m.position.set(x, y, z);
+      return m;
+    };
+    const cylY = (r, len, mat, x, y, z, seg = 16) => {
+      const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, seg), mat);
+      m.position.set(x, y, z);
+      return m;
+    };
+    const UP = new THREE.Vector3(0, 1, 0);
+    function rod(a, b, r, mat) {
+      const d = new THREE.Vector3().subVectors(b, a);
+      const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, d.length(), 12), mat);
+      m.position.copy(a).add(b).multiplyScalar(0.5);
+      m.quaternion.setFromUnitVectors(UP, d.normalize());
+      return m;
+    }
+    const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+    // A fan: square frame (case/cooler fans) or a round opening (GPU / PSU fans). Blades spin around local z.
+    function makeFan(ctx, r, axis, o = {}) {
+      const g = new THREE.Group();
+      const look = o.look || FAN_BLACK;
+      const depth = r * 0.42;
+      if (o.square !== false) {
+        const fm = M(look.frame, { metalness: 0.1, roughness: 0.75 });
+        const s = r * 2.04, w = r * 0.12;
+        g.add(box(s, w, depth, fm, 0, s / 2 - w / 2, 0));
+        g.add(box(s, w, depth, fm, 0, -s / 2 + w / 2, 0));
+        g.add(box(w, s, depth, fm, s / 2 - w / 2, 0, 0));
+        g.add(box(w, s, depth, fm, -s / 2 + w / 2, 0, 0));
+        g.add(new THREE.Mesh(new THREE.TorusGeometry(r, r * 0.06, 8, 40), fm));
+        const screw = M(0x9aa1a8, { metalness: 0.9, roughness: 0.3 });
+        for (const [sx, sy] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) {
+          const sc = cylZ(r * 0.05, depth * 1.02, screw, sx * (s / 2 - w * 0.9), sy * (s / 2 - w * 0.9), 0, 8);
+          g.add(sc);
+        }
+      } else {
+        g.add(new THREE.Mesh(new THREE.TorusGeometry(r * 1.02, r * 0.07, 8, 40), M(o.ringColor ?? 0x15171a, { metalness: 0.3, roughness: 0.6 })));
+      }
+      if (o.rgb) g.add(new THREE.Mesh(new THREE.TorusGeometry(r * 0.94, r * 0.035, 6, 40), rgbMat(ctx)));
+      const blades = new THREE.Group();
+      const hub = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.3, r * 0.3, depth * 0.9, 20), M(look.hub, { metalness: 0.2, roughness: 0.6 }));
+      hub.rotation.x = Math.PI / 2;
+      blades.add(hub);
+      const bm = M(look.blade, { metalness: 0.05, roughness: 0.75 });
+      const n = o.blades || 7;
+      for (let i = 0; i < n; i++) {
+        const b = box(r * 0.64, r * 0.3, r * 0.025, bm);
+        b.position.x = r * 0.58;
+        b.rotation.x = 0.5;
+        const holder = new THREE.Group();
+        holder.add(b);
+        holder.rotation.z = (i / n) * Math.PI * 2;
+        blades.add(holder);
+      }
+      g.add(blades);
+      ctx.fans.push(blades);
+      if (axis === "x") g.rotation.y = Math.PI / 2;
+      if (axis === "y") g.rotation.x = Math.PI / 2;
+      return g;
+    }
+
+    /* ---------- layout (1 unit = 100 mm) ----------
+       x = front (+) / back (-), y = up, z = glass side (+) / solid side (-) */
+    const W = 4.4, H = 4.8, D = 2.1, TH = 0.08;
+    const mm = (v) => v / 100;
+    const BX = -2.02, BTOP = 2.18, BZ = -D / 2 + 0.2;      // motherboard: back edge, top edge, board plane
+    const SX = BX + 1.0, SY = BTOP - 0.78;                  // CPU socket centre
+    const SLOT_Y = BTOP - 1.5;                               // first PCIe x16 slot
+    const SHROUD_Y = -H / 2 + 0.52 + 0.475;                  // top of the PSU shroud
+    const DIMM_X = [0, 1, 2, 3].map((i) => BX + 1.6 + i * 0.09);
+    const GOLD = () => M(0xc9a54b, { metalness: 0.9, roughness: 0.3 });
+    const boardSize = () => { const atx = part("mobo").form === "ATX"; return { bw: 2.44, bh: atx ? 3.05 : 2.44, atx }; };
+    function gpuLayout() {
+      const gpu = part("gpu"), lk = gpu.look;
+      const len = mm(gpu.len), t = gpu.slots * 0.2, hz = mm(gpu.h);
+      const x0 = BX - 0.03, cy = SLOT_Y - t / 2, cz = BZ + 0.1 + hz / 2, bpT = 0.035;
+      const plug = { x: x0 + len * 0.6, y: cy + t / 2 - bpT - 0.07, z: cz + hz / 2 + 0.03, kind: lk.plug };
+      return { gpu, lk, len, t, hz, x0, cx: x0 + len / 2, cy, cz, bpT, plug };
+    }
+
+    /* ---------- case ---------- */
+    function buildCase(ctx) {
+      const c = part("case"), lk = c.look, white = lk.color === "white";
+      const base = white ? 0xdfe3e7 : 0x3b424b, dark = white ? 0xc6cbd1 : 0x252a30;
+      const grp = new THREE.Group();
+      const cm = T(tex(256, 256, (g, w, h) => brushed(g, w, h, hex(base), 1)), { metalness: white ? 0.2 : 0.55, roughness: 0.45 });
+      const sm = T(tex(256, 256, (g, w, h) => brushed(g, w, h, hex(dark), 2)), { metalness: white ? 0.2 : 0.55, roughness: 0.45 });
+      const dm = M(white ? 0xbfc4ca : 0x22272d, { metalness: 0.6, roughness: 0.4 });
+      const topTex = tex(256, 128, (g, w, h) => {
+        brushed(g, w, h, hex(base), 5);
+        g.fillStyle = white ? "rgba(0,0,0,0.22)" : "rgba(0,0,0,0.5)";
+        for (let y = 14; y < h - 10; y += 7) for (let x = 40 + ((y / 7) % 2) * 3; x < w - 30; x += 7) g.fillRect(x, y, 3, 3);
+      });
+      grp.add(box(W, TH, D, faces(cm, { 2: T(topTex, { metalness: white ? 0.2 : 0.55, roughness: 0.45 }) }), 0, H / 2, 0));
+      grp.add(box(W, TH, D, cm, 0, -H / 2, 0));
+      const backTex = tex(256, 256, (g, w, h) => {
+        brushed(g, w, h, hex(base), 6);
+        g.fillStyle = white ? "rgba(0,0,0,0.25)" : "rgba(0,0,0,0.55)";
+        const cx = w * 0.62, cy = h * 0.2, r = w * 0.15;
+        for (let y = cy - r; y < cy + r; y += 6) for (let x = cx - r; x < cx + r; x += 6) if ((x - cx) ** 2 + (y - cy) ** 2 < r * r) g.fillRect(x, y, 3, 3);
+      });
+      grp.add(box(TH, H, D, faces(cm, { 1: T(backTex, { metalness: white ? 0.2 : 0.55, roughness: 0.45 }) }), -W / 2, 0, 0));
+      grp.add(box(W, H, TH, cm, 0, 0, -D / 2));
+      if (lk.front === "glass") {
+        grp.add(box(TH, H, 0.12, cm, W / 2, 0, -D / 2 + 0.06));
+        grp.add(box(TH, H, 0.12, cm, W / 2, 0, D / 2 - 0.06));
+        grp.add(box(0.03, H - 0.12, D - 0.22, glassMat(0.12), W / 2, 0, 0));
+      } else {
+        const meshTex = tex(256, 512, (g, w, h) => {
+          g.fillStyle = hex(white ? 0xe9ecef : 0x363d46);
+          g.fillRect(0, 0, w, h);
+          g.fillStyle = white ? "#9aa1a9" : "#12161a";
+          const step = lk.front === "wood" ? 8 : 10;
+          for (let y = 6, row = 0; y < h; y += step, row++) {
+            for (let x = 6 + (row % 2) * step / 2; x < w; x += step) { g.beginPath(); g.arc(x, y, step * 0.32, 0, Math.PI * 2); g.fill(); }
+          }
+        });
+        grp.add(box(TH, H, D, faces(cm, { 0: T(meshTex, { metalness: 0.4 }) }), W / 2, 0, 0));
+        if (lk.front === "wood") {
+          const wm = T(tex(64, 512, (g, w, h) => {
+            g.fillStyle = hex(lk.wood); g.fillRect(0, 0, w, h);
+            const r = seeded(9);
+            for (let i = 0; i < 26; i++) { g.fillStyle = `rgba(0,0,0,${0.05 + r() * 0.12})`; g.fillRect(r() * w, 0, 1 + r() * 2, h); }
+          }), { metalness: 0, roughness: 0.85 });
+          for (let i = 0; i < 11; i++) grp.add(box(0.06, H - 0.3, 0.08, wm, W / 2 + 0.07, 0, -D / 2 + 0.18 + (i * (D - 0.36)) / 10));
+        }
+      }
+      if (lk.strip) grp.add(box(0.03, H * 0.8, 0.05, rgbMat(ctx), W / 2 + 0.06, 0, D / 2 - 0.12));
+      // rear: PCIe slot covers
+      for (let i = 0; i < 7; i++) grp.add(box(0.02, 0.13, 0.5, dm, -W / 2 - 0.05, SLOT_Y - 0.1 - i * 0.2, BZ + 0.45));
+      // top: power button + front USB
+      grp.add(cylY(0.08, 0.03, M(0x111214, { metalness: 0.5, roughness: 0.4 }), W / 2 - 0.35, H / 2 + 0.055, 0));
+      grp.add(new THREE.Mesh(new THREE.TorusGeometry(0.08, 0.012, 6, 24), new THREE.MeshStandardMaterial({ color: 0x111111, emissive: 0xffffff, emissiveIntensity: 0.9 })));
+      grp.children[grp.children.length - 1].rotation.x = Math.PI / 2;
+      grp.children[grp.children.length - 1].position.set(W / 2 - 0.35, H / 2 + 0.072, 0);
+      for (const z of [-0.45, -0.3]) grp.add(box(0.12, 0.02, 0.05, M(0x15171a), W / 2 - 0.35, H / 2 + 0.045, z));
+      for (const [fx, fz] of [[-1.6, 0.6], [1.6, 0.6], [-1.6, -0.6], [1.6, -0.6]]) grp.add(box(0.6, 0.08, 0.6, dm, fx, -H / 2 - 0.08, fz));
+      grp.add(box(W - 0.2, 0.95, D - 0.2, sm, 0, -H / 2 + 0.52, 0));   // PSU shroud
+      const rear = makeFan(ctx, 0.6, "x", { look: lk.fan, rgb: !!lk.rgb });   // rear exhaust, comes with the case
+      rear.position.set(-W / 2 + 0.2, 1.3, 0.3);
+      grp.add(rear);
+      // grommets in the shroud and next to the board, where the cables pass
+      const rub = M(0x0c0d0f, { metalness: 0, roughness: 0.9 });
+      grp.add(box(0.5, 0.012, 0.3, rub, BX + 0.8, SHROUD_Y + 0.005, BZ + 1.45));
+      grp.add(box(0.12, 0.7, 0.012, rub, BX + 2.95, SY - 0.15, BZ - 0.13));
+      return grp;
+    }
+
+    function buildGlass() {
+      const grp = new THREE.Group();
+      grp.add(box(W - 0.1, H - 0.1, 0.03, glassMat(0.1), 0, 0, D / 2));
+      const scr = M(0x9aa1a8, { metalness: 0.9, roughness: 0.3 });
+      for (const [x, y] of [[-1, 1], [1, 1], [-1, -1], [1, -1]]) grp.add(cylZ(0.05, 0.03, scr, x * (W / 2 - 0.15), y * (H / 2 - 0.15), D / 2 + 0.025, 12));
+      return grp;
+    }
+
+    function buildFront(ctx) {
+      const lk = part("case").look;
+      const grp = new THREE.Group();
+      const r = mm(lk.fanMm) / 2, gap = mm(lk.fanMm) + 0.04;
+      for (let i = 0; i < lk.fans; i++) {
+        const f = makeFan(ctx, r, "x", { look: lk.fan, rgb: !!lk.rgb });
+        f.position.set(W / 2 - 0.25, 0.15 + ((lk.fans - 1) / 2 - i) * gap, 0.05);
+        grp.add(f);
+      }
+      return grp;
+    }
+
+    /* ---------- motherboard ---------- */
+    function buildMobo(ctx) {
+      const m = part("mobo"), lk = m.look, { bw, bh, atx } = boardSize();
+      const grp = new THREE.Group();
+      const lightPcb = isLight(lk.pcb);
+      const pcbTex = tex(512, Math.round((512 * bh) / bw), (g, w, h) => {
+        g.fillStyle = hex(lk.pcb);
+        g.fillRect(0, 0, w, h);
+        const U = (x) => ((x - BX) / bw) * w, Vv = (y) => ((BTOP - y) / bh) * h;
+        const r = seeded(5);
+        g.strokeStyle = hex(shade(lk.pcb, lightPcb ? -0.1 : 0.1));
+        g.lineWidth = 2;
+        for (let i = 0; i < 70; i++) {
+          let x = r() * w, y = r() * h;
+          g.beginPath(); g.moveTo(x, y);
+          for (let s = 0; s < 4; s++) { if (r() > 0.5) x += (r() - 0.5) * 150; else y += (r() - 0.5) * 150; g.lineTo(x, y); }
+          g.stroke();
+        }
+        g.fillStyle = "#3a3f45";
+        for (let i = 0; i < 60; i++) g.fillRect(r() * w, r() * h, 3 + r() * 4, 2 + r() * 3);     // small SMD parts
+        g.fillStyle = hex(shade(lk.pcb, lightPcb ? -0.12 : 0.12));
+        g.fillRect(U(SX - 0.36), Vv(SY + 0.36), U(SX + 0.36) - U(SX - 0.36), Vv(SY - 0.36) - Vv(SY + 0.36));
+        g.fillRect(U(SX - 0.42), Vv(SLOT_Y + 0.38), U(SX + 0.46) - U(SX - 0.42), 10);      // M.2 slot marking
+        label(g, lk.series, U(BX + 0.25), Vv(SLOT_Y - 0.35), 20, lightPcb ? "#3a4048" : "#cfd6dd");
+        label(g, `${m.socket} · DDR5 · ${m.form}`, U(BX + 0.25), Vv(SLOT_Y - 0.5), 13, lightPcb ? "#5a626c" : "#8a96a3", "left", "normal");
+        label(g, "CPU_FAN", U(SX + 0.5), Vv(BTOP - 0.05), 10, lightPcb ? "#5a626c" : "#8a96a3", "left", "normal");
+        label(g, "DIMM_A2  DIMM_B2", U(DIMM_X[0] - 0.05), Vv(SY - 0.75), 10, lightPcb ? "#5a626c" : "#8a96a3", "left", "normal");
+      });
+      grp.add(box(bw, bh, 0.06, faces(M(lk.pcb), { 4: T(pcbTex, { metalness: 0.15, roughness: 0.75 }) }), BX + bw / 2, BTOP - bh / 2, BZ));
+      const hs = M(lk.hs, { metalness: 0.75, roughness: 0.35 });
+      const acc = M(lk.accent, { metalness: 0.5, roughness: 0.4 });
+      grp.add(box(1.05, 0.34, 0.24, hs, SX + 0.05, SY + 0.6, BZ + 0.15));                 // VRM heatsinks
+      grp.add(box(0.34, 1.0, 0.24, hs, SX - 0.6, SY + 0.08, BZ + 0.15));
+      grp.add(box(1.0, 0.04, 0.02, acc, SX + 0.05, SY + 0.5, BZ + 0.28));
+      const cap = M(0x2a2d31, { metalness: 0.6, roughness: 0.35 });
+      for (let i = 0; i < 7; i++) grp.add(cylZ(0.035, 0.1, cap, SX - 0.33 + i * 0.11, SY + 0.37, BZ + 0.08, 10));   // capacitors
+      for (let i = 0; i < 5; i++) grp.add(cylZ(0.035, 0.1, cap, SX - 0.37, SY - 0.3 + i * 0.12, BZ + 0.08, 10));
+      const ioTex = tex(64, 256, (g, w, h) => {
+        brushed(g, w, h, hex(lk.hs), 8);
+        g.fillStyle = hex(lk.accent);
+        g.fillRect(w * 0.15, h * 0.08, w * 0.12, h * 0.84);
+        g.save(); g.translate(w * 0.6, h * 0.5); g.rotate(-Math.PI / 2);
+        label(g, lk.series, 0, 0, 20, isLight(lk.hs) ? "#3a4048" : "#d7dde4", "center");
+        g.restore();
+      });
+      grp.add(box(0.36, 1.3, 0.32, faces(hs, { 4: T(ioTex, { metalness: 0.6, roughness: 0.4 }) }), BX + 0.2, BTOP - 0.7, BZ + 0.19));
+      if (lk.rgb) grp.add(box(0.03, 1.0, 0.03, rgbMat(ctx), BX + 0.39, BTOP - 0.7, BZ + 0.33));
+      // rear I/O panel, seen from the back of the case
+      const portTex = tex(64, 256, (g, w, h) => {
+        brushed(g, w, h, "#9aa1a8", 21);
+        const port = (y, ph, col) => { g.fillStyle = col; g.fillRect(w * 0.25, y, w * 0.5, ph); };
+        port(h * 0.05, 10, "#1a1c1f");
+        for (let i = 0; i < 4; i++) port(h * 0.14 + i * 16, 9, i % 2 ? "#1f4fbf" : "#1a1c1f");                      // USB
+        port(h * 0.45, 18, "#1a1c1f");                                                                                // LAN
+        for (let i = 0; i < 2; i++) port(h * 0.58 + i * 14, 9, "#c23a2b");                                            // USB 3.2 (red)
+        for (let i = 0; i < 3; i++) { g.fillStyle = ["#7fd36b", "#3fa2ff", "#f2b24a"][i]; g.beginPath(); g.arc(w * 0.5, h * 0.8 + i * 14, 5, 0, 7); g.fill(); }
+        g.fillStyle = "#c9a54b";
+        for (const y of [h * 0.34, h * 0.39]) { g.beginPath(); g.arc(w * 0.5, y, 4, 0, 7); g.fill(); }                 // WiFi antenna
+      });
+      grp.add(box(0.03, 1.58, 0.44, faces(M(0x9aa1a8, { metalness: 0.8, roughness: 0.35 }), { 1: T(portTex, { metalness: 0.6, roughness: 0.4 }) }), -W / 2 - 0.055, BTOP - 0.85, BZ + 0.25));
+      const amd = m.socket === "AM5";
+      grp.add(box(amd ? 0.52 : 0.48, amd ? 0.52 : 0.6, 0.03, M(0xaab1b8, { metalness: 0.9, roughness: 0.3 }), SX, SY, BZ + 0.045));
+      grp.add(rod(V(SX + 0.3, SY - 0.28, BZ + 0.07), V(SX + 0.3, SY + 0.26, BZ + 0.07), 0.012, M(0xb9c0c7, { metalness: 0.9, roughness: 0.3 })));   // socket lever
+      const slotM = M(lk.slot, { metalness: 0.2, roughness: 0.6 });
+      for (const x of DIMM_X) grp.add(box(0.06, 1.38, 0.08, slotM, x, SY, BZ + 0.07));
+      grp.add(box(0.9, 0.07, 0.1, M(0xb9c0c7, { metalness: 0.85, roughness: 0.3 }), BX + 0.62, SLOT_Y, BZ + 0.08));
+      if (atx) {
+        grp.add(box(0.9, 0.06, 0.08, slotM, BX + 0.62, SLOT_Y - 0.82, BZ + 0.07));
+        grp.add(box(0.9, 0.24, 0.05, faces(hs, { 4: T(tex(128, 34, (g, w, h) => { brushed(g, w, h, hex(lk.hs), 4); label(g, "M.2_2", w * 0.08, h * 0.5, 12, isLight(lk.hs) ? "#3a4048" : "#c9cfd6"); }), { metalness: 0.6, roughness: 0.4 }) }), BX + 1.0, SLOT_Y - 0.45, BZ + 0.06));
+      }
+      const chipTex = tex(256, 256, (g, w, h) => {
+        brushed(g, w, h, hex(lk.hs), 3);
+        g.fillStyle = hex(lk.accent);
+        g.fillRect(0, h * 0.7, w, h * 0.06);
+        label(g, lk.series, w * 0.5, h * 0.45, 30, isLight(lk.hs) ? "#3a4048" : "#d7dde4", "center");
+      });
+      const chs = atx ? 0.85 : 0.6;
+      grp.add(box(0.85, chs, 0.1, faces(hs, { 4: T(chipTex, { metalness: 0.6, roughness: 0.4 }) }), BX + bw - 0.6, BTOP - bh + chs / 2 + 0.15, BZ + 0.08));
+      if (lk.rgb) grp.add(box(0.8, 0.03, 0.03, rgbMat(ctx), BX + bw - 0.6, BTOP - bh + 0.12, BZ + 0.12));
+      const blk = M(0x15171a, { metalness: 0.1, roughness: 0.7 });
+      grp.add(box(0.1, 0.55, 0.16, blk, BX + bw - 0.08, SY - 0.15, BZ + 0.1));          // 24-pin
+      grp.add(box(0.22, 0.12, 0.08, blk, BX + 0.42, BTOP - 0.09, BZ + 0.07));           // 8-pin EPS
+      for (let i = 0; i < 4; i++) grp.add(box(0.1, 0.1, 0.06, blk, BX + bw - 0.07, BTOP - bh + 0.4 + i * 0.13, BZ + 0.06));   // SATA
+      grp.add(box(0.28, 0.06, 0.04, GOLD(), BX + bw - 0.55, BTOP - bh + 0.07, BZ + 0.05));                                     // front panel pins
+      grp.add(cylZ(0.1, 0.03, M(0xc4cad0, { metalness: 0.9, roughness: 0.25 }), BX + 1.55, atx ? SLOT_Y - 1.15 : BTOP - bh + 0.3, BZ + 0.05, 20));   // CMOS battery
+      const screwM = M(0xc4cad0, { metalness: 0.9, roughness: 0.3 });
+      const xs = [BX + 0.2, BX + 1.3, BX + bw - 0.2], ys = atx ? [BTOP - 0.18, BTOP - 1.55, BTOP - bh + 0.18] : [BTOP - 0.18, BTOP - bh + 0.18];
+      for (const x of xs) for (const y of ys) grp.add(cylZ(0.045, 0.03, screwM, x, y, BZ + 0.045, 12));
+      return grp;
+    }
+
+    /* ---------- CPU, paste and cooler ---------- */
+    function cpuLines(name) {
+      const words = name.split(" ");
+      const brand = words.shift();
+      let last = words.pop();
+      if (last.includes("-")) { const [a, b] = last.split("-"); words.push(a); last = b; }
+      return [brand === "AMD" ? "AMD" : "intel", words.join(" ").toUpperCase().replace("CORE I", "CORE i"), last];
+    }
+    function buildChip() {
+      const cpu = part("cpu");
+      const grp = new THREE.Group();
+      const amd = cpu.socket === "AM5";
+      const cw = amd ? 0.4 : 0.375, chh = amd ? 0.4 : 0.45;
+      const ihs = tex(256, Math.round((256 * chh) / cw), (g, w, h) => {
+        g.fillStyle = amd ? "#2f6a46" : "#24563a";
+        g.fillRect(0, 0, w, h);
+        g.save(); g.translate(w * 0.07, h * 0.07);
+        brushed(g, w * 0.86, h * 0.86, "#c3c8ce", 11);
+        if (amd) { g.fillStyle = "#2f6a46"; for (const [x, y] of [[0, 0.3], [0, 0.6], [0.86, 0.3], [0.86, 0.6]]) g.fillRect(x * w - 6, y * h * 0.86, 12, 18); }
+        const [l1, l2, l3] = cpuLines(cpu.name);
+        label(g, l1, w * 0.43, h * 0.24, 34, "#4a5058", "center");
+        label(g, l2, w * 0.43, h * 0.46, 22, "#4a5058", "center");
+        label(g, l3, w * 0.43, h * 0.64, 26, "#4a5058", "center");
+        g.restore();
+        g.fillStyle = "#e3c766";
+        g.beginPath(); g.moveTo(4, h - 4); g.lineTo(26, h - 4); g.lineTo(4, h - 26); g.fill();     // pin-1 triangle
+      });
+      grp.add(box(cw, chh, 0.04, faces(M(0x2f6a46), { 4: T(ihs, { metalness: 0.6, roughness: 0.35 }) }), SX, SY, BZ + 0.07));
+      return grp;
+    }
+    function buildPaste() {
+      const grp = new THREE.Group();
+      const pm = M(0x9ea4aa, { metalness: 0.2, roughness: 0.6 });
+      grp.add(cylZ(0.09, 0.015, pm, SX, SY, BZ + 0.098, 24));
+      const blob = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 10), pm);
+      blob.scale.set(1, 1, 0.45);
+      blob.position.set(SX, SY, BZ + 0.105);
+      grp.add(blob);
+      return grp;
+    }
+    function buildCooler(ctx) {
+      const c = part("cooler"), lk = c.look;
+      const grp = new THREE.Group();
+      const z0 = BZ + 0.1;
+      if (c.type === "tower") {
+        const fanD = mm(lk.fanMm), fr = fanD / 2;
+        const stackY = Math.max(fanD, 1.2) + 0.04;
+        const two = lk.towers === 2;
+        const tDepth = two ? 0.48 : 0.56;
+        const towerXs = two ? [SX - 0.37, SX + 0.37] : [SX];
+        const finBottom = z0 + 0.32, finTop = z0 + mm(c.h) - 0.14;
+        const finM = M(lk.fin, { metalness: 0.85, roughness: 0.3 });
+        const topTex = tex(128, Math.round((128 * stackY) / tDepth), (g, w, h) => {
+          brushed(g, w, h, hex(lk.top), 12);
+          g.save(); g.translate(w * 0.5, h * 0.5); g.rotate(-Math.PI / 2);
+          label(g, lk.logo, 0, 0, 22, isLight(lk.top) ? "#5a626c" : "#c9cfd6", "center");
+          g.restore();
+        });
+        const topM = faces(M(lk.top, { metalness: 0.6, roughness: 0.35 }), { 4: T(topTex, { metalness: 0.6, roughness: 0.35 }) });
+        const nFins = 24;
+        for (const tx of towerXs) {
+          for (let i = 0; i < nFins; i++) grp.add(box(tDepth, stackY, 0.012, finM, tx, SY, finBottom + ((finTop - finBottom) * i) / (nFins - 1)));
+          grp.add(box(tDepth + 0.02, stackY + 0.02, 0.05, topM, tx, SY, finTop + 0.035));
+        }
+        grp.add(box(0.44, 0.44, 0.1, M(0xc9ced3, { metalness: 0.9, roughness: 0.25 }), SX, SY, z0 + 0.03));
+        grp.add(box(0.7, 0.12, 0.03, M(0x8d949b, { metalness: 0.85, roughness: 0.3 }), SX, SY, z0 + 0.09));   // mounting bar
+        const pipeM = M(lk.pipe, { metalness: 0.9, roughness: 0.25 });
+        for (let i = 0; i < 3; i++) {
+          const y = SY + (i - 1) * 0.16;
+          const xa = two ? towerXs[0] + (i - 1) * 0.1 : SX - 0.16;
+          const xb = two ? towerXs[1] + (i - 1) * 0.1 : SX + 0.16;
+          const zTop = finTop + 0.09, zBase = z0 + 0.09;
+          for (const x of [xa, xb]) grp.add(cylZ(0.035, zTop - zBase, pipeM, x, y, (zTop + zBase) / 2, 10));
+          grp.add(rod(V(xa, y, zBase), V(xb, y, zBase), 0.035, pipeM));
+        }
+        const zc = (finBottom + finTop) / 2;
+        const spots = { front: towerXs[towerXs.length - 1] + tDepth / 2 + 0.14, back: towerXs[0] - tDepth / 2 - 0.14, mid: SX };
+        const clipM = M(0x9aa1a8, { metalness: 0.85, roughness: 0.3 });
+        for (const s of lk.fans) {
+          const f = makeFan(ctx, fr, "x", { look: lk.fan, rgb: !!lk.rgb });
+          f.position.set(spots[s], SY, zc);
+          grp.add(f);
+          for (const sy of [-1, 1]) grp.add(box(0.02, 0.02, fr * 1.6, clipM, spots[s] + (s === "back" ? -0.14 : 0.14), SY + sy * fr * 0.9, zc));   // wire clips
+        }
+      } else {
+        const pm = M(lk.pumpColor, { metalness: 0.4, roughness: 0.45 });
+        const light = isLight(lk.pumpColor);
+        let top;
+        if (lk.screen) {
+          const scr = tex(256, 256, (g, w, h) => {
+            g.fillStyle = "#05070a"; g.fillRect(0, 0, w, h);
+            g.strokeStyle = "#ff7a33"; g.lineWidth = 10;
+            g.beginPath(); g.arc(w / 2, h / 2, w * 0.36, Math.PI * 0.75, Math.PI * 2.05); g.stroke();
+            label(g, "42°", w / 2, h * 0.48, 64, "#ffffff", "center");
+            label(g, `CPU · ${lk.logo}`, w / 2, h * 0.68, 18, "#9aa5b1", "center", "normal");
+          });
+          top = T(scr, { emissive: 0xffffff, emissiveMap: scr, emissiveIntensity: 0.85, metalness: 0.1, roughness: 0.3 });
+        } else {
+          top = T(tex(256, 256, (g, w, h) => {
+            brushed(g, w, h, hex(lk.pumpColor), 13);
+            label(g, lk.logo, w / 2, h / 2, 34, light ? "#5a626c" : "#c9cfd6", "center");
+          }), { metalness: 0.5, roughness: 0.35 });
+        }
+        const pumpZ = z0 + 0.17;
+        if (lk.pump === "round") {
+          const cyl = new THREE.Mesh(new THREE.CylinderGeometry(0.37, 0.39, 0.34, 40), [pm, top, pm]);
+          cyl.rotation.x = Math.PI / 2;
+          cyl.position.set(SX, SY, pumpZ);
+          grp.add(cyl);
+        } else {
+          grp.add(box(0.72, 0.72, 0.32, faces(pm, { 4: top }), SX, SY, pumpZ));
+        }
+        if (lk.mirror) {
+          const ring = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.025, 8, 40), rgbMat(ctx));
+          ring.position.set(SX, SY, pumpZ + 0.18);
+          grp.add(ring);
+        }
+        if (lk.vrmFan) {
+          const f = makeFan(ctx, 0.17, "y", { look: lk.fan });
+          f.position.set(SX, SY + 0.44, pumpZ - 0.04);
+          grp.add(f);
+        }
+        const nFans = c.rad / 120, radLen = mm(c.rad) + 0.34, radW = 1.24, thick = mm(c.thick || 27);
+        const radX = -0.05, radZ = 0.3, radY = H / 2 - TH / 2 - thick / 2 - 0.03;
+        const finTex = tex(512, 128, (g, w, h) => {
+          g.fillStyle = hex(lk.radColor); g.fillRect(0, 0, w, h);
+          g.fillStyle = light ? "rgba(0,0,0,0.18)" : "rgba(255,255,255,0.08)";
+          for (let x = 0; x < w; x += 4) g.fillRect(x, 0, 1.5, h);
+        });
+        const radM = M(lk.radColor, { metalness: 0.5, roughness: 0.5 });
+        const finM = T(finTex, { metalness: 0.5, roughness: 0.5 });
+        grp.add(box(radLen - 0.3, thick, radW, faces(radM, { 2: finM, 3: finM }), radX, radY, radZ));
+        for (const s of [-1, 1]) grp.add(box(0.15, thick + 0.04, radW + 0.02, radM, radX + s * (radLen / 2 - 0.075), radY, radZ));
+        for (let i = 0; i < nFans; i++) {
+          const f = makeFan(ctx, 0.6, "y", { look: lk.fan, rgb: !!lk.rgb });
+          f.position.set(radX + (i - (nFans - 1) / 2) * 1.22, radY - thick / 2 - 0.14, radZ);
+          grp.add(f);
+        }
+        const tubeM = M(lk.tube, { metalness: 0.1, roughness: 0.85 });
+        const endX = radX - radLen / 2 + 0.075;
+        for (const k of [-0.12, 0.12]) {
+          const a = V(SX + k, SY + 0.36, pumpZ + 0.02);
+          const b = V(SX + k - 0.2, SY + 0.55, pumpZ + 0.3 + k);
+          const e = V(endX, radY - thick / 2 - 0.06, radZ + k * 3);
+          grp.add(rod(a, b, 0.06, tubeM));
+          grp.add(rod(b, e, 0.06, tubeM));
+          const joint = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 10), tubeM);
+          joint.position.copy(b);
+          grp.add(joint);
+        }
+      }
+      return grp;
+    }
+
+    /* ---------- memory ---------- */
+    function buildRam(ctx) {
+      const r = part("ram"), lk = r.look, hz = mm(lk.h);
+      const grp = new THREE.Group();
+      const light = isLight(lk.body);
+      const sideTex = tex(96, 320, (g, w, h) => {
+        brushed(g, w, h, hex(lk.body), 4);
+        g.fillStyle = hex(lk.band);
+        if (lk.split) { g.beginPath(); g.moveTo(0, h * 0.62); g.lineTo(w, h * 0.42); g.lineTo(w, h); g.lineTo(0, h); g.fill(); }
+        else g.fillRect(w * 0.12, 0, w * 0.06, h);
+        g.save(); g.translate(w * 0.55, h * 0.5); g.rotate(-Math.PI / 2);
+        label(g, lk.text, 0, -10, 18, light ? "#3a4048" : "#d7dde4", "center");
+        label(g, `DDR5 · ${r.gb / 2} GB`, 0, 14, 13, light ? "#5a626c" : "#8a96a3", "center", "normal");
+        g.restore();
+      });
+      const bodyM = M(lk.body, { metalness: 0.55, roughness: 0.4 });
+      const sm = T(sideTex, { metalness: 0.55, roughness: 0.4 });
+      const gold = GOLD();
+      const pcbM = M(0x1d3a2a, { metalness: 0.1, roughness: 0.7 });
+      const bodyH = lk.rgb ? hz - 0.07 : hz;
+      for (const x of [DIMM_X[1], DIMM_X[3]]) {
+        grp.add(box(0.075, 1.33, bodyH, faces(bodyM, { 0: sm, 1: sm }), x, SY, BZ + 0.11 + bodyH / 2));
+        grp.add(box(0.02, 1.33, 0.06, pcbM, x, SY, BZ + 0.11));
+        if (lk.rgb) grp.add(box(0.068, 1.27, 0.07, rgbMat(ctx), x, SY, BZ + 0.11 + bodyH + 0.035));
+        grp.add(box(0.04, 1.3, 0.04, gold, x, SY, BZ + 0.09));
+      }
+      return grp;
+    }
+
+    /* ---------- graphics card ---------- */
+    function paintGpuSide(g, w, h, gpu) {
+      const lk = gpu.look, light = isLight(lk.shroud);
+      if (lk.style !== "partner") {
+        brushed(g, w, h, hex(lk.shroud), 7);
+        g.fillStyle = "rgba(0,0,0,0.28)";
+        g.fillRect(w * 0.3, h * 0.28, w * 0.4, h * 0.44);
+        return;
+      }
+      g.fillStyle = hex(lk.shroud);
+      g.fillRect(0, 0, w, h);
+      g.fillStyle = hex(lk.accent);
+      g.beginPath(); g.moveTo(w * 0.03, h); g.lineTo(w * 0.09, 0); g.lineTo(w * 0.12, 0); g.lineTo(w * 0.06, h); g.fill();
+      g.fillRect(w * 0.16, h * 0.12, w * 0.5, Math.max(2, h * 0.05));
+      g.fillRect(w * 0.6, h * 0.83, w * 0.37, Math.max(2, h * 0.04));
+      label(g, lk.series, w * 0.16, h * 0.52, h * 0.3, light ? "#3a4048" : "#e7ebf0");
+      label(g, gpu.short, w * 0.97, h * 0.52, h * 0.3, light ? "#5a626c" : "#aeb6bf", "right");
+    }
+    function buildGpu(ctx) {
+      const L = gpuLayout(), { gpu, lk, len, t, hz, x0, cx, cy, cz, bpT } = L;
+      const grp = new THREE.Group();
+      const bodyT = t - bpT, bodyY = cy - bpT / 2;
+      const fe = lk.style !== "partner";
+      const light = isLight(lk.shroud);
+      const shroudM = M(lk.shroud, { metalness: fe ? 0.7 : 0.35, roughness: 0.38 });
+      const sideH = Math.max(40, Math.round((512 * bodyT) / len));
+      const sideOpts = { metalness: fe ? 0.6 : 0.35, roughness: 0.4 };
+      if (fe) {
+        const glowTex = tex(512, sideH, (g, w, h) => { g.fillStyle = "#000"; g.fillRect(0, 0, w, h); label(g, "GEFORCE RTX", w * 0.5, h * 0.5, h * 0.3, "#ffffff", "center"); });
+        Object.assign(sideOpts, { emissive: 0xffffff, emissiveMap: glowTex, emissiveIntensity: 0.9 });
+      }
+      const sideM = T(tex(512, sideH, (g, w, h) => paintGpuSide(g, w, h, gpu)), sideOpts);
+      const n = lk.fans;
+      const pos = lk.fanPos || Array.from({ length: n }, (_, i) => (i + 0.5) / n);
+      const r = fe ? hz * 0.4 : Math.min(hz * 0.42, (len - 0.15) / (n * 2.1));
+      const fanX = (p) => x0 + 0.08 + (len - 0.08) * p;
+      const bottomTex = tex(512, Math.round((512 * hz) / len), (g, w, h) => {
+        if (fe) brushed(g, w, h, hex(lk.shroud), 14);
+        else { g.fillStyle = hex(lk.shroud); g.fillRect(0, 0, w, h); }
+        g.fillStyle = "#0b0d10";
+        for (const p of pos) { g.beginPath(); g.arc(((fanX(p) - x0) / len) * w, h * 0.5, (r / len) * w * 1.04, 0, Math.PI * 2); g.fill(); }
+        if (fe) { g.fillStyle = "rgba(0,0,0,0.5)"; for (let x = w * 0.36; x < w * 0.64; x += 5) g.fillRect(x, h * 0.12, 2, h * 0.76); }
+      });
+      grp.add(box(len, bodyT, hz, faces(shroudM, { 4: sideM, 3: T(bottomTex, { metalness: fe ? 0.6 : 0.35, roughness: 0.4 }) }), cx, bodyY, cz));
+      const fanLook = { frame: lk.shroud, blade: light ? 0xe8eaed : 0x16181b, hub: light ? 0xdfe2e6 : 0x23262b };
+      for (const p of pos) {
+        const f = makeFan(ctx, r, "y", { look: fanLook, square: false, ringColor: shade(lk.shroud, light ? -0.15 : 0.1) });
+        f.position.set(fanX(p), bodyY - bodyT / 2 - r * 0.1, cz);
+        grp.add(f);
+      }
+      const backTex = tex(512, Math.round((512 * hz) / len), (g, w, h) => {
+        brushed(g, w, h, hex(lk.back), 3);
+        g.fillStyle = "rgba(0,0,0,0.55)";
+        const from = lk.topFan ? 0.68 : 0.78;
+        for (let x = w * from; x < w * 0.97; x += 7) g.fillRect(x, h * 0.15, 3, h * 0.7);
+        label(g, gpu.short, w * 0.06, h * 0.5, h * 0.16, isLight(lk.back) ? "#5a626c" : "#9aa5b1");
+        g.fillStyle = "#9aa1a8";
+        for (const [sx, sy] of [[0.03, 0.08], [0.03, 0.92], [0.6, 0.08], [0.6, 0.92], [0.25, 0.3], [0.25, 0.7]]) { g.beginPath(); g.arc(sx * w, sy * h, 3, 0, 7); g.fill(); }   // screws
+      });
+      grp.add(box(len, bpT, hz, faces(M(lk.back, { metalness: 0.6, roughness: 0.4 }), { 2: T(backTex, { metalness: 0.6, roughness: 0.4 }) }), cx, cy + t / 2 - bpT / 2, cz));
+      grp.add(box(len - 0.1, 0.02, hz - 0.04, M(0x14301f, { metalness: 0.1, roughness: 0.7 }), cx + 0.03, cy + t / 2 - bpT - 0.012, cz));   // PCB edge
+      if (lk.topFan) {
+        const f = makeFan(ctx, r * 0.95, "y", { look: fanLook, square: false, ringColor: shade(lk.back, 0.1) });
+        f.position.set(x0 + len * 0.84, cy + t / 2 + r * 0.05, cz);
+        grp.add(f);
+      }
+      if (lk.rgb) grp.add(box(len * 0.42, 0.035, 0.02, rgbMat(ctx), cx + len * 0.18, cy + t / 2 - bpT - 0.07, cz + hz / 2 + 0.012));
+      if (lk.plug !== "hidden") {
+        const pw = lk.plug === "8pin2" ? 0.42 : 0.2;
+        grp.add(box(pw, 0.09, 0.06, M(0x111214, { metalness: 0.1, roughness: 0.8 }), L.plug.x, L.plug.y, cz + hz / 2 + 0.03));
+      }
+      const bracketTex = tex(128, Math.max(32, Math.round((128 * (t + 0.14)) / (hz * 0.92))), (g, w, h) => {
+        brushed(g, w, h, "#aab1b8", 17);
+        g.fillStyle = "#1a1c1f";
+        for (let i = 0; i < 4; i++) g.fillRect(w * (0.08 + i * 0.22), h * 0.12, w * 0.15, Math.min(h * 0.22, 10));       // DP / HDMI
+        g.fillStyle = "rgba(0,0,0,0.45)";
+        for (let x = w * 0.08; x < w * 0.92; x += 8) g.fillRect(x, h * 0.45, 4, h * 0.45);                               // vents
+      });
+      grp.add(box(0.03, t + 0.14, hz * 0.92, faces(M(0xaab1b8, { metalness: 0.85, roughness: 0.3 }), { 1: T(bracketTex, { metalness: 0.7, roughness: 0.35 }) }), x0 - 0.015, cy + 0.02, cz - 0.02));
+      grp.add(box(0.89, 0.02, 0.07, GOLD(), x0 + 0.65, cy + t / 2 - bpT - 0.02, BZ + 0.08));
+      return grp;
+    }
+
+    /* ---------- storage ---------- */
+    function buildSsd(ctx) {
+      const s = part("ssd"), lk = s.look;
+      const grp = new THREE.Group();
+      const x = SX + 0.07, y = SLOT_Y + 0.3, z = BZ + 0.06;
+      const sub = `${s.tb} TB · PCIe ${s.gen}.0`;
+      if (lk.hs) {
+        const hsTex = tex(256, 72, (g, w, h) => {
+          brushed(g, w, h, hex(lk.hs), 15);
+          g.fillStyle = "rgba(0,0,0,0.35)";
+          for (let xx = w * 0.62; xx < w * 0.96; xx += 6) g.fillRect(xx, h * 0.12, 2, h * 0.76);
+          label(g, lk.brand, w * 0.06, h * 0.4, 16, "#d8dee4");
+          label(g, sub, w * 0.06, h * 0.68, 11, "#8a96a3", "left", "normal");
+        });
+        grp.add(box(0.82, 0.25, 0.1, faces(M(lk.hs, { metalness: 0.7, roughness: 0.35 }), { 4: T(hsTex, { metalness: 0.6, roughness: 0.4 }) }), x, y, z + 0.06));
+        if (lk.rgb) grp.add(box(0.7, 0.02, 0.02, rgbMat(ctx), x, y - 0.13, z + 0.09));
+      } else {
+        const lab = tex(256, 72, (g, w, h) => {
+          g.fillStyle = hex(lk.pcb); g.fillRect(0, 0, w, h);
+          g.fillStyle = hex(lk.label); g.fillRect(w * 0.03, h * 0.08, w * 0.86, h * 0.84);
+          label(g, lk.brand, w * 0.07, h * 0.38, 15, hex(lk.text));
+          label(g, sub, w * 0.07, h * 0.68, 11, "#aab4bf", "left", "normal");
+          g.fillStyle = "#c9a54b";
+          for (let i = 0; i < 9; i++) g.fillRect(w * 0.92, h * 0.1 + i * 7, 18, 3);
+        });
+        grp.add(box(0.8, 0.22, 0.025, faces(M(lk.pcb), { 4: T(lab) }), x, y, z + 0.01));
+      }
+      grp.add(cylZ(0.03, 0.04, M(0xb9c0c7, { metalness: 0.9, roughness: 0.3 }), x + 0.43, y, z + 0.02));
+      return grp;
+    }
+
+    /* ---------- power supply ---------- */
+    const EFF_COLOR = { Bronze: "#b0764a", Gold: "#c9a54b", Platinum: "#c7ccd2", Titanium: "#8d969f" };
+    function buildPsu(ctx) {
+      const p = part("psu"), lk = p.look, len = mm(lk.len);
+      const light = isLight(lk.color);
+      const grp = new THREE.Group();
+      const x = -W / 2 + TH / 2 + 0.03 + len / 2, y = -H / 2 + TH / 2 + 0.45, z = 0;
+      const side = tex(256, 128, (g, w, h) => {
+        brushed(g, w, h, hex(lk.color), 6);
+        label(g, lk.brand, w * 0.07, h * 0.3, 24, light ? "#2a2f35" : "#e6e9ec");
+        label(g, `${p.watts} W`, w * 0.07, h * 0.62, 30, light ? "#2a2f35" : "#e6e9ec");
+        const tier = p.eff.split(" ").pop();
+        g.fillStyle = EFF_COLOR[tier] || "#c9a54b";
+        g.fillRect(w * 0.66, h * 0.2, w * 0.28, h * 0.6);
+        label(g, "80+", w * 0.8, h * 0.4, 18, "#1b1f24", "center");
+        label(g, tier.toUpperCase(), w * 0.8, h * 0.62, 12, "#1b1f24", "center");
+      });
+      const sideM = T(side, { metalness: 0.45, roughness: 0.45 });
+      const modTex = tex(128, 64, (g, w, h) => {
+        brushed(g, w, h, hex(lk.color), 19);
+        g.fillStyle = "#08090a";
+        for (let i = 0; i < 6; i++) g.fillRect(w * 0.08 + i * 19, h * 0.2, 13, 16);
+        for (let i = 0; i < 4; i++) g.fillRect(w * 0.08 + i * 26, h * 0.6, 20, 12);
+      });
+      const backTex = tex(128, 64, (g, w, h) => {
+        brushed(g, w, h, hex(lk.color), 20);
+        g.fillStyle = "#08090a";
+        g.fillRect(w * 0.1, h * 0.3, 26, 20);                                                   // C14 socket
+        g.fillStyle = "#1c1e21"; g.fillRect(w * 0.35, h * 0.32, 12, 18);                         // switch
+        g.fillStyle = "rgba(0,0,0,0.5)";
+        for (let y = h * 0.15; y < h * 0.85; y += 7) for (let x2 = w * 0.55; x2 < w * 0.92; x2 += 7) g.fillRect(x2, y, 4, 4);   // honeycomb
+      });
+      grp.add(box(len, 0.86, 1.5, faces(M(lk.color, { metalness: 0.5, roughness: 0.45 }), {
+        4: sideM, 5: sideM, 0: T(modTex, { metalness: 0.45, roughness: 0.45 }), 1: T(backTex, { metalness: 0.45, roughness: 0.45 }),
+      }), x, y, z));
+      const f = makeFan(ctx, 0.58, "y", { look: light ? FAN_WHITE : FAN_BLACK, square: false, ringColor: shade(lk.color, light ? -0.2 : 0.15) });
+      f.position.set(x, y - 0.43 - 0.03, z);
+      grp.add(f);
+      if (lk.oled) {
+        const scr = tex(128, 48, (g, w, h) => { g.fillStyle = "#020304"; g.fillRect(0, 0, w, h); label(g, `${p.watts}W`, w / 2, h / 2, 26, "#ffffff", "center"); });
+        grp.add(box(0.5, 0.18, 0.01, faces(M(0x020304), { 4: T(scr, { emissive: 0xffffff, emissiveMap: scr, emissiveIntensity: 0.9 }) }), x + len / 2 - 0.4, y + 0.18, z + 0.755));
+      }
+      return grp;
+    }
+
+    /* ---------- power cables: 24-pin, 8-pin EPS and the GPU power cable ---------- */
+    function buildCables() {
+      const white = part("case").look.color === "white";
+      const { bw } = boardSize();
+      const cm = M(white ? 0xe9ebee : 0x1b1d20, { metalness: 0.05, roughness: 0.85 });
+      const plugM = M(white ? 0xdfe2e6 : 0x101113, { metalness: 0.1, roughness: 0.7 });
+      const grp = new THREE.Group();
+      const strands = (pts, n, gap, side, r) => {
+        for (let i = 0; i < n; i++) {
+          const off = (i - (n - 1) / 2) * gap;
+          const curve = new THREE.CatmullRomCurve3(pts.map((p) => p.clone().addScaledVector(side, off)));
+          grp.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 28, r, 6, false), cm));
+        }
+      };
+      // 24-pin: plugs into the board edge, loops into a grommet behind the tray
+      const px = BX + bw - 0.03, py = SY - 0.15, pz = BZ + 0.12;
+      grp.add(box(0.14, 0.56, 0.12, plugM, px + 0.07, py, pz));
+      strands([V(px + 0.14, py, pz), V(px + 0.38, py, pz + 0.02), V(px + 0.55, py, BZ - 0.02), V(px + 0.57, py, BZ - 0.16)], 6, 0.085, V(0, 1, 0), 0.034);
+      // 8-pin EPS: top left corner of the board, through the top grommet
+      const ex = BX + 0.42, ey = BTOP - 0.09, ez = BZ + 0.15;
+      grp.add(box(0.22, 0.12, 0.08, plugM, ex, ey, ez));
+      strands([V(ex, ey + 0.05, ez), V(ex, ey + 0.16, ez - 0.02), V(ex, ey + 0.2, BZ - 0.05), V(ex, ey + 0.2, BZ - 0.16)], 4, 0.05, V(1, 0, 0), 0.024);
+      // GPU power: from the shroud up to the connector on the card
+      const L = gpuLayout();
+      if (L.plug.kind !== "hidden") {
+        const n = L.plug.kind === "8pin2" ? 2 : 1;
+        for (let j = 0; j < n; j++) {
+          const x = L.plug.x + (n === 2 ? (j - 0.5) * 0.21 : 0), y = L.plug.y, z = L.plug.z + 0.05;
+          grp.add(box(0.18, 0.08, 0.06, plugM, x, y, z));
+          strands([V(x, y, z + 0.03), V(x, y - 0.05, z + 0.14), V(x, y - 0.45, z + 0.17), V(x, SHROUD_Y + 0.2, z + 0.12), V(x, SHROUD_Y - 0.05, z + 0.05)], 3, 0.05, V(1, 0, 0), 0.026);
+        }
+      }
+      return grp;
+    }
+
+    /* ---------- parts are rebuilt whenever a different product is picked ---------- */
+    const root = new THREE.Group();
+    root.position.y = 0.1;
+    scene.add(root);
+    const shadow = new THREE.Mesh(new THREE.PlaneGeometry(7, 4.6), new THREE.MeshBasicMaterial({
+      map: tex(256, 128, (g, w, h) => {
+        const grd = g.createRadialGradient(w / 2, h / 2, 4, w / 2, h / 2, w / 2);
+        grd.addColorStop(0, "rgba(0,0,0,0.55)"); grd.addColorStop(0.55, "rgba(0,0,0,0.18)"); grd.addColorStop(1, "rgba(0,0,0,0)");
+        g.fillStyle = grd; g.fillRect(0, 0, w, h);
+      }), transparent: true, depthWrite: false,
+    }));
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.y = -H / 2 - 0.13;
+    root.add(shadow);
+
+    const parts = {};
+    const v3 = new THREE.Vector3();
+    const BUILDERS = { case: buildCase, glass: buildGlass, mobo: buildMobo, chip: buildChip, paste: buildPaste, cooler: buildCooler, ram: buildRam, ssd: buildSsd, gpu: buildGpu, psu: buildPsu, cables: buildCables, front: buildFront };
+    const OFFSETS = { case: [0, 0, 0], glass: [0, 0, 2.2], mobo: [0, 0, -0.9], chip: [0, 0.1, 0.7], paste: [0, 0.1, 0.9], cooler: [0, 0.2, 1.7], ram: [0, 0.3, 1.4], gpu: [0.3, -0.1, 2.0], psu: [-0.4, -0.6, 1.8], ssd: [0, 0, 1.0], cables: [0.5, 0, 1.2], front: [1.4, 0, 0] };
+    const LABELS = {
+      case: () => `Case: ${part("case").name}`,
+      glass: () => "Tempered glass side panel",
+      mobo: () => `Motherboard: ${part("mobo").name}`,
+      chip: () => `Processor: ${part("cpu").name}`,
+      paste: () => "Thermal paste",
+      cooler: () => `Cooler: ${part("cooler").name}`,
+      ram: () => `Memory: ${part("ram").name}`,
+      gpu: () => `Graphics card: ${part("gpu").name}`,
+      psu: () => `Power supply: ${part("psu").name}`,
+      ssd: () => `Storage: ${part("ssd").name}`,
+      cables: () => "Power cables: 24-pin, 8-pin EPS, GPU",
+      front: () => { const lk = part("case").look; return `${caseShort()}: ${lk.fans} × ${lk.fanMm} mm fans`; },
+    };
+    function disposeGroup(g) {
+      g.traverse((o) => {
+        if (o.geometry) o.geometry.dispose();
+        if (!o.material) return;
+        for (const m of [].concat(o.material)) {
+          if (m.map) m.map.dispose();
+          if (m.emissiveMap && m.emissiveMap !== m.map) m.emissiveMap.dispose();
+          m.dispose();
+        }
+      });
+    }
+    function mount(name) {
+      const ctx = { fans: [], rgb: [] };
+      const group = BUILDERS[name](ctx);
+      root.add(group);
+      // move the pivot to the visual centre, so a pulled-out part spins around its middle
+      root.updateMatrixWorld(true);
+      const bb = new THREE.Box3().setFromObject(group);
+      const center = root.worldToLocal(bb.getCenter(new THREE.Vector3()));
+      group.children.forEach((c) => c.position.sub(center));
+      group.position.copy(center);
+      const radius = bb.getSize(v3).length() / 2;
+      group.traverse((o) => { o.userData.part = name; });
+      const old = parts[name];
+      const p = old || { label: LABELS[name], offset: new THREE.Vector3(...OFFSETS[name]), k: 0, rx: 0, ry: 0, fade: 1, out: 0, outTarget: 0, park: null };
+      if (old) { root.remove(old.group); disposeGroup(old.group); }
+      p.group = group;
+      p.base = group.position.clone();
+      p.baseRot = group.rotation.clone();
+      p.fit = Math.min(2.4, Math.max(0.6, (radius > 2.1 ? 2.2 : 2.9) / radius));
+      p.fans = ctx.fans;
+      p.rgb = ctx.rgb;
+      p.opacity = -1;
+      parts[name] = p;
+      setOpacity(p, Math.abs(p.fade - 1) < 0.02 ? 1 : Math.round(p.fade * 40) / 40);
+    }
+
+    /* ---------- fading (used while a part is pulled out) ---------- */
+    function setOpacity(p, o) {
+      if (p.opacity === o) return;
+      p.opacity = o;
+      p.group.traverse((obj) => {
+        if (!obj.isMesh) return;
+        const list = Array.isArray(obj.material) ? obj.material : [obj.material];
+        for (const m of list) {
+          const base = m.userData.baseOpacity ?? 1;
+          const transparent = !!m.userData.baseTransparent || o < 0.999;
+          if (m.transparent !== transparent) { m.transparent = transparent; m.needsUpdate = true; }
+          m.opacity = base * o;
+          m.depthWrite = !transparent;
+        }
+      });
+    }
+
+    for (const name of Object.keys(BUILDERS)) mount(name);
+
+    /* ---------- assembly mode (builder page): parts wait on a tray in front of the case ---------- */
+    const ASSEMBLY = [
+      ["mobo", "Motherboard", () => `The board sits on the standoffs in the case and is held by ${boardSize().atx ? 9 : 6} screws. The rear I/O lines up with the opening at the back.`],
+      ["chip", "Processor", () => `Lift the socket lever, match the small gold triangle on the ${part("cpu").name} with the mark on the socket, lay it in without pressure and close the lever.`],
+      ["paste", "Thermal paste", () => "A pea-sized dot of thermal paste in the middle of the CPU. The cooler pressure spreads it into a thin layer."],
+      ["cooler", "CPU cooler", () => (part("cooler").type === "aio"
+        ? "The pump block goes on the CPU with four screws, the radiator is screwed under the top panel with the fans blowing out."
+        : "The tower cooler is screwed onto its mounting bar. The fan clips onto the fins and blows towards the back of the case.")],
+      ["ram", "Memory", () => "Two sticks go into slots A2 and B2 (the 2nd and 4th from the CPU). Press until both clips click."],
+      ["ssd", "NVMe SSD", () => "The drive slides into the M.2 slot at an angle, then is pressed down and held by one small screw."],
+      ["gpu", "Graphics card", () => `Remove two slot covers at the back, push the card into the top PCIe x16 slot until it clicks and screw the bracket. This card is about ${part("gpu").len} mm long.`],
+      ["psu", "Power supply", () => "The PSU slides into the bottom compartment with its fan facing down and is screwed from the back."],
+      ["cables", "Power cables", () => `Connect the 24-pin to the board, the 8-pin EPS at the top for the CPU, and ${({ "12v": "the 12V-2x6 cable", "8pin1": "one 8-pin cable", "8pin2": "two 8-pin cables", hidden: "the hidden power connector" })[part("gpu").look.plug]} to the graphics card.`],
+      ["front", "Case fans", () => "The intake fans mount on the front panel and pull cool air in; the rear fan that came with the case blows it out. Each fan plugs into a header on the board."],
+      ["glass", "Side panel", () => "Close the case with the tempered glass panel and its four thumb screws. Done!"],
+    ];
+    const ASM_SET = new Set(ASSEMBLY.map(([n]) => n));
+    const PARK = {
+      mobo: [-3.9, 0.4, 1.8], chip: [-1.9, 2.9, 4.0], paste: [-1.2, 2.9, 4.0], cooler: [-1.6, 1.2, 4.2], ram: [-0.2, 2.7, 4.0], ssd: [0.8, 3.0, 4.0],
+      gpu: [-1.0, -1.4, 4.2], psu: [1.6, -2.0, 4.0], cables: [2.4, 1.6, 3.4], front: [3.7, 0.2, 2.6], glass: [5.2, 0.2, -1.2],
+    };
+    const parkFor = (n) => new THREE.Vector3(...(n === "cooler" && part("cooler").type === "aio" ? [-0.4, 3.3, 3.2] : PARK[n]));
+    for (const n of Object.keys(PARK)) parts[n].park = parkFor(n);
+    const asmPanel = $("asmPanel");
+    const assembly = { on: false, step: 0 };
+    const asmActive = () => assembly.on && assembly.step < ASSEMBLY.length;
+
+    /* ---------- camera + state ---------- */
+    const view = { theta: 0.75, phi: 1.2, radius: 15.5, targetRadius: 15.5, targetTheta: 0.75, targetPhi: 1.2 };
+    let autoSpin = !reduceMotion;
+    let explode = 0, explodeTarget = 0;
+    let inspect = null;
+    let dragging = false;
+    const spinBtn = $("btnSpin");
+    const setSpin = (on) => { autoSpin = on; spinBtn.setAttribute("aria-pressed", String(on)); };
+    setSpin(autoSpin);
+
+    function resize() {
+      const r = canvas.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      renderer.setSize(r.width, r.height, false);
+      camera.aspect = r.width / r.height;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", resize);
+    if (window.ResizeObserver) new ResizeObserver(resize).observe(canvas);
+
+    /* ---------- inspect panel + part buttons ---------- */
+    const card = $("inspectCard");
+    const bar = $("partBar");
+    const partButtons = {};
+    if (bar) {
+      for (const name of PART_ORDER) {
+        const b = document.createElement("button");
+        b.className = "chip-btn";
+        b.textContent = PART_BTN[name];
+        b.setAttribute("aria-pressed", "false");
+        b.addEventListener("click", () => (inspect === name ? closeInspect() : openInspect(name)));
+        bar.appendChild(b);
+        partButtons[name] = b;
+      }
+    }
+    function fillCard() {
+      if (!inspect) return;
+      const info = PART_INFO[inspect];
+      $("inspTitle").textContent = info.title;
+      const dl = $("inspRows");
+      dl.innerHTML = "";
+      for (const [k, v] of info.rows()) {
+        const row = document.createElement("div");
+        const dt = document.createElement("dt"); dt.textContent = k;
+        const dd = document.createElement("dd"); dd.textContent = v;
+        row.append(dt, dd);
+        dl.appendChild(row);
+      }
+    }
+    function openInspect(name) {
+      if (!PART_INFO[name] || asmActive()) return;
+      if (inspect && inspect !== name) normalise(parts[inspect]);
+      inspect = name;
+      setSpin(false);
+      hideTip();
+      card.hidden = false;
+      $("stageTag").hidden = true;
+      fillCard();
+      for (const [n, b] of Object.entries(partButtons)) b.setAttribute("aria-pressed", String(n === name));
+    }
+    function closeInspect() {
+      if (!inspect) return;
+      normalise(parts[inspect]);
+      inspect = null;
+      card.hidden = true;
+      $("stageTag").hidden = false;
+      for (const b of Object.values(partButtons)) b.setAttribute("aria-pressed", "false");
+    }
+    function normalise(p) {
+      const TAU = Math.PI * 2;
+      p.ry = ((((p.ry + Math.PI) % TAU) + TAU) % TAU) - Math.PI;
+    }
+    $("btnPutBack").addEventListener("click", closeInspect);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeInspect(); });
+
+    const asmBtn = $("btnAssemble");
+    function asmName(n) {
+      if (n === "glass") return "tempered glass";
+      if (n === "paste") return "thermal compound";
+      if (n === "cables") return "24-pin · EPS · GPU";
+      if (n === "chip") return part("cpu").name;
+      if (n === "front") { const lk = part("case").look; return `${lk.fans} × ${lk.fanMm} mm front fans`; }
+      return part(n).name;
+    }
+    function renderAssembly(hint) {
+      if (!asmPanel) return;
+      const ol = $("asmSteps");
+      ol.innerHTML = "";
+      ASSEMBLY.forEach(([n, title], i) => {
+        const li = document.createElement("li");
+        li.className = i < assembly.step ? "done" : i === assembly.step ? "current" : "";
+        const b = document.createElement("b"); b.textContent = `${i + 1}. ${title}`;
+        const sp = document.createElement("span"); sp.textContent = asmName(n);
+        li.append(b, sp);
+        ol.appendChild(li);
+      });
+      $("asmCount").textContent = `${assembly.step} / ${ASSEMBLY.length}`;
+      const fill = $("asmProgress");
+      if (fill) fill.style.width = `${(assembly.step / ASSEMBLY.length) * 100}%`;
+      const done = assembly.step >= ASSEMBLY.length;
+      $("asmNext").textContent = done ? "Start again" : `Install: ${ASSEMBLY[assembly.step][1]}`;
+      if (hint) $("asmHint").textContent = hint;
+      else if (!done) $("asmHint").textContent = `Step ${assembly.step + 1}: ${ASSEMBLY[assembly.step][2]()} Click the glowing part or press the button.`;
+      else {
+        const a = analyse();
+        $("asmHint").textContent = `Done! This build costs about €${a.price.toLocaleString("en-US")} and draws up to ${a.load} W. Run the benchmark below to see what it can do.`;
+      }
+    }
+    function startAssembly() {
+      if (!asmPanel) return;
+      closeInspect();
+      for (const p of Object.values(parts)) { p.rx = 0; p.ry = 0; }
+      assembly.on = true;
+      assembly.step = 0;
+      for (const [n] of ASSEMBLY) parts[n].outTarget = 1;
+      explodeTarget = 0;
+      $("btnExplode").setAttribute("aria-pressed", "false");
+      setSpin(false);
+      view.targetTheta = 0.4; view.targetPhi = 1.15; view.targetRadius = 22.5;
+      asmPanel.hidden = false;
+      if (bar) bar.hidden = true;
+      if (asmBtn) asmBtn.setAttribute("aria-pressed", "true");
+      renderAssembly();
+    }
+    function exitAssembly() {
+      if (!assembly.on) return;
+      assembly.on = false;
+      for (const [n] of ASSEMBLY) parts[n].outTarget = 0;
+      view.targetRadius = 15.5;
+      asmPanel.hidden = true;
+      if (bar) bar.hidden = false;
+      if (asmBtn) asmBtn.setAttribute("aria-pressed", "false");
+    }
+    function installNext(clicked) {
+      if (!assembly.on) return;
+      if (assembly.step >= ASSEMBLY.length) return startAssembly();
+      const [n, title] = ASSEMBLY[assembly.step];
+      if (clicked && clicked !== n) {
+        const other = ASSEMBLY.find(([m]) => m === clicked);
+        if (other && parts[clicked].outTarget === 1) {
+          renderAssembly(`Not yet: the ${other[1].toLowerCase()} comes later. First: ${title.toLowerCase()}.`);
+        }
+        return;
+      }
+      parts[n].outTarget = 0;
+      assembly.step += 1;
+      renderAssembly();
+    }
+    if (asmBtn) asmBtn.addEventListener("click", () => (assembly.on ? exitAssembly() : startAssembly()));
+    if (asmPanel) {
+      $("asmNext").addEventListener("click", () => installNext(null));
+      $("asmExit").addEventListener("click", exitAssembly);
+    }
+
+    /* ---------- pointer: drag rotates the PC, or the pulled-out part ---------- */
+    let drag = null;
+    canvas.addEventListener("pointerdown", (e) => {
+      drag = { x: e.clientX, y: e.clientY, moved: 0, id: e.pointerId };
+      try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+      canvas.classList.add("dragging");
+    });
+    canvas.addEventListener("pointermove", (e) => {
+      if (drag && e.pointerId === drag.id) {
+        const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+        drag.moved += Math.abs(dx) + Math.abs(dy);
+        drag.x = e.clientX; drag.y = e.clientY;
+        if (drag.moved < 4) return;
+        dragging = true;
+        if (inspect) {
+          const p = parts[inspect];
+          p.ry += dx * 0.012;
+          p.rx = Math.min(1.3, Math.max(-1.3, p.rx + dy * 0.01));
+        } else {
+          view.targetTheta -= dx * 0.009;
+          view.targetPhi = Math.min(1.75, Math.max(0.45, view.targetPhi - dy * 0.007));
+          if (autoSpin) setSpin(false);
+        }
+      } else if (e.pointerType === "mouse" && !inspect && !asmActive()) {
+        hover(e);
+      }
+    });
+    const endDrag = (e) => {
+      if (!drag) return;
+      const wasClick = drag.moved < 6;
+      drag = null;
+      dragging = false;
+      canvas.classList.remove("dragging");
+      if (wasClick && asmActive()) {
+        const name = partAt(e, true);
+        if (name) installNext(name);
+      } else if (wasClick && !inspect) {
+        const name = partAt(e);
+        if (name) openInspect(name);
+      }
+    };
+    canvas.addEventListener("pointerup", endDrag);
+    canvas.addEventListener("pointercancel", () => { drag = null; dragging = false; canvas.classList.remove("dragging"); });
+    canvas.addEventListener("pointerleave", hideTip);
+
+    const ray = new THREE.Raycaster();
+    const ndc = new THREE.Vector2();
+    const tip = $("tip");
+    function partAt(e, asm) {
+      const r = canvas.getBoundingClientRect();
+      ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+      ray.setFromCamera(ndc, camera);
+      for (const h of ray.intersectObjects(root.children, true)) {
+        const n = h.object.userData.part;
+        if (n && parts[n] && (PART_INFO[n] || (asm && ASM_SET.has(n))) && parts[n].fade > 0.5) return n;
+      }
+      return null;
+    }
+    function hover(e) {
+      const name = partAt(e);
+      if (!name) return hideTip();
+      tip.innerHTML = "";
+      const b = document.createElement("b");
+      b.textContent = "click to pull out";
+      tip.append(b, document.createTextNode(parts[name].label()));
+      tip.classList.add("show");
+    }
+    function hideTip() { tip.classList.remove("show"); }
+
+    /* ---------- toolbar ---------- */
+    $("btnExplode").addEventListener("click", (e) => {
+      explodeTarget = explodeTarget ? 0 : 1;
+      e.currentTarget.setAttribute("aria-pressed", String(!!explodeTarget));
+    });
+    spinBtn.addEventListener("click", () => setSpin(!autoSpin));
+    $("btnReset").addEventListener("click", () => {
+      closeInspect();
+      exitAssembly();
+      view.targetTheta = 0.75; view.targetPhi = 1.2; explodeTarget = 0;
+      $("btnExplode").setAttribute("aria-pressed", "false");
+      for (const p of Object.values(parts)) { p.rx = 0; p.ry = 0; }
+    });
+
+    /* ---------- render loop ---------- */
+    const clock = new THREE.Clock();
+    const tmp = new THREE.Vector3();
+    const target = new THREE.Vector3();
+    const ease = (k) => k * k * (3 - 2 * k);
+    function frame() {
+      requestAnimationFrame(frame);
+      const dt = Math.min(clock.getDelta(), 0.05);
+      if (document.hidden) return;
+      const fast = reduceMotion ? 30 : 6;
+
+      if (autoSpin && !inspect) view.targetTheta += dt * 0.25;
+      view.theta += (view.targetTheta - view.theta) * Math.min(1, dt * 8);
+      view.phi += (view.targetPhi - view.phi) * Math.min(1, dt * 8);
+      view.radius += (view.targetRadius - view.radius) * Math.min(1, dt * 4);
+      camera.position.set(
+        view.radius * Math.sin(view.phi) * Math.sin(view.theta),
+        view.radius * Math.cos(view.phi),
+        view.radius * Math.sin(view.phi) * Math.cos(view.theta)
+      );
+      camera.lookAt(0, 0, 0);
+
+      explode += (explodeTarget - explode) * Math.min(1, dt * (reduceMotion ? 30 : 5));
+      target.copy(camera.position).sub(root.position).normalize().multiplyScalar(1.6);
+      if (inspect && !dragging && !reduceMotion) parts[inspect].ry += dt * 0.45;
+
+      const fanLevel = sim.stress ? Math.max(sim.fan, 0.9) : sim.fan;
+      const spin = (0.6 + fanLevel * 14) * dt * (reduceMotion ? 0.3 : 1);
+      if (rgb.mode === "rainbow") rgb.color.setHSL(rgbState.hue, 1, 0.55);
+      else rgb.color.set(rgb.hex);
+      const intensity = 1.6 * rgbState.intensity;
+
+      for (const [name, p] of Object.entries(parts)) {
+        p.k += ((inspect === name ? 1 : 0) - p.k) * Math.min(1, dt * fast);
+        if (inspect !== name && p.k < 0.002) { p.k = 0; p.rx = 0; p.ry = 0; }
+        const e = ease(p.k);
+        tmp.copy(p.offset).multiplyScalar(explode).add(p.base);
+        p.out += (p.outTarget - p.out) * Math.min(1, dt * (reduceMotion ? 30 : 3.5));
+        if (Math.abs(p.out - p.outTarget) < 0.002) p.out = p.outTarget;
+        const parked = p.park ? ease(p.out) : 0;
+        if (parked > 0) tmp.lerp(p.park, parked);
+        if (e > 0) {
+          tmp.lerp(target, e);
+          p.group.scale.setScalar(1 + (p.fit - 1) * e);
+          p.group.rotation.set(p.baseRot.x + p.rx * e, p.baseRot.y + p.ry * e, p.baseRot.z);
+        } else {
+          const isNext = asmActive() && ASSEMBLY[assembly.step][0] === name;
+          const pulse = isNext && !reduceMotion ? 1 + 0.06 * Math.sin(clock.elapsedTime * 5) : 1;
+          p.group.scale.setScalar((1 - 0.12 * parked) * pulse);
+          p.group.rotation.copy(p.baseRot);
+        }
+        p.group.position.copy(tmp);
+        const fadeTarget = inspect && inspect !== name ? 0.07 : 1;
+        p.fade += (fadeTarget - p.fade) * Math.min(1, dt * fast);
+        setOpacity(p, Math.abs(p.fade - fadeTarget) < 0.02 ? fadeTarget : Math.round(p.fade * 40) / 40);
+        for (const f of p.fans) f.rotation.z += spin;
+        for (const m of p.rgb) { m.emissive.copy(rgb.color); m.emissiveIntensity = intensity; }
+      }
+      shadow.visible = !assembly.on || assembly.step >= ASSEMBLY.length;
+
+      glow.color.copy(rgb.color);
+      glow.intensity = intensity * 0.8;
+      renderer.render(scene, camera);
+    }
+    resize();
+    requestAnimationFrame(() => { resize(); frame(); });
+
+    const AFFECTS = { cpu: ["chip"], cooler: ["cooler"], mobo: ["mobo", "cables"], gpu: ["gpu", "cables"], ram: ["ram"], ssd: ["ssd"], psu: ["psu"], case: ["case", "front", "cables"] };
+    return {
+      update(kinds) {
+        const names = new Set();
+        for (const k of [].concat(kinds || [])) for (const n of AFFECTS[k] || []) names.add(n);
+        for (const n of names) mount(n);
+        if (parts.cooler) parts.cooler.park = parkFor("cooler");
+        fillCard();
+        if (assembly.on) renderAssembly();
+      },
+      refreshCard() { if (inspect === "front" || inspect === "psu") fillCard(); },
+      startAssembly,
+      exitAssembly,
+    };
+  }
+
+  function start3D() {
+    try {
+      return init3D();
+    } catch (err) {
+      console.error(err);
+      const f = $("fallback");
+      if (f) {
+        f.textContent = `The 3D model could not start (${err && err.message ? err.message : err}). Everything else on this page works.`;
+        f.hidden = false;
+        $("pc").hidden = true;
+        if ($("partBar")) $("partBar").hidden = true;
+        document.querySelector(".stage-bar").hidden = true;
+      }
+      return null;
+    }
+  }
+
+  window.PC = { PARTS, KINDS, KIND_LABEL, DEFAULTS, build, part, setPart, resetBuild, analyse, estimate, scores, GAMES, RES, rgb, rgbState, sim, reduceMotion, start3D };
+})();
+
+</script>
+<script>
+/* PC Builder page: configurator, compatibility checks, step-by-step assembly and the benchmark. */
+(() => {
+  "use strict";
+  const { PARTS, KINDS, build, part, setPart, analyse, estimate, scores, RES, sim, reduceMotion } = window.PC;
+  const $ = (id) => document.getElementById(id);
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const SELECTS = { cpu: "selCpu", cooler: "selCooler", mobo: "selMobo", gpu: "selGpu", ram: "selRam", ssd: "selSsd", psu: "selPsu", case: "selCase" };
+
+  // inside the Avlastimov XP window the page drops its own header and opens links in the main tab
+  if (window.self !== window.top) {
+    document.documentElement.classList.add("embedded");
+    document.querySelectorAll('a[href="./"]').forEach((a) => { a.target = "_top"; });
+  }
+  const engine = window.PC.start3D();
+
+  /* ================= CONFIGURATOR ================= */
+  for (const [kind, selId] of Object.entries(SELECTS)) {
+    const sel = $(selId);
+    const groups = {};
+    for (const p of PARTS[kind]) {
+      if (!groups[p.group]) {
+        groups[p.group] = document.createElement("optgroup");
+        groups[p.group].label = p.group;
+        sel.appendChild(groups[p.group]);
+      }
+      const o = document.createElement("option");
+      o.value = p.id;
+      o.textContent = `${p.name} · €${p.price.toLocaleString("en-US")}`;
+      groups[p.group].appendChild(o);
+    }
+    sel.value = build[kind];
+    sel.addEventListener("change", () => changed(setPart(kind, sel.value)));
+  }
+  function syncSelects() { for (const [k, id] of Object.entries(SELECTS)) $(id).value = build[k]; }
+
+  function changed(kinds) {
+    syncSelects();
+    renderChecks();
+    if (engine) engine.update(kinds);
+    $("bmResults").hidden = true;
+    $("bmState").textContent = "build changed · run again";
+  }
+
+  function renderChecks() {
+    const a = analyse();
+    $("kpiPrice").textContent = a.price.toLocaleString("en-US");
+    $("kpiLoad").textContent = `${a.load} W`;
+    $("kpiRec").textContent = `${a.recommended} W`;
+    const pct = Math.min(100, Math.round(a.usage * 100));
+    $("meterVal").textContent = `${Math.round(a.usage * 100)}%`;
+    const fill = $("meterFill");
+    fill.style.width = `${pct}%`;
+    fill.style.backgroundColor = a.usage > 1 ? css("--bad") : a.usage > 0.77 ? css("--warn") : css("--good");
+    const ul = $("checks");
+    ul.innerHTML = "";
+    for (const [state, text] of a.checks) {
+      const li = document.createElement("li");
+      const pill = document.createElement("span");
+      pill.className = `pill ${state}`;
+      pill.textContent = state === "ok" ? "ok" : state === "warn" ? "check" : "fail";
+      const t = document.createElement("span");
+      t.textContent = text;
+      li.append(pill, t);
+      ul.appendChild(li);
+    }
+    $("stageTag").textContent = `MODEL // ${part("case").name.replace(/\s*\(.*\)$/, "").toUpperCase()} · DRAG TO ROTATE`;
+  }
+
+  const PRESETS = {
+    budget: { cpu: "7500f", cooler: "ak400", mobo: "a620m", gpu: "5060ventus", ram: "fury32", ssd: "nv3_1", psu: "a650bn", case: "q300l" },
+    sweet: { cpu: "7800x3d", cooler: "pa120se", mobo: "b650tom", gpu: "9070xtnitro", ram: "tz5neo32", ssd: "sn850x_2", psu: "rm850x", case: "4000db" },
+    white: { cpu: "9800x3d", cooler: "krakenelite360w", mobo: "x870a", gpu: "9070xthh", ram: "vengrgbw32", ssd: "990pro_2", psu: "rm850xw", case: "o11evow" },
+    flagship: { cpu: "9950x3d", cooler: "ryujin3", mobo: "x870ehero", gpu: "5090astral", ram: "domti64", ssd: "9100pro_4", psu: "thor1200", case: "lancool216" },
+  };
+  document.querySelectorAll("[data-preset]").forEach((b) => b.addEventListener("click", () => {
+    const p = PRESETS[b.dataset.preset];
+    for (const k of KINDS) setPart(k, p[k]);
+    setPart("mobo", p.mobo);
+    changed(KINDS);
+  }));
+  $("asmPanel") && document.querySelectorAll("[data-goto-asm]").forEach((b) => b.addEventListener("click", () => engine && engine.startAssembly()));
+  renderChecks();
+
+  /* ================= BENCHMARK ================= */
+  let res = 1440;
+  document.querySelectorAll("[data-res]").forEach((b) => b.addEventListener("click", () => {
+    res = Number(b.dataset.res);
+    document.querySelectorAll("[data-res]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    if (!$("bmResults").hidden) showResults();
+  }));
+
+  const cv = $("bmCanvas");
+  const ctx = cv.getContext("2d");
+  function fitCanvas() {
+    const r = cv.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.max(1, Math.round(r.width * dpr));
+    cv.height = Math.max(1, Math.round(r.height * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return r;
+  }
+  const HUES = [190, 25, 280, 12, 45];
+
+  // Scenes are simple procedural animations; only the counters carry the (estimated) numbers.
+  function drawTunnel(t, hue, w, h) {
+    ctx.fillStyle = `hsl(${hue}, 45%, 6%)`;
+    ctx.fillRect(0, 0, w, h);
+    const cx = w / 2 + Math.sin(t * 0.7) * w * 0.06, cy = h / 2 + Math.cos(t * 0.5) * h * 0.06;
+    for (let i = 24; i > 0; i--) {
+      const z = (i - ((t * 6) % 1)) / 24;
+      const r = (1 / (z + 0.05)) * Math.min(w, h) * 0.06;
+      ctx.strokeStyle = `hsla(${hue + i * 4}, 90%, ${35 + (1 - z) * 35}%, ${0.15 + (1 - z) * 0.7})`;
+      ctx.lineWidth = 1 + (1 - z) * 3;
+      ctx.beginPath();
+      const sides = 6;
+      for (let s = 0; s <= sides; s++) {
+        const a = (s / sides) * Math.PI * 2 + t * 0.3 + i * 0.05;
+        const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r * 0.7;
+        s ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.stroke();
+    }
+  }
+  const tiles = [];
+  function drawCpu(k, w, h) {
+    ctx.fillStyle = "#0b0e12";
+    ctx.fillRect(0, 0, w, h);
+    const cols = 16, rows = 9, tw = w / cols, th = h / rows;
+    if (!tiles.length) for (let i = 0; i < cols * rows; i++) tiles.push(i);
+    const done = Math.floor(k * cols * rows);
+    for (let i = 0; i < cols * rows; i++) {
+      const x = (i % cols) * tw, y = Math.floor(i / cols) * th;
+      if (i < done) {
+        const g = ctx.createLinearGradient(x, y, x + tw, y + th);
+        g.addColorStop(0, `hsl(${20 + ((i * 7) % 40)}, 70%, ${30 + ((i * 13) % 30)}%)`);
+        g.addColorStop(1, `hsl(${200 + ((i * 5) % 40)}, 50%, ${20 + ((i * 11) % 25)}%)`);
+        ctx.fillStyle = g;
+        ctx.fillRect(x + 1, y + 1, tw - 2, th - 2);
+      } else if (i < done + part("cpu").cores) {
+        ctx.strokeStyle = "#ff9c63";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x + 2, y + 2, tw - 4, th - 4);
+      }
+    }
+  }
+  function drawGpu(t, w, h) {
+    ctx.fillStyle = "rgba(6,8,12,0.35)";
+    ctx.fillRect(0, 0, w, h);
+    for (let i = 0; i < 260; i++) {
+      const a = i * 2.39996 + t * (0.6 + (i % 7) * 0.05);
+      const r = ((i * 37) % 100) / 100 * Math.min(w, h) * 0.45 + Math.sin(t * 2 + i) * 6;
+      ctx.fillStyle = `hsla(${(i * 3 + t * 60) % 360}, 90%, 60%, 0.85)`;
+      ctx.fillRect(w / 2 + Math.cos(a) * r * 1.4, h / 2 + Math.sin(a) * r * 0.8, 2.5, 2.5);
+    }
+  }
+  function drawIdle(w, h, lines, color) {
+    ctx.fillStyle = "#06080b";
+    ctx.fillRect(0, 0, w, h);
+    ctx.font = `13px ${css("--font-mono") || "monospace"}`;
+    ctx.fillStyle = color;
+    lines.forEach((l, i) => ctx.fillText(l, 18, 64 + i * 20));
+  }
+  let screen = () => drawIdle(cv.getBoundingClientRect().width, cv.getBoundingClientRect().height, ["> press Run benchmark", "> 5 games + CPU single-thread, CPU multi-thread, GPU", "> results are estimates, not measurements"], "#7fd7a4");
+  function idleScreen() { fitCanvas(); screen(); }
+
+  let running = false;
+  function phase(dur, draw, fps, label, progress) {
+    return new Promise((resolve) => {
+      const t0 = performance.now();
+      const step = (now) => {
+        const k = Math.min(1, (now - t0) / dur);
+        const r = cv.getBoundingClientRect();
+        draw((now - t0) / 1000, k, r.width, r.height);
+        $("bmTest").textContent = label;
+        $("bmFps").textContent = fps == null ? "--" : String(Math.max(1, Math.round(fps * (1 + (Math.random() - 0.5) * 0.08))));
+        $("bmBar").style.width = `${(progress(k)) * 100}%`;
+        if (k < 1) requestAnimationFrame(step);
+        else resolve();
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  async function runBench() {
+    if (running) return;
+    const a = analyse();
+    const bad = a.checks.filter((c) => c[0] === "bad");
+    fitCanvas();
+    if (bad.length) {
+      screen = () => {
+        const r = cv.getBoundingClientRect();
+        drawIdle(r.width, r.height, ["POST FAILED", "", ...bad.map((b) => `> ${b[1].length > 70 ? b[1].slice(0, 67) + "…" : b[1]}`), "", "fix the red checks in the builder and run again"], "#f06a66");
+      };
+      screen();
+      $("bmTest").textContent = "BENCH // no boot";
+      $("bmFps").textContent = "--";
+      $("bmState").textContent = "cannot start: incompatible parts";
+      $("bmResults").hidden = true;
+      return;
+    }
+    running = true;
+    $("bmRun").disabled = true;
+    $("bmResults").hidden = true;
+    sim.stress = true;
+    const games = estimate(res);
+    const total = games.length + 3;
+    const per = reduceMotion ? 500 : 1700;
+    let idx = 0;
+    const prog = (i) => (k) => (i + k) / total;
+    tiles.length = 0;
+    for (let i = 0; i < games.length; i++) {
+      const g = games[i];
+      $("bmState").textContent = `running ${i + 1} / ${total}`;
+      await phase(per, (t, k, w, h) => drawTunnel(t, HUES[i], w, h), g.fps, `${g.name.toUpperCase()} // ${RES[res]}`, prog(idx++));
+    }
+    $("bmState").textContent = `running ${total - 2} / ${total}`;
+    await phase(per, (t, k, w, h) => drawCpu(k * 0.25, w, h), null, "CPU // SINGLE THREAD", prog(idx++));
+    $("bmState").textContent = `running ${total - 1} / ${total}`;
+    await phase(per * 1.2, (t, k, w, h) => drawCpu(0.25 + k * 0.75, w, h), null, `CPU // ${part("cpu").cores} CORES`, prog(idx++));
+    $("bmState").textContent = `running ${total} / ${total}`;
+    await phase(per * 1.2, (t, k, w, h) => drawGpu(t, w, h), null, "GPU // GRAPHICS SCORE", prog(idx++));
+    sim.stress = false;
+    running = false;
+    $("bmRun").disabled = false;
+    $("bmRun").textContent = "Run again";
+    $("bmState").textContent = "done";
+    $("bmTest").textContent = "BENCH // finished";
+    $("bmFps").textContent = String(games[0].fps);
+    const sc = scores();
+    screen = () => {
+      const r = cv.getBoundingClientRect();
+      drawIdle(r.width, r.height, ["BENCHMARK COMPLETE", "", ...games.map((g) => `${g.name.padEnd(24, " ")}${String(g.fps).padStart(4, " ")} fps`), "", `bench score ${sc.overall.toLocaleString("en-US")} · ${RES[res]} · estimate`], "#7fd7a4");
+    };
+    idleScreen();
+    showResults();
+  }
+  $("bmRun").addEventListener("click", runBench);
+
+  const REFS = [
+    ["Budget 1080p preset", PARTS.cpu.find((c) => c.id === "7500f"), PARTS.gpu.find((g) => g.id === "5060ventus"), PARTS.cooler.find((c) => c.id === "ak400")],
+    ["Sweet spot preset", PARTS.cpu.find((c) => c.id === "7800x3d"), PARTS.gpu.find((g) => g.id === "9070xtnitro"), PARTS.cooler.find((c) => c.id === "pa120se")],
+    ["Flagship preset", PARTS.cpu.find((c) => c.id === "9950x3d"), PARTS.gpu.find((g) => g.id === "5090astral"), PARTS.cooler.find((c) => c.id === "ryujin3")],
+  ];
+  function bar(label, value, max, cls, right) {
+    const pct = Math.max(2, Math.min(100, (value / max) * 100));
+    return `<div class="bm-row ${cls || ""}"><span class="bm-name">${label}</span><i><em style="width:${pct}%"></em></i><b>${right ?? value.toLocaleString("en-US")}</b></div>`;
+  }
+  function showResults() {
+    const games = estimate(res), s = scores();
+    $("bmResLabel").textContent = RES[res];
+    const max = Math.max(...games.map((g) => g.fps), 144);
+    $("bmGames").innerHTML = games.map((g) => {
+      const tags = `<span class="bm-tag ${g.limit === "GPU" ? "gpu" : "cpu"}">${g.limit}-bound</span>${g.lowVram ? '<span class="bm-tag warn">low VRAM</span>' : ""}`;
+      return `<div class="bm-game">${bar(`${g.name}<small>${g.preset} ${tags}</small>`, g.fps, max, g.fps < 45 ? "low" : g.fps >= 100 ? "high" : "", `${g.fps} fps`)}</div>`;
+    }).join("");
+    $("bmScores").innerHTML = [
+      ["CPU single-thread", s.single], ["CPU multi-thread", s.multi], ["GPU graphics", s.graphics], ["Overall bench score", s.overall],
+    ].map(([k, v]) => `<div class="kpi"><div class="v">${v.toLocaleString("en-US")}</div><div class="k">${k}</div></div>`).join("");
+    const rows = REFS.map(([name, cpu, gpu, cooler]) => [name, scores({ cpu, gpu, cooler }).overall]);
+    rows.push(["Your build", s.overall]);
+    rows.sort((x, y) => y[1] - x[1]);
+    const top = Math.max(...rows.map((r) => r[1]));
+    $("bmCompare").innerHTML = rows.map(([n, v]) => bar(n, v, top, n === "Your build" ? "you" : "")).join("");
+    const heavy = games[0];
+    const tier = heavy.fps >= 100 ? ["Excellent", "high refresh rates even in the heaviest game here"]
+      : heavy.fps >= 60 ? ["Smooth", "60+ fps at max settings in the heaviest game here"]
+        : heavy.fps >= 40 ? ["Playable", "turn on upscaling or lower a few settings for 60 fps"]
+          : ["Too heavy", "lower the resolution or the settings, or pick a faster graphics card"];
+    const gpuBound = games.filter((g) => g.limit === "GPU").length;
+    const hint = gpuBound >= 3 ? "Most games are limited by the graphics card, so a faster GPU helps most." : "Most games are limited by the processor here, so a faster CPU (an X3D chip, for example) helps most.";
+    $("bmVerdict").innerHTML = `<b>${tier[0]} at ${RES[res]}</b><span>${tier[1]}. ${hint}</span>`;
+    $("bmResults").hidden = false;
+  }
+
+  idleScreen();
+  window.addEventListener("resize", () => { if (!running) idleScreen(); });
+  if (location.hash === "#assemble" && engine) engine.startAssembly();
+})();
+
+</script>
+</body>
+</html>
