@@ -4,9 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Denys Avlastymov · Avlastymov XP</title>
-<meta name="description" content="Portfolio of Denys Avlastymov: AI automation, prompt engineering, Java. A retro desktop with a 3D PC builder, projects and a QA mini game.">
+<meta name="description" content="Portfolio and resume of Denys Avlastymov: AI automation, QA and SQL. A retro desktop with a recruiter view, a 3D PC builder, projects and games in 4 languages.">
 <meta property="og:title" content="Denys Avlastymov · Avlastymov XP">
-<meta property="og:description" content="Portfolio of Denys Avlastymov: AI automation, prompt engineering, Java. A retro desktop with a 3D PC builder, projects and a QA mini game.">
+<meta property="og:description" content="Portfolio and resume of Denys Avlastymov: AI automation, QA and SQL. A retro desktop with a recruiter view, a 3D PC builder, projects and games in 4 languages.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://me1atoninvomne.github.io/">
+<meta property="og:image" content="https://me1atoninvomne.github.io/preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Denys Avlastymov, AI Automation · QA · SQL: a retro desktop portfolio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Denys Avlastymov · Avlastymov XP">
+<meta name="twitter:description" content="Portfolio and resume of Denys Avlastymov: AI automation, QA and SQL. A retro desktop with a recruiter view, a 3D PC builder, projects and games in 4 languages.">
+<meta name="twitter:image" content="https://me1atoninvomne.github.io/preview.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='6' width='36' height='52' rx='6' fill='%2313171C'/%3E%3Ccircle cx='32' cy='22' r='9' fill='none' stroke='%23FF7A33' stroke-width='4'/%3E%3Crect x='22' y='40' width='20' height='4' rx='2' fill='%23FF7A33'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Noto+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Pixelify+Sans:wght@400;500;700&display=swap">
@@ -950,8 +960,45 @@ html.desk-enter .taskbar { animation: barIn .6s cubic-bezier(.2,.8,.2,1) .25s bo
   .win:not([hidden]), .startmenu:not([hidden]), html.desk-enter .wall, html.desk-enter .dicon, html.desk-enter .taskbar, .boot:not([hidden]) .boot-inner { animation: none; }
 }
 
+/* ---------- language menu (tray) ---------- */
+.langmenu { position: fixed; right: 70px; bottom: 38px; z-index: 955; min-width: 170px; padding: 3px; background: #fff; border: 1px solid #7F9DB9; border-radius: 4px 4px 0 0; box-shadow: 2px 3px 10px rgba(0,0,0,.35); font: 12px var(--font-ui); }
+.langmenu:not([hidden]) { animation: smIn .15s ease-out both; }
+.langmenu button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 5px 10px; border: 0; background: none; text-align: left; font: inherit; color: #000; cursor: pointer; border-radius: 2px; }
+.langmenu button b { width: 24px; text-align: center; padding: 1px 0; border: 1px solid #9AAAC8; border-radius: 2px; font-size: 10.5px; color: #0A2A6B; }
+.langmenu button:hover { background: #316AC5; color: #fff; }
+.langmenu button:hover b { color: #fff; border-color: #fff; }
+.langmenu button[aria-pressed="true"] { font-weight: 700; }
+/* ---------- GitHub Activity window ---------- */
+.gh { padding: 14px 16px 12px; font: 12.5px/1.45 var(--font-ui); color: #1d2433; background: #fff; min-height: 100%; box-sizing: border-box; }
+.gh-msg { padding: 40px 10px; text-align: center; color: #555; }
+.gh-msg .xp-btn { margin-top: 12px; }
+.gh-top { display: flex; gap: 14px; align-items: center; }
+.gh-ava { width: 64px; height: 64px; border-radius: 6px; border: 1px solid #C8C4B0; background: #ECE9D8; }
+.gh-name { display: block; font-size: 17px; color: #0A2A6B; }
+.gh-login { color: #0A4CC4; text-decoration: none; }
+.gh-sub { color: #666; font-size: 12px; margin-top: 2px; }
+.gh-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px 0 6px; }
+.gh-kpis div { padding: 8px 10px; border: 1px solid #C9D3E6; border-radius: 4px; background: linear-gradient(#FBFCFF, #EEF3FC); }
+.gh-kpis b { display: block; font-size: 22px; color: #0A2A6B; font-variant-numeric: tabular-nums; }
+.gh-kpis span { color: #556; font-size: 11.5px; }
+.gh h4 { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: #0A2A6B; }
+.gh-bar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid #C8C4B0; }
+.gh-bar i { display: block; height: 100%; }
+.gh-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 6px; }
+.gh-legend span, .gh-repos small { display: inline-flex; align-items: center; gap: 5px; }
+.gh-legend i, .gh-repos small i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.gh-legend small { color: #777; }
+.gh-cols { display: grid; grid-template-columns: 1.1fr 1fr; gap: 18px; }
+.gh-feed, .gh-repos { list-style: none; margin: 0; padding: 0; }
+.gh-feed li, .gh-repos li { display: flex; flex-direction: column; padding: 5px 0; border-bottom: 1px dotted #D6D2C2; }
+.gh-feed small, .gh-repos small { color: #777; font-size: 11.5px; }
+.gh a { color: #0A4CC4; text-decoration: none; } .gh a:hover { text-decoration: underline; }
+.gh-repos a { font-weight: 700; }
+.gh-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; padding-top: 8px; border-top: 1px solid #E2DED0; color: #777; font-size: 11.5px; flex-wrap: wrap; }
+@media (max-width: 700px) { .gh-kpis { grid-template-columns: repeat(2, 1fr); } .gh-cols { grid-template-columns: 1fr; } }
+
 </style>
-<style>html.pre-boot{background:#000}html.pre-boot body{visibility:hidden}html.pre-boot .intro,html.pre-boot .boot{visibility:visible}</style>
+<style>html.pre-boot{background:#000}html.pre-boot body{visibility:hidden}html.pre-boot .intro,html.pre-boot .boot,html.pre-boot .flow,html.pre-boot .rc{visibility:visible}</style>
 <script>(function(){var d=document.documentElement,on=true;try{on=localStorage.getItem("denis.xp.noboot")!=="1"&&!matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}if(on){d.classList.add("pre-boot");setTimeout(function(){d.classList.remove("pre-boot")},15000)}})();</script>
 </head>
 <body class="os">
@@ -959,6 +1006,7 @@ html.desk-enter .taskbar { animation: barIn .6s cubic-bezier(.2,.8,.2,1) .25s bo
 <div class="wall"><canvas id="wave"></canvas><div class="wall-mark">Avlastymov<sup>XP</sup><small>Professional</small></div></div>
 <nav class="icons" aria-label="Desktop">
   <button class="dicon" data-open="home"><span data-ico="home"></span><span>Home</span></button>
+  <button class="dicon" data-open="recruiter"><span data-ico="brief"></span><span>For recruiters</span></button>
   <button class="dicon" data-open="about"><span data-ico="computer"></span><span>My Computer</span></button>
   <button class="dicon" data-open="projects"><span data-ico="folder"></span><span>Projects</span></button>
   <button class="dicon" data-open="builder"><span data-ico="pc"></span><span>PC Builder</span></button>
@@ -967,6 +1015,7 @@ html.desk-enter .taskbar { animation: barIn .6s cubic-bezier(.2,.8,.2,1) .25s bo
   <button class="dicon" data-open="taskmgr"><span data-ico="chart"></span><span>Task Manager</span></button>
   <button class="dicon" data-open="resume"><span data-ico="doc"></span><span>Resume.txt</span></button>
   <button class="dicon" data-open="contact"><span data-ico="mail"></span><span>Contact</span></button>
+  <button class="dicon" data-open="github"><span data-ico="globe"></span><span>GitHub Activity</span></button>
   <button class="dicon" data-open="player"><span data-ico="music"></span><span>Avlamp</span></button>
   <button class="dicon" data-open="bin"><span data-ico="bin"></span><span>Recycle Bin</span></button>
 </nav>
@@ -1305,7 +1354,7 @@ html.desk-enter .taskbar { animation: barIn .6s cubic-bezier(.2,.8,.2,1) .25s bo
     <div class="bh-board">
       <div class="bh-shop-wrap">
         <div class="bh-chrome"><i></i><i></i><i></i><span>freshcart.example/checkout</span></div>
-        <div class="bh-shop" id="bhShop"></div>
+        <div class="bh-shop" id="bhShop" data-no-i18n></div>
         <div class="bh-overlay" id="bhOverlay">
           <div>
             <b>Find the 6 bugs</b>
@@ -1317,7 +1366,7 @@ html.desk-enter .taskbar { animation: barIn .6s cubic-bezier(.2,.8,.2,1) .25s bo
       </div>
       <aside class="bh-log">
         <h4>Bug reports</h4>
-        <ol id="bhLog"><li class="empty">No bugs reported yet.</li></ol>
+        <ol id="bhLog" data-no-i18n><li class="empty">No bugs reported yet.</li></ol>
       </aside>
     </div>
   </section>
@@ -1341,7 +1390,7 @@ html.desk-enter .taskbar { animation: barIn .6s cubic-bezier(.2,.8,.2,1) .25s bo
         </div>
       </div>
       <div class="term" id="term">
-        <div class="term-out" id="termOut" aria-live="polite"></div>
+        <div class="term-out" id="termOut" data-no-i18n aria-live="polite"></div>
         <form class="term-line" id="termForm">
           <span class="p">denys@bench:~$</span>
           <label for="termIn" class="label" hidden>Command</label>
@@ -1538,6 +1587,16 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
   <div class="win-resize" aria-hidden="true"></div>
 </section>
 
+<section class="win" id="win-github" data-icon="globe" data-title="GitHub Activity - live" data-w="760" data-h="560" role="dialog" aria-label="GitHub Activity - live" hidden>
+  <header class="win-title"><span data-ico="globe"></span><b>GitHub Activity - live</b><div class="win-btns"><button class="wb-min" aria-label="Minimize"></button><button class="wb-max" aria-label="Maximize"></button><button class="wb-close" aria-label="Close"></button></div></header>
+  
+  <div class="win-body plain">
+<div class="gh" id="ghBody" data-no-i18n></div>
+  </div>
+  <footer class="win-status"><span>api.github.com</span><span>github.com/me1atoninvomne</span></footer>
+  <div class="win-resize" aria-hidden="true"></div>
+</section>
+
 <section class="win" id="win-bin" data-icon="bin" data-title="Recycle Bin" data-w="520" data-h="300" role="dialog" aria-label="Recycle Bin" hidden>
   <header class="win-title"><span data-ico="bin"></span><b>Recycle Bin</b><div class="win-btns"><button class="wb-min" aria-label="Minimize"></button><button class="wb-max" aria-label="Maximize"></button><button class="wb-close" aria-label="Close"></button></div></header>
   <div class="win-menu" aria-hidden="true"><span>File</span><span>Edit</span><span>View</span><span>Help</span></div>
@@ -1558,12 +1617,13 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
 <div class="taskbar" role="toolbar" aria-label="Taskbar">
   <button class="start" id="startBtn" aria-expanded="false" aria-controls="startMenu"><span data-ico="chip"></span>start</button>
   <div class="tasks" id="tasks"></div>
-  <div class="tray"><button class="lang" title="English">EN</button><button class="vol" id="trayVol" title="Open the player" data-open="player">🔊</button><span id="clock">12:00</span></div>
+  <div class="tray"><button class="lang" id="trayLang" title="Language" aria-haspopup="true" data-no-i18n>EN</button><button class="vol" id="trayVol" title="Open the player" data-open="player">🔊</button><span id="clock">12:00</span></div>
 </div>
 <div class="startmenu" id="startMenu" hidden>
   <div class="sm-head"><span class="sm-ava">DA</span>Denys Avlastymov</div>
   <div class="sm-cols">
     <div class="sm-left">
+      <button class="sm-item" data-open="recruiter"><span data-ico="brief"></span><span><b>For recruiters</b><small>the resume on one page</small></span></button>
       <button class="sm-item" data-open="home"><span data-ico="home"></span><span><b>Home</b><small>about me and my work</small></span></button>
       <button class="sm-item" data-open="projects"><span data-ico="folder"></span><span><b>Projects</b><small>10 repos on GitHub</small></span></button>
       <button class="sm-item" data-open="builder"><span data-ico="pc"></span><span><b>PC Builder</b><small>3D build + benchmark</small></span></button>
@@ -1582,14 +1642,15 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
       <button class="sm-item" data-open="resume"><span data-ico="doc"></span><span><b>Resume</b></span></button>
       <button class="sm-item" data-open="contact"><span data-ico="mail"></span><span><b>Contact</b></span></button>
       <div class="sm-sep"></div>
-      <a class="sm-item" href="https://github.com/me1atoninvomne" target="_blank" rel="noopener"><span data-ico="globe"></span><span><b>GitHub</b></span></a>
+      <button class="sm-item" data-open="github"><span data-ico="globe"></span><span><b>GitHub Activity</b></span></button>
       <button class="sm-item" data-open="bin"><span data-ico="bin"></span><span><b>Recycle Bin</b></span></button>
     </div>
   </div>
   <div class="sm-foot"><button class="log" id="btnRestart"><i>↻</i>Restart</button><button class="off" id="btnShutdown"><i>⏻</i>Shut Down</button></div>
 </div>
 
-<div class="intro" id="intro" hidden><canvas id="introCanvas"></canvas><div class="intro-skip">click or press any key to skip</div><div class="intro-fade" id="introFade"></div></div>
+<div class="intro" id="intro" hidden><canvas id="introCanvas"></canvas><div class="intro-fade" id="introFade"></div></div>
+<div class="langmenu" id="langMenu" hidden data-no-i18n></div>
 <div class="boot" id="boot" hidden><div class="boot-inner"><div class="boot-logo">Avlastymov<sup>XP</sup><small>PROFESSIONAL</small></div><div class="boot-bar"><i></i><i></i><i></i></div><div class="boot-hint">click to skip</div></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -3777,11 +3838,174 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
 
 </script>
 <script>
+/* generated by gen_i18n.py from tr_*.py: English -> [Deutsch, Українська, 中文] */
+window.I18N_DICT = {"Desktop":["Desktop","Робочий стіл","桌面"],"Home":["Startseite","Головна","主页"],"For recruiters":["Für Recruiter","Для рекрутерів","招聘者专区"],"My Computer":["Arbeitsplatz","Мій комп'ютер","我的电脑"],"Projects":["Projekte","Проєкти","项目"],"PC Builder":["PC-Konfigurator","Конфігуратор ПК","电脑装机"],"Bug Hunter":["Bug Hunter","Мисливець на баги","捉虫游戏"],"Terminal":["Terminal","Термінал","终端"],"Task Manager":["Task-Manager","Диспетчер завдань","任务管理器"],"Resume.txt":["Lebenslauf.txt","Резюме.txt","简历.txt"],"Contact":["Kontakt","Контакт","联系"],"GitHub Activity":["GitHub-Aktivität","Активність на GitHub","GitHub 动态"],"Avlamp":["Avlamp","Avlamp","Avlamp"],"Recycle Bin":["Papierkorb","Кошик","回收站"],"Games":["Spiele","Ігри","游戏"],"Minesweeper":["Minesweeper","Сапер","扫雷"],"Solitaire":["Solitär","Пасьянс","纸牌"],"Paint":["Paint","Paint","画图"],"Home - Denys Avlastymov":["Startseite - Denys Avlastymov","Головна - Denys Avlastymov","主页 - Denys Avlastymov"],"Minimize":["Minimieren","Згорнути","最小化"],"Maximize":["Maximieren","Розгорнути","最大化"],"Close":["Schließen","Закрити","关闭"],"File":["Datei","Файл","文件"],"Edit":["Bearbeiten","Правка","编辑"],"View":["Ansicht","Вигляд","查看"],"Favorites":["Favoriten","Обране","收藏夹"],"Help":["Hilfe","Довідка","帮助"],"Tools":["Extras","Сервіс","工具"],"Format":["Format","Формат","格式"],"Taskbar":["Taskleiste","Панель завдань","任务栏"],"start":["Start","Пуск","开始"],"Open the player":["Player öffnen","Відкрити плеєр","打开播放器"],"Language":["Sprache","Мова","语言"],"the resume on one page":["der Lebenslauf auf einer Seite","резюме на одній сторінці","一页简历"],"about me and my work":["über mich und meine Arbeit","про мене і мою роботу","关于我和我的工作"],"10 repos on GitHub":["10 Repos auf GitHub","10 репозиторіїв на GitHub","GitHub 上的 10 个仓库"],"3D build + benchmark":["3D-Build + Benchmark","3D-збірка + бенчмарк","3D 装机 + 跑分"],"Resume":["Lebenslauf","Резюме","简历"],"<i>↻</i>Restart":["<i>↻</i>Neu starten","<i>↻</i>Перезавантажити","<i>↻</i>重新启动"],"<i>⏻</i>Shut Down":["<i>⏻</i>Herunterfahren","<i>⏻</i>Вимкнути","<i>⏻</i>关机"],"click to skip":["Klicken zum Überspringen","клацніть, щоб пропустити","点击跳过"],"Avlastymov XP is shutting down…":["Avlastymov XP wird heruntergefahren…","Avlastymov XP завершує роботу…","Avlastymov XP 正在关机…"],"It is now safe to close this tab.":["Sie können diesen Tab jetzt schließen.","Тепер цю вкладку можна закрити.","现在可以安全地关闭此标签页了。"],"Turn it back on":["Wieder einschalten","Увімкнути знову","重新开机"],"Applecat, the site assistant: click for options":["Applecat, der Assistent der Seite: klicken für Optionen","Applecat, помічник сайту: клацніть, щоб побачити варіанти","Applecat，网站助手：点击查看选项"],"AI that works<br>in real processes.":["KI, die in echten<br>Prozessen funktioniert.","ШІ, що працює<br>в реальних процесах.","在真实流程中<br>发挥作用的 AI。"],"I’m Denys, an AI automation and prompt engineering specialist. I connect language models to everyday work: support tickets, reports, stock checks. Then I build the Java backends and the tests around them.":["Ich bin Denys, Spezialist für KI-Automatisierung und Prompt Engineering. Ich verbinde Sprachmodelle mit der täglichen Arbeit: Support-Tickets, Berichte, Bestandsprüfungen. Dazu baue ich die Java-Backends und die Tests drumherum.","Я Денис, спеціаліст з AI-автоматизації та промпт-інжинірингу. Я підключаю мовні моделі до щоденної роботи: тікети підтримки, звіти, перевірка залишків. А потім пишу для цього Java-бекенди й тести.","我是 Denys，AI 自动化与提示词工程专员。我把大语言模型接入日常工作：客服工单、报表、库存核对，再为它们编写 Java 后端和测试。"],"● Hire me":["● Mich einstellen","● Найняти мене","● 雇用我"],"▶ View the work":["▶ Arbeiten ansehen","▶ Подивитися роботи","▶ 查看作品"],"Interactive 3D model of a desktop PC. Drag to rotate it, click a part to pull it out and rotate it on its own.":["Interaktives 3D-Modell eines Desktop-PCs. Ziehen zum Drehen, auf ein Teil klicken, um es herauszunehmen und einzeln zu drehen.","Інтерактивна 3D-модель ПК. Потягніть, щоб обертати, клацніть на деталь, щоб витягти її й покрутити окремо.","台式电脑的交互式 3D 模型。拖动可旋转，点击部件可将其取出并单独旋转。"],"Put back":["Zurücklegen","Повернути","放回"],"drag to rotate the part":["ziehen, um das Teil zu drehen","потягніть, щоб обертати деталь","拖动旋转部件"],"Explode view":["Explosionsansicht","Розібраний вигляд","爆炸视图"],"Auto-rotate":["Auto-Drehen","Автообертання","自动旋转"],"Reset":["Zurücksetzen","Скинути","重置"],"Build & benchmark →":["Bauen & Benchmark →","Зібрати й протестувати →","装机并跑分 →"],"Build &amp; benchmark →":["Bauen &amp; Benchmark →","Зібрати й протестувати →","装机并跑分 →"],"click a part to pull it out":["auf ein Teil klicken, um es herauszunehmen","клацніть на деталь, щоб витягти її","点击部件将其取出"],"Pull out a part":["Teil herausnehmen","Витягти деталь","取出部件"],"pull out:":["herausnehmen:","витягти:","取出："],"Cooler":["Kühler","Кулер","散热器"],"Motherboard":["Mainboard","Материнська плата","主板"],"Case fans":["Gehäuselüfter","Корпусні вентилятори","机箱风扇"],"DA-1 · live 3D model of your build":["DA-1 · Live-3D-Modell Ihres Builds","DA-1 · жива 3D-модель вашої збірки","DA-1 · 你的配置的实时 3D 模型"],"From the shop floor<br>to LLM pipelines.":["Vom Ladengeschäft<br>zu LLM-Pipelines.","Від торгової зали<br>до LLM-пайплайнів.","从门店一线<br>到 LLM 流水线。"],"I learned what “a process” really means in retail: invoices that don’t match the delivery, refunds, daily sales reports, a support inbox full of the same questions. Now I automate exactly those things with AI.":["Im Einzelhandel habe ich gelernt, was „ein Prozess“ wirklich bedeutet: Rechnungen, die nicht zur Lieferung passen, Rückerstattungen, tägliche Verkaufsberichte, ein Support-Postfach voller gleicher Fragen. Genau diese Dinge automatisiere ich jetzt mit KI.","У рітейлі я зрозумів, що насправді означає «процес»: накладні, які не збігаються з поставкою, повернення, щоденні звіти про продажі, скринька підтримки, повна однакових питань. Тепер я автоматизую саме це за допомогою ШІ.","在零售业我真正明白了“流程”是什么：与到货不符的发票、退款、每日销售报表、塞满相同问题的客服邮箱。现在我正是用 AI 把这些事情自动化。"],"For the last half year I have worked on independent AI projects: prompts for ChatGPT, Claude and Chinese models such as DeepSeek and Qwen, AI assistants for business workflows and automations in n8n and Make. Before that I worked as an SQL analyst and manual QA, and for two years as a shift manager whose store reached the global top 15 of its chain.":["Im letzten halben Jahr habe ich an eigenen KI-Projekten gearbeitet: Prompts für ChatGPT, Claude und chinesische Modelle wie DeepSeek und Qwen, KI-Assistenten für Geschäftsprozesse und Automatisierungen in n8n und Make. Davor war ich SQL-Analyst und manueller Tester und zwei Jahre Schichtleiter in einem Markt, der es in die weltweiten Top 15 seiner Kette schaffte.","Останні півроку я працюю над власними AI-проєктами: промпти для ChatGPT, Claude та китайських моделей на кшталт DeepSeek і Qwen, AI-асистенти для бізнес-процесів і автоматизації в n8n та Make. До цього я працював SQL-аналітиком і мануальним тестувальником, а два роки — керівником зміни в магазині, який увійшов до світового топ-15 своєї мережі.","过去半年我一直在做独立的 AI 项目：为 ChatGPT、Claude 以及 DeepSeek、Qwen 等中国模型编写提示词，为业务流程打造 AI 助手，并用 n8n 和 Make 做自动化。在此之前，我做过 SQL 分析师和手工测试，还当了两年值班经理，我所在的门店进入了全连锁全球前 15 名。"],"I hold a Bachelor’s degree in Applied Economics from Comenius University in Bratislava. Java is my main language, with SQL, C++ and Rust next to it. Every project below is on GitHub with its source code.":["Ich habe einen Bachelor in Angewandter Ökonomie der Comenius-Universität Bratislava. Meine Hauptsprache ist Java, dazu SQL, C++ und Rust. Jedes Projekt unten liegt mit Quellcode auf GitHub.","Я маю ступінь бакалавра з прикладної економіки Університету Коменського в Братиславі. Моя основна мова — Java, поруч SQL, C++ і Rust. Кожен проєкт нижче лежить на GitHub із вихідним кодом.","我拥有布拉迪斯拉发夸美纽斯大学应用经济学学士学位。主力语言是 Java，另外会 SQL、C++ 和 Rust。下面每个项目都在 GitHub 上公开源码。"],"AI Automation & Prompt Engineering":["KI-Automatisierung & Prompt Engineering","AI-автоматизація та промпт-інжиніринг","AI 自动化与提示词工程"],"AI Automation &amp; Prompt Engineering":["KI-Automatisierung &amp; Prompt Engineering","AI-автоматизація та промпт-інжиніринг","AI 自动化与提示词工程"],"On the bench":["Auf dem Prüfstand","На стенді","工作台上"],"Ten projects with source code. Most of them solve a problem I met in retail, customer support or testing. The previews are small live illustrations.":["Zehn Projekte mit Quellcode. Die meisten lösen ein Problem, das mir im Einzelhandel, im Kundensupport oder beim Testen begegnet ist. Die Vorschauen sind kleine Live-Illustrationen.","Десять проєктів із вихідним кодом. Більшість розв'язує проблему, з якою я стикався в рітейлі, підтримці клієнтів або тестуванні. Прев'ю — це невеликі живі ілюстрації.","十个附源码的项目，大多解决我在零售、客服或测试中遇到的问题。预览是小型的实时示意。"],"Filter projects":["Projekte filtern","Фільтр проєктів","筛选项目"],"All · 10":["Alle · 10","Усі · 10","全部 · 10"],"AI &amp; automation":["KI &amp; Automatisierung","ШІ та автоматизація","AI 与自动化"],"AI & automation":["KI & Automatisierung","ШІ та автоматизація","AI 与自动化"],"QA & testing":["QA & Testen","QA та тестування","QA 与测试"],"QA &amp; testing":["QA &amp; Testen","QA та тестування","QA 与测试"],"Data & code":["Daten & Code","Дані та код","数据与代码"],"Data &amp; code":["Daten &amp; Code","Дані та код","数据与代码"],"AI automation":["KI-Automatisierung","AI-автоматизація","AI 自动化"],"n8n workflow: an LLM sorts support messages in any language by topic and urgency, validates its own JSON, drafts replies and alerts Slack.":["n8n-Workflow: Ein LLM sortiert Support-Nachrichten in jeder Sprache nach Thema und Dringlichkeit, prüft sein eigenes JSON, entwirft Antworten und meldet sich in Slack.","n8n-воркфлоу: LLM сортує повідомлення підтримки будь-якою мовою за темою й терміновістю, перевіряє власний JSON, готує чернетки відповідей і сповіщає Slack.","n8n 工作流：LLM 按主题和紧急程度对任何语言的客服消息分类，自检输出的 JSON，起草回复并在 Slack 中提醒。"],"pass rate · illustration, simulated numbers":["Erfolgsquote · Illustration, simulierte Zahlen","відсоток успіху · ілюстрація, змодельовані числа","通过率 · 示意图，模拟数据"],"LLM evaluation":["LLM-Bewertung","Оцінювання LLM","LLM 评估"],"Sends the same prompts to DeepSeek, Qwen, GPT and Claude, checks every answer automatically and compares prompt versions.":["Schickt dieselben Prompts an DeepSeek, Qwen, GPT und Claude, prüft jede Antwort automatisch und vergleicht Prompt-Versionen.","Надсилає однакові промпти до DeepSeek, Qwen, GPT і Claude, автоматично перевіряє кожну відповідь і порівнює версії промптів.","将同样的提示词发给 DeepSeek、Qwen、GPT 和 Claude，自动检查每个回答并比较不同版本的提示词。"],"no dependencies":["keine Abhängigkeiten","без залежностей","无依赖"],"AI tooling":["KI-Werkzeuge","AI-інструменти","AI 工具"],"A ready workspace for making short videos with an AI coding agent: HTML/GSAP and React video skills, offline Ukrainian and German voice-over, loudness at −14 LUFS.":["Ein fertiger Arbeitsbereich für kurze Videos mit einem KI-Coding-Agenten: Video-Skills für HTML/GSAP und React, Offline-Sprecher auf Ukrainisch und Deutsch, Lautheit bei −14 LUFS.","Готовий робочий простір для створення коротких відео з AI-агентом: відео-навички для HTML/GSAP і React, офлайн-озвучення українською та німецькою, гучність −14 LUFS.","用 AI 编程智能体制作短视频的现成工作区：HTML/GSAP 和 React 视频技能、离线乌克兰语和德语配音、响度 −14 LUFS。"],"Manual QA":["Manuelles Testen","Мануальне тестування","手工测试"],"Full test cycle for a demo shop: test plan, 37 test cases, Jira-style bug reports and a summary report, plus a Postman API suite.":["Kompletter Testzyklus für einen Demo-Shop: Testplan, 37 Testfälle, Bug-Reports im Jira-Stil und ein Abschlussbericht, dazu eine Postman-API-Suite.","Повний цикл тестування демо-магазину: тест-план, 37 тест-кейсів, баг-репорти у стилі Jira і підсумковий звіт, плюс набір API-тестів у Postman.","演示网店的完整测试周期：测试计划、37 个测试用例、Jira 风格的缺陷报告和总结报告，外加一套 Postman API 测试。"],"test plan":["Testplan","тест-план","测试计划"],"bug reports":["Bug-Reports","баг-репорти","缺陷报告"],"Test automation":["Testautomatisierung","Автоматизація тестів","测试自动化"],"The manual test plan turned into code: Playwright + TypeScript with Page Objects, 3 browsers, and CI on every push.":["Der manuelle Testplan als Code: Playwright + TypeScript mit Page Objects, 3 Browser und CI bei jedem Push.","Мануальний тест-план, перетворений на код: Playwright + TypeScript із Page Objects, 3 браузери та CI на кожен push.","把手工测试计划变成代码：Playwright + TypeScript 配合 Page Object，3 种浏览器，每次推送都跑 CI。"],"API testing":["API-Tests","API-тестування","API 测试"],"Test plan, 32 test cases and a Postman/Newman collection for a store inventory REST API: stock, sales and deliveries.":["Testplan, 32 Testfälle und eine Postman/Newman-Collection für eine REST-API zur Lagerverwaltung: Bestand, Verkäufe und Lieferungen.","Тест-план, 32 тест-кейси та колекція Postman/Newman для REST API складського обліку магазину: залишки, продажі й поставки.","为门店库存 REST API 编写的测试计划、32 个测试用例和 Postman/Newman 集合：库存、销售与到货。"],"test cases":["Testfälle","тест-кейси","测试用例"],"9 tables · joins · window functions":["9 Tabellen · Joins · Fensterfunktionen","9 таблиць · join-и · віконні функції","9 张表 · 连接 · 窗口函数"],"SQL analytics":["SQL-Analyse","SQL-аналітика","SQL 分析"],"A simulated grocery chain database and six business questions: revenue, top products, refunds, delivery discrepancies, customer segments.":["Eine simulierte Datenbank einer Supermarktkette und sechs Geschäftsfragen: Umsatz, Top-Produkte, Rückerstattungen, Lieferabweichungen, Kundensegmente.","Змодельована база даних мережі продуктових магазинів і шість бізнес-питань: виручка, топ-товари, повернення, розбіжності в поставках, сегменти клієнтів.","模拟的连锁超市数据库和六个业务问题：营收、热销商品、退款、到货差异、客户分群。"],"Backend":["Backend","Бекенд","后端"],"REST API for a shop's stock, sales and deliveries: overselling protection, low-stock report and an invoice discrepancy check on every delivery.":["REST-API für Bestand, Verkäufe und Lieferungen eines Ladens: Schutz vor Überverkauf, Bericht über knappe Bestände und Rechnungsabgleich bei jeder Lieferung.","REST API для залишків, продажів і поставок магазину: захист від продажу понад залишок, звіт про товари, що закінчуються, і перевірка розбіжностей у накладній при кожній поставці.","面向门店库存、销售和到货的 REST API：防止超卖、低库存报告，并在每次到货时核对发票差异。"],"checking…":["prüfe…","перевірка…","检查中…"],"CLI tool":["CLI-Tool","CLI-утиліта","命令行工具"],"Compares an invoice with the goods that arrived and reports missing, short and extra items. Exit codes for scripts.":["Vergleicht eine Rechnung mit der gelieferten Ware und meldet fehlende, zu wenige und zusätzliche Artikel. Exit-Codes für Skripte.","Порівнює накладну з товаром, що надійшов, і повідомляє про відсутні, недостачу та зайві позиції. Коди виходу для скриптів.","将发票与实际到货比对，报告缺失、短少和多出的商品。提供可供脚本使用的退出码。"],"tests":["Tests","тести","测试"],"Reads a shop's daily sales CSV and prints revenue per day and the best-selling products. Bad lines are skipped with a clear message.":["Liest die tägliche Verkaufs-CSV eines Ladens und gibt den Umsatz pro Tag und die meistverkauften Produkte aus. Fehlerhafte Zeilen werden mit klarer Meldung übersprungen.","Читає щоденний CSV із продажами магазину й виводить виручку за день і найпопулярніші товари. Помилкові рядки пропускаються з чітким повідомленням.","读取门店每日销售 CSV，输出每日营收和最畅销商品。错误行会被跳过并给出明确提示。"],"What I can do":["Was ich kann","Що я вмію","我能做什么"],"Skills":["Fähigkeiten","Навички","技能"],"Prompt engineering":["Prompt Engineering","Промпт-інжиніринг","提示词工程"],"Java backends":["Java-Backends","Java-бекенди","Java 后端"],"Data &amp; reporting":["Daten &amp; Reporting","Дані та звітність","数据与报表"],"Data & reporting":["Daten & Reporting","Дані та звітність","数据与报表"],"Workflows that read, sort and answer for you.":["Workflows, die für Sie lesen, sortieren und antworten.","Воркфлоу, які читають, сортують і відповідають замість вас.","替你阅读、分类并回复的工作流。"],"n8n and Make workflows with LLM steps that classify messages, draft replies and log everything to Google Sheets or Slack.":["n8n- und Make-Workflows mit LLM-Schritten, die Nachrichten klassifizieren, Antworten entwerfen und alles in Google Sheets oder Slack protokollieren.","Воркфлоу в n8n і Make з кроками LLM, які класифікують повідомлення, готують відповіді й записують усе в Google Sheets або Slack.","带有 LLM 步骤的 n8n 和 Make 工作流：分类消息、起草回复，并把一切记录到 Google Sheets 或 Slack。"],"n8n · Make · webhooks":["n8n · Make · Webhooks","n8n · Make · вебхуки","n8n · Make · Webhook"],"OpenAI-compatible APIs (DeepSeek, Qwen, OpenAI)":["OpenAI-kompatible APIs (DeepSeek, Qwen, OpenAI)","OpenAI-сумісні API (DeepSeek, Qwen, OpenAI)","兼容 OpenAI 的 API（DeepSeek、Qwen、OpenAI）"],"Validation of model output, retries, fallbacks":["Validierung der Modellausgabe, Wiederholungen, Fallbacks","Перевірка відповіді моделі, повтори, запасні варіанти","模型输出校验、重试与兜底"],"Prompts that return the same, clean result every time.":["Prompts, die jedes Mal dasselbe saubere Ergebnis liefern.","Промпти, які щоразу дають однаковий чистий результат.","每次都返回一致、干净结果的提示词。"],"I write system prompts with strict output formats and test them on several models before they go into a workflow.":["Ich schreibe System-Prompts mit strengen Ausgabeformaten und teste sie auf mehreren Modellen, bevor sie in einen Workflow kommen.","Я пишу системні промпти зі строгим форматом відповіді й тестую їх на кількох моделях, перш ніж вони потраплять у воркфлоу.","我编写带严格输出格式的系统提示词，并在投入工作流前在多个模型上测试。"],"Strict JSON output and allowed values":["Striktes JSON und erlaubte Werte","Строгий JSON і дозволені значення","严格的 JSON 输出和允许值"],"Prompt versions compared with automatic checks":["Prompt-Versionen mit automatischen Prüfungen verglichen","Версії промптів, порівняні автоматичними перевірками","用自动检查对比提示词版本"],"ChatGPT, Claude, Gemini, DeepSeek, Qwen":["ChatGPT, Claude, Gemini, DeepSeek, Qwen","ChatGPT, Claude, Gemini, DeepSeek, Qwen","ChatGPT、Claude、Gemini、DeepSeek、Qwen"],"The service behind the automation.":["Der Service hinter der Automatisierung.","Сервіс, що стоїть за автоматизацією.","自动化背后的服务。"],"REST APIs in Java and Spring Boot with validation, clear errors and tests, based on real retail processes.":["REST-APIs in Java und Spring Boot mit Validierung, klaren Fehlermeldungen und Tests, nach echten Einzelhandelsprozessen.","REST API на Java і Spring Boot з валідацією, зрозумілими помилками й тестами, на основі реальних процесів рітейлу.","基于真实零售流程、用 Java 和 Spring Boot 编写的 REST API，带校验、清晰的错误信息和测试。"],"Java 17 · Spring Boot 3 · JPA":["Java 17 · Spring Boot 3 · JPA","Java 17 · Spring Boot 3 · JPA","Java 17 · Spring Boot 3 · JPA"],"JUnit 5, Mockito, MockMvc":["JUnit 5, Mockito, MockMvc","JUnit 5, Mockito, MockMvc","JUnit 5、Mockito、MockMvc"],"Plus SQL, C++ and Rust tools":["Dazu Tools in SQL, C++ und Rust","Плюс інструменти на SQL, C++ і Rust","另有 SQL、C++ 和 Rust 小工具"],"Finding what breaks before users do.":["Finden, was kaputtgeht, bevor es die Nutzer tun.","Знайти, що ламається, раніше за користувачів.","在用户之前发现问题。"],"Test plans, test cases and bug reports by hand, and the same coverage automated with Playwright and Postman.":["Testpläne, Testfälle und Bug-Reports von Hand, und dieselbe Abdeckung automatisiert mit Playwright und Postman.","Тест-плани, тест-кейси й баг-репорти вручну, і те саме покриття, автоматизоване в Playwright і Postman.","手工编写测试计划、用例和缺陷报告，并用 Playwright 和 Postman 实现同样覆盖的自动化。"],"Functional testing, Jira-style bug reports":["Funktionstests, Bug-Reports im Jira-Stil","Функціональне тестування, баг-репорти у стилі Jira","功能测试，Jira 风格缺陷报告"],"Postman / Newman API suites":["Postman-/Newman-API-Suites","Набори API-тестів Postman / Newman","Postman / Newman API 测试集"],"Playwright + TypeScript in CI":["Playwright + TypeScript in CI","Playwright + TypeScript у CI","CI 中的 Playwright + TypeScript"],"Numbers a shift manager can act on.":["Zahlen, mit denen ein Schichtleiter arbeiten kann.","Цифри, з якими керівник зміни може працювати.","值班经理能直接用来决策的数据。"],"SQL queries and small tools that turn sales, refunds and deliveries into reports.":["SQL-Abfragen und kleine Tools, die Verkäufe, Rückerstattungen und Lieferungen in Berichte verwandeln.","SQL-запити й невеликі інструменти, що перетворюють продажі, повернення й поставки на звіти.","把销售、退款和到货数据变成报表的 SQL 查询和小工具。"],"SQL with joins and window functions":["SQL mit Joins und Fensterfunktionen","SQL із join-ами та віконними функціями","带连接和窗口函数的 SQL"],"Excel and Google Sheets":["Excel und Google Sheets","Excel і Google Sheets","Excel 和 Google Sheets"],"Daily and monthly reports":["Tages- und Monatsberichte","Щоденні та щомісячні звіти","日报和月报"],"Before we work together":["Bevor wir zusammenarbeiten","Перш ніж працювати разом","合作之前"],"Help and Support":["Hilfe und Support","Довідка та підтримка","帮助和支持"],"Which roles am I looking for?":["Welche Stellen suche ich?","Які посади я шукаю?","我在找什么职位？"],"Remote or on site?":["Remote oder vor Ort?","Віддалено чи в офісі?","远程还是现场？"],"Which languages do I speak?":["Welche Sprachen spreche ich?","Якими мовами я володію?","我会说哪些语言？"],"Which AI tools do I use?":["Welche KI-Tools nutze ich?","Якими AI-інструментами я користуюся?","我用哪些 AI 工具？"],"Can I show real code?":["Kann ich echten Code zeigen?","Чи можу я показати справжній код?","能展示真实代码吗？"],"How do we get started?":["Wie fangen wir an?","Як почнемо?","怎么开始？"],"AI automation, prompt engineering and junior Java developer roles. I am also open to QA roles where automation and AI are part of the job.":["KI-Automatisierung, Prompt Engineering und Junior-Java-Entwickler. Offen bin ich auch für QA-Stellen, in denen Automatisierung und KI zum Job gehören.","AI-автоматизація, промпт-інжиніринг і посади junior Java-розробника. Також відкритий до QA-посад, де автоматизація та ШІ — частина роботи.","AI 自动化、提示词工程以及初级 Java 开发岗位。我也接受把自动化和 AI 作为工作内容的 QA 岗位。"],"Both work for me. I am used to working independently and to reporting progress in writing.":["Beides passt. Ich bin es gewohnt, selbstständig zu arbeiten und den Fortschritt schriftlich zu berichten.","Підходить і те, і те. Я звик працювати самостійно та звітувати про прогрес письмово.","两种都可以。我习惯独立工作，并以书面形式汇报进度。"],"Ukrainian (native), Slovak B2, Russian B2, English B1 (good conversational English) and German A1, which I am learning.":["Ukrainisch (Muttersprache), Slowakisch B2, Russisch B2, Englisch B1 (gutes Konversationsenglisch) und Deutsch A1, das ich gerade lerne.","Українська (рідна), словацька B2, російська B2, англійська B1 (добра розмовна) і німецька A1, яку я вчу.","乌克兰语（母语）、斯洛伐克语 B2、俄语 B2、英语 B1（日常交流流利）以及正在学习的德语 A1。"],"ChatGPT, Claude and Gemini, and Chinese models such as DeepSeek and Qwen through their APIs. For automation: n8n, Make and OpenAI-compatible APIs.":["ChatGPT, Claude und Gemini sowie chinesische Modelle wie DeepSeek und Qwen über ihre APIs. Für Automatisierung: n8n, Make und OpenAI-kompatible APIs.","ChatGPT, Claude і Gemini, а також китайські моделі на кшталт DeepSeek і Qwen через їхні API. Для автоматизації: n8n, Make та OpenAI-сумісні API.","ChatGPT、Claude 和 Gemini，以及通过 API 使用的 DeepSeek、Qwen 等中国模型。自动化方面：n8n、Make 和兼容 OpenAI 的 API。"],"Yes. Every project on this site has its source code on GitHub, with a README that explains how to run it.":["Ja. Jedes Projekt auf dieser Seite hat seinen Quellcode auf GitHub, mit einer README, die erklärt, wie man es startet.","Так. Кожен проєкт на цьому сайті має вихідний код на GitHub і README з поясненням, як його запустити.","可以。本站每个项目都在 GitHub 上公开源码，并附有说明运行方法的 README。"],"Send a short message with the role or the process you want to automate. I usually reply the same day.":["Schreiben Sie eine kurze Nachricht mit der Stelle oder dem Prozess, den Sie automatisieren möchten. Ich antworte meist am selben Tag.","Надішліть коротке повідомлення про посаду або процес, який хочете автоматизувати. Зазвичай я відповідаю того ж дня.","发一条简短消息，说明职位或你想自动化的流程。我通常当天回复。"],"Have a process to automate?<br>Let’s talk.":["Haben Sie einen Prozess zum Automatisieren?<br>Lassen Sie uns reden.","Є процес для автоматизації?<br>Поговорімо.","有需要自动化的流程？<br>聊聊吧。"],"Open to AI automation, prompt engineering and junior Java roles, remote or on site. A short message is enough to start.":["Offen für KI-Automatisierung, Prompt Engineering und Junior-Java-Stellen, remote oder vor Ort. Eine kurze Nachricht genügt für den Anfang.","Відкритий до посад в AI-автоматизації, промпт-інжинірингу та junior Java, віддалено чи в офісі. Для початку достатньо короткого повідомлення.","欢迎 AI 自动化、提示词工程和初级 Java 岗位，远程或现场均可。发一条简短消息就能开始。"],"✉ Write a message":["✉ Nachricht schreiben","✉ Написати повідомлення","✉ 写消息"],"Copy email":["E-Mail kopieren","Скопіювати email","复制邮箱"],"Copied!":["Kopiert!","Скопійовано!","已复制！"],"or write to <span class=\"addr\" id=\"mail\" style=\"user-select:all\">slekktt@gmail.com</span>":["oder schreiben Sie an <span class=\"addr\" id=\"mail\" style=\"user-select:all\">slekktt@gmail.com</span>","або напишіть на <span class=\"addr\" id=\"mail\" style=\"user-select:all\">slekktt@gmail.com</span>","或写信到 <span class=\"addr\" id=\"mail\" style=\"user-select:all\">slekktt@gmail.com</span>"],"<i style=\"background:#3A8B3A\">CV</i>Resume":["<i style=\"background:#3A8B3A\">CV</i>Lebenslauf","<i style=\"background:#3A8B3A\">CV</i>Резюме","<i style=\"background:#3A8B3A\">CV</i>简历"],"Show the boot screen when the site opens":["Startbildschirm beim Öffnen der Seite zeigen","Показувати екран завантаження при відкритті сайту","打开网站时显示开机画面"],"▲ Back to the top":["▲ Nach oben","▲ Нагору","▲ 回到顶部"],"Available for AI automation, prompt engineering and junior Java roles":["Verfügbar für KI-Automatisierung, Prompt Engineering und Junior-Java-Stellen","Відкритий до роботи: AI-автоматизація, промпт-інжиніринг, junior Java","可接受 AI 自动化、提示词工程和初级 Java 岗位"],"System Properties":["Systemeigenschaften","Властивості системи","系统属性"],"System:":["System:","Система:","系统："],"Avlastymov XP<br>Professional · Version 2026":["Avlastymov XP<br>Professional · Version 2026","Avlastymov XP<br>Professional · Версія 2026","Avlastymov XP<br>专业版 · 2026 版"],"Registered to:":["Registriert für:","Зареєстровано на:","注册给："],"Denys Avlastymov<br>AI Automation & Prompt Engineering":["Denys Avlastymov<br>KI-Automatisierung & Prompt Engineering","Denys Avlastymov<br>AI-автоматизація та промпт-інжиніринг","Denys Avlastymov<br>AI 自动化与提示词工程"],"Denys Avlastymov<br>AI Automation &amp; Prompt Engineering":["Denys Avlastymov<br>KI-Automatisierung &amp; Prompt Engineering","Denys Avlastymov<br>AI-автоматизація та промпт-інжиніринг","Denys Avlastymov<br>AI 自动化与提示词工程"],"Computer:":["Computer:","Комп'ютер:","计算机："],"Your build":["Ihr Build","Ваша збірка","你的配置"],"saved in this browser":["in diesem Browser gespeichert","збережено в цьому браузері","保存在此浏览器中"],"Board":["Mainboard","Плата","主板"],"Case":["Gehäuse","Корпус","机箱"],"price, € (example)":["Preis, € (Beispiel)","ціна, € (приклад)","价格，€（示例）"],"bench score*":["Bench-Score*","бал тесту*","跑分*"],"* Estimates from rough relative performance figures, not measurements.":["* Schätzungen aus groben relativen Leistungswerten, keine Messungen.","* Оцінки за приблизними відносними показниками продуктивності, а не вимірювання.","* 根据大致的相对性能数据估算，并非实测。"],"Change parts &amp; run the benchmark →":["Teile ändern &amp; Benchmark starten →","Змінити деталі та запустити бенчмарк →","更换配件并运行跑分 →"],"Change parts & run the benchmark →":["Teile ändern & Benchmark starten →","Змінити деталі та запустити бенчмарк →","更换配件并运行跑分 →"],"File and Folder Tasks":["Datei- und Ordneraufgaben","Завдання для файлів і папок","文件和文件夹任务"],"View live previews":["Live-Vorschauen ansehen","Переглянути живі прев'ю","查看实时预览"],"Open on GitHub":["Auf GitHub öffnen","Відкрити на GitHub","在 GitHub 上打开"],"Other Places":["Andere Orte","Інші місця","其他位置"],"Details":["Details","Подробиці","详细信息"],"10 repositories<br>AI · QA · data · code":["10 Repositories<br>KI · QA · Daten · Code","10 репозиторіїв<br>ШІ · QA · дані · код","10 个仓库<br>AI · QA · 数据 · 代码"],"n8n + LLM support triage":["n8n + LLM Support-Triage","n8n + LLM сортування підтримки","n8n + LLM 客服分流"],"Java · prompt evaluation":["Java · Prompt-Bewertung","Java · оцінювання промптів","Java · 提示词评估"],"AI agent video workspace":["Video-Arbeitsbereich mit KI-Agent","Відеостудія з AI-агентом","AI 智能体视频工作区"],"test plan, cases, bugs":["Testplan, Fälle, Bugs","тест-план, кейси, баги","测试计划、用例、缺陷"],"Postman / Newman tests":["Postman-/Newman-Tests","тести Postman / Newman","Postman / Newman 测试"],"Spring Boot REST API":["Spring Boot REST-API","REST API на Spring Boot","Spring Boot REST API"],"SQL on a grocery chain":["SQL für eine Supermarktkette","SQL для мережі магазинів","连锁超市 SQL 分析"],"Rust CLI · invoice check":["Rust-CLI · Rechnungsprüfung","Rust CLI · перевірка накладних","Rust 命令行 · 发票核对"],"C++17 sales report":["C++17-Verkaufsbericht","звіт про продажі на C++17","C++17 销售报表"],"10 objects":["10 Objekte","10 об'єктів","10 个对象"],"5 objects":["5 Objekte","5 об'єктів","5 个对象"],"PC Builder - 134 real parts":["PC-Konfigurator - 134 echte Teile","Конфігуратор ПК - 134 реальні деталі","电脑装机 - 134 款真实配件"],"Bug Hunter mini game":["Bug Hunter Minispiel","Міні-гра «Мисливець на баги»","捉虫小游戏"],"time":["Zeit","час","时间"],"score":["Punkte","рахунок","得分"],"bugs":["Bugs","баги","缺陷"],"best":["Rekord","рекорд","最佳"],"Start round":["Runde starten","Почати раунд","开始一轮"],"Restart":["Neu starten","Заново","重新开始"],"Find the 6 bugs":["Finde die 6 Bugs","Знайдіть 6 багів","找出 6 个缺陷"],"Typos, wrong maths, impossible values… Click anything that looks broken. 60 seconds.":["Tippfehler, falsche Rechnungen, unmögliche Werte… Klicke alles an, was kaputt aussieht. 60 Sekunden.","Одруківки, хибні розрахунки, неможливі значення… Клацайте на все, що виглядає зламаним. 60 секунд.","错别字、算错的数、不可能的数值……点击任何看起来有问题的地方。限时 60 秒。"],"Start":["Start","Старт","开始"],"Play again":["Nochmal spielen","Грати ще","再玩一次"],"Bug reports":["Bug-Reports","Баг-репорти","缺陷报告"],"Command Prompt":["Eingabeaufforderung","Командний рядок","命令提示符"],"Command":["Befehl","Команда","命令"],"type help":["help eingeben","введіть help","输入 help"],"Sensor monitor":["Sensormonitor","Монітор датчиків","传感器监控"],"simulation":["Simulation","симуляція","模拟"],"CPU temperature":["CPU-Temperatur","Температура CPU","CPU 温度"],"GPU temperature":["GPU-Temperatur","Температура GPU","GPU 温度"],"fan speed, RPM":["Lüfterdrehzahl, U/min","швидкість вентиляторів, об/хв","风扇转速，RPM"],"Line chart of simulated CPU and GPU temperature over the last 60 seconds":["Liniendiagramm der simulierten CPU- und GPU-Temperatur der letzten 60 Sekunden","Графік змодельованої температури CPU і GPU за останні 60 секунд","过去 60 秒模拟 CPU 和 GPU 温度的折线图"],"last 60 s":["letzte 60 s","останні 60 с","最近 60 秒"],"Run stress test":["Stresstest starten","Запустити стрес-тест","运行压力测试"],"Stop stress test":["Stresstest stoppen","Зупинити стрес-тест","停止压力测试"],"Temperatures follow the CPU and GPU in your build, the load and the fan speed. The fans in the 3D model spin at the same speed.":["Die Temperaturen richten sich nach CPU und GPU Ihres Builds, der Last und der Lüfterdrehzahl. Die Lüfter im 3D-Modell drehen sich genauso schnell.","Температури залежать від CPU і GPU у вашій збірці, навантаження та швидкості вентиляторів. Вентилятори в 3D-моделі крутяться з тією ж швидкістю.","温度取决于你配置中的 CPU 和 GPU、负载以及风扇转速。3D 模型中的风扇也以同样的速度旋转。"],"RGB controller":["RGB-Steuerung","RGB-контролер","RGB 控制器"],"drives the 3D model":["steuert das 3D-Modell","керує 3D-моделлю","驱动 3D 模型"],"Lighting colour":["Lichtfarbe","Колір підсвітки","灯光颜色"],"Lighting effect":["Lichteffekt","Ефект підсвітки","灯光效果"],"Static":["Statisch","Статичний","常亮"],"Breathing":["Atmen","Дихання","呼吸"],"Rainbow":["Regenbogen","Веселка","彩虹"],"Off":["Aus","Вимк.","关闭"],"Changes the fan rings, memory and GPU light strips in the model above.":["Ändert die Lüfterringe, den Arbeitsspeicher und die GPU-Lichtleisten im Modell oben.","Змінює кільця вентиляторів, пам'ять і світлові смуги GPU в моделі вище.","改变上方模型中的风扇灯圈、内存和显卡灯条。"],"Resume.txt - Notepad":["Lebenslauf.txt - Editor","Резюме.txt - Блокнот","简历.txt - 记事本"],"New Message":["Neue Nachricht","Нове повідомлення","新邮件"],"To:":["An:","Кому:","收件人："],"Subject:":["Betreff:","Тема:","主题："],"Tell me about the role or the process you want to automate.":["Erzählen Sie mir von der Stelle oder dem Prozess, den Sie automatisieren möchten.","Розкажіть про посаду або процес, який хочете автоматизувати.","告诉我职位信息或你想自动化的流程。"],"Message":["Nachricht","Повідомлення","消息"],"✉ Send":["✉ Senden","✉ Надіслати","✉ 发送"],"Opens your email app with this message filled in.":["Öffnet Ihr E-Mail-Programm mit dieser Nachricht.","Відкриє вашу пошту з уже заповненим повідомленням.","将打开你的邮件应用并填好这条消息。"],"Previous":["Zurück","Попередній","上一首"],"Play":["Abspielen","Грати","播放"],"Stop":["Stopp","Стоп","停止"],"Next":["Weiter","Далі","下一首"],"Volume":["Lautstärke","Гучність","音量"],"loop":["Loop","цикл","循环"],"Synthesised live in your browser · no audio files":["Live in Ihrem Browser synthetisiert · keine Audiodateien","Синтезується наживо у вашому браузері · без аудіофайлів","在你的浏览器中实时合成 · 无音频文件"],"Game:":["Spiel:","Гра:","游戏："],"Beginner":["Anfänger","Новачок","初级"],"Intermediate":["Fortgeschritten","Любитель","中级"],"Expert":["Experte","Експерт","高级"],"New game":["Neues Spiel","Нова гра","新游戏"],"Left click opens, right click (long press on a phone) plants a flag. Click a number with all its flags set to open the rest.":["Linksklick öffnet, Rechtsklick (langes Drücken am Handy) setzt eine Flagge. Klicke auf eine Zahl mit allen Flaggen, um den Rest zu öffnen.","Ліва кнопка відкриває, права (довге натискання на телефоні) ставить прапорець. Клацніть на число, навколо якого стоять усі прапорці, щоб відкрити решту.","左键翻开，右键（手机上长按）插旗。点击周围旗子已插满的数字可翻开其余格子。"],"Deal again":["Neu geben","Роздати знову","重新发牌"],"Drag cards · double-click sends a card home · click the deck to draw":["Karten ziehen · Doppelklick schickt eine Karte nach Hause · auf den Stapel klicken zum Ziehen","Перетягуйте карти · подвійний клік відправляє карту додому · клацніть на колоду, щоб узяти","拖动纸牌 · 双击把牌送回基础堆 · 点击牌堆抽牌"],"Click to deal again":["Klicken zum Neugeben","Клацніть, щоб роздати знову","点击重新发牌"],"untitled - Paint":["Unbenannt - Paint","без назви - Paint","未命名 - 画图"],"New":["Neu","Новий","新建"],"Undo":["Rückgängig","Скасувати","撤销"],"Save as PNG":["Als PNG speichern","Зберегти як PNG","另存为 PNG"],"Pencil":["Stift","Олівець","铅笔"],"Brush":["Pinsel","Пензель","刷子"],"Eraser":["Radierer","Гумка","橡皮"],"Fill":["Füllen","Заливка","填充"],"Pick colour":["Farbe aufnehmen","Піпетка","取色"],"Line":["Linie","Лінія","直线"],"Rectangle":["Rechteck","Прямокутник","矩形"],"Ellipse":["Ellipse","Еліпс","椭圆"],"GitHub Activity - live":["GitHub-Aktivität - live","Активність на GitHub - наживо","GitHub 动态 - 实时"],"replaced by blue":["durch Blau ersetzt","замінено синім","已换成蓝色"],"too many versions":["zu viele Versionen","забагато версій","版本太多了"],"BUG-042 “works on my machine”":["BUG-042 „bei mir läuft’s“","BUG-042 «у мене працює»","BUG-042 “在我电脑上能跑”"],"fixed":["behoben","виправлено","已修复"],"JSON came back broken":["JSON kam kaputt zurück","JSON повернувся зламаним","返回的 JSON 坏了"],"automated now":["jetzt automatisiert","тепер автоматизовано","现已自动化"],"Recruiter view":["Recruiter-Ansicht","Режим для рекрутера","招聘者视图"],"Recruiter view - Denys Avlastymov":["Recruiter-Ansicht - Denys Avlastymov","Режим для рекрутера - Denys Avlastymov","招聘者视图 - Denys Avlastymov"],"Explore the full site":["Ganze Seite erkunden","Переглянути весь сайт","浏览完整网站"],"Print or save as PDF":["Drucken oder als PDF speichern","Друк або зберегти як PDF","打印或保存为 PDF"],"Email me":["E-Mail schreiben","Написати email","给我发邮件"],"AI Automation · QA · SQL":["KI-Automatisierung · QA · SQL","AI-автоматизація · QA · SQL","AI 自动化 · QA · SQL"],"Junior specialist · Bachelor's in Applied Economics, Comenius University in Bratislava (2026) · Open to remote work":["Junior-Spezialist · Bachelor in Angewandter Ökonomie, Comenius-Universität Bratislava (2026) · Offen für Remote-Arbeit","Junior-спеціаліст · бакалавр прикладної економіки, Університет Коменського в Братиславі (2026) · відкритий до віддаленої роботи","初级专员 · 布拉迪斯拉发夸美纽斯大学应用经济学学士（2026）· 可远程工作"],"In short":["Kurz gesagt","Коротко","简介"],"I connect language models to everyday work: support tickets, reports, stock checks. I write and test prompts, build automations in n8n and Make, and check that the result is right, with the eye of a QA tester and the numbers of an SQL analyst.":["Ich verbinde Sprachmodelle mit der täglichen Arbeit: Support-Tickets, Berichte, Bestandsprüfungen. Ich schreibe und teste Prompts, baue Automatisierungen in n8n und Make und prüfe, ob das Ergebnis stimmt, mit dem Blick eines QA-Testers und den Zahlen eines SQL-Analysten.","Я підключаю мовні моделі до щоденної роботи: тікети підтримки, звіти, перевірка залишків. Пишу й тестую промпти, будую автоматизації в n8n і Make та перевіряю, що результат правильний, — оком QA-тестувальника і цифрами SQL-аналітика.","我把大语言模型接入日常工作：客服工单、报表、库存核对。我编写并测试提示词，用 n8n 和 Make 搭建自动化，并用 QA 测试员的眼光和 SQL 分析师的数据确认结果正确。"],"What I can do for your team":["Was ich für Ihr Team tun kann","Чим я можу бути корисним вашій команді","我能为你的团队做什么"],"AI automation and prompts":["KI-Automatisierung und Prompts","AI-автоматизація та промпти","AI 自动化与提示词"],"Prompts for ChatGPT, Claude, DeepSeek and Qwen, AI assistants for business workflows, n8n and Make automations, checking LLM answers.":["Prompts für ChatGPT, Claude, DeepSeek und Qwen, KI-Assistenten für Geschäftsprozesse, Automatisierungen in n8n und Make, Prüfung von LLM-Antworten.","Промпти для ChatGPT, Claude, DeepSeek і Qwen, AI-асистенти для бізнес-процесів, автоматизації в n8n і Make, перевірка відповідей LLM.","为 ChatGPT、Claude、DeepSeek 和 Qwen 编写提示词，为业务流程打造 AI 助手，n8n 和 Make 自动化，校验 LLM 的回答。"],"Testing":["Testen","Тестування","测试"],"Test plans and test cases, clear bug reports in Jira, API tests in Postman and Newman, UI tests with Playwright.":["Testpläne und Testfälle, klare Bug-Reports in Jira, API-Tests in Postman und Newman, UI-Tests mit Playwright.","Тест-плани й тест-кейси, зрозумілі баг-репорти в Jira, API-тести в Postman і Newman, UI-тести в Playwright.","测试计划和测试用例、Jira 中清晰的缺陷报告、Postman 和 Newman 的 API 测试、Playwright 的 UI 测试。"],"Data and reports":["Daten und Berichte","Дані та звіти","数据与报表"],"SQL queries that answer business questions: revenue, top products, refunds, delivery problems. Excel and Google Sheets.":["SQL-Abfragen, die Geschäftsfragen beantworten: Umsatz, Top-Produkte, Rückerstattungen, Lieferprobleme. Excel und Google Sheets.","SQL-запити, що відповідають на бізнес-питання: виручка, топ-товари, повернення, проблеми з поставками. Excel і Google Sheets.","回答业务问题的 SQL 查询：营收、热销商品、退款、到货问题。Excel 和 Google Sheets。"],"Best projects":["Beste Projekte","Найкращі проєкти","代表项目"],"this website":["diese Website","цей сайт","本网站"],"A retro operating system built from scratch in plain JavaScript: a 3D PC builder, games, a desktop assistant and four languages.":["Ein Retro-Betriebssystem, von Grund auf in reinem JavaScript gebaut: ein 3D-PC-Konfigurator, Spiele, ein Desktop-Assistent und vier Sprachen.","Ретро-операційна система, створена з нуля на чистому JavaScript: 3D-конфігуратор ПК, ігри, помічник на робочому столі та чотири мови.","用原生 JavaScript 从零打造的复古操作系统：3D 电脑装机、游戏、桌面助手和四种语言。"],"Experience":["Berufserfahrung","Досвід","工作经历"],"2026 – now":["2026 – heute","2026 – дотепер","2026 – 至今"],"Independent AI projects: prompts for ChatGPT, Claude, DeepSeek and Qwen; AI assistants for business workflows; automation with n8n, Make and AI APIs; LLM evaluation.":["Eigene KI-Projekte: Prompts für ChatGPT, Claude, DeepSeek und Qwen; KI-Assistenten für Geschäftsprozesse; Automatisierung mit n8n, Make und KI-APIs; Bewertung von LLMs.","Власні AI-проєкти: промпти для ChatGPT, Claude, DeepSeek і Qwen; AI-асистенти для бізнес-процесів; автоматизація з n8n, Make та AI API; оцінювання LLM.","独立 AI 项目：为 ChatGPT、Claude、DeepSeek 和 Qwen 编写提示词；为业务流程打造 AI 助手；使用 n8n、Make 和 AI API 做自动化；LLM 评估。"],"SQL Analyst & Manual QA":["SQL-Analyst & manueller Tester","SQL-аналітик і мануальний тестувальник","SQL 分析师与手工测试"],"SQL Analyst &amp; Manual QA":["SQL-Analyst &amp; manueller Tester","SQL-аналітик і мануальний тестувальник","SQL 分析师与手工测试"],"Functional testing, bug reports in Jira, API testing in Postman, SQL reporting.":["Funktionstests, Bug-Reports in Jira, API-Tests in Postman, SQL-Reporting.","Функціональне тестування, баг-репорти в Jira, API-тестування в Postman, SQL-звітність.","功能测试、在 Jira 中提交缺陷、用 Postman 做 API 测试、SQL 报表。"],"Shift Manager, Woltmarket":["Schichtleiter, Woltmarket","Керівник зміни, Woltmarket","值班经理，Woltmarket"],"Deliveries and invoice checks, shift planning, daily sales reports, refunds, Excel and Google Sheets. The store reached the global top 15 of the chain and held it for 3 months.":["Warenannahme und Rechnungsprüfung, Schichtplanung, tägliche Verkaufsberichte, Rückerstattungen, Excel und Google Sheets. Der Markt erreichte die weltweiten Top 15 der Kette und hielt sich dort 3 Monate.","Приймання товару й перевірка накладних, планування змін, щоденні звіти про продажі, повернення, Excel і Google Sheets. Магазин увійшов до світового топ-15 мережі й утримувався там 3 місяці.","到货与发票核对、排班、每日销售报表、退款、Excel 和 Google Sheets。门店进入全连锁全球前 15 名并保持了 3 个月。"],"Grocery Associate and online customer support":["Verkäufer im Lebensmittelhandel und Online-Kundensupport","Продавець-консультант і онлайн-підтримка клієнтів","超市店员兼在线客服"],"Education":["Ausbildung","Освіта","教育背景"],"Bachelor's in Applied Economics":["Bachelor in Angewandter Ökonomie","Бакалавр прикладної економіки","应用经济学学士"],"Comenius University in Bratislava, Faculty of Social and Economic Sciences":["Comenius-Universität Bratislava, Fakultät für Sozial- und Wirtschaftswissenschaften","Університет Коменського в Братиславі, факультет соціальних і економічних наук","布拉迪斯拉发夸美纽斯大学，社会与经济科学学院"],"Languages":["Sprachen","Мови","语言"],"Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1":["Ukrainisch (Muttersprache) · Slowakisch B2 · Russisch B2 · Englisch B1 · Deutsch A1","Українська (рідна) · словацька B2 · російська B2 · англійська B1 · німецька A1","乌克兰语（母语）· 斯洛伐克语 B2 · 俄语 B2 · 英语 B1 · 德语 A1"],"References available on request.":["Referenzen auf Anfrage.","Рекомендації — на запит.","可应要求提供推荐信。"],"Welcome! Who are you?":["Willkommen! Wer sind Sie?","Вітаю! Хто ви?","欢迎！你是谁？"],"This site is my portfolio and my resume at the same time. Choose how you want to see it.":["Diese Seite ist mein Portfolio und mein Lebenslauf zugleich. Wählen Sie, wie Sie sie sehen möchten.","Цей сайт — водночас моє портфоліо і моє резюме. Оберіть, як хочете його переглянути.","这个网站既是我的作品集，也是我的简历。请选择浏览方式。"],"I'm a recruiter / HR":["Ich bin Recruiter / HR","Я рекрутер / HR","我是招聘者 / HR"],"The resume on one page, in a minute":["Der Lebenslauf auf einer Seite, in einer Minute","Резюме на одній сторінці, за хвилину","一页简历，一分钟看完"],"I'm just visiting":["Ich schaue mich nur um","Я просто в гостях","我只是随便看看"],"Turn on the computer and explore":["Computer einschalten und erkunden","Увімкнути комп'ютер і досліджувати","打开电脑，四处看看"],"Tap the computer to turn it on":["Tippen Sie auf den Computer, um ihn einzuschalten","Торкніться комп'ютера, щоб увімкнути його","点一下电脑把它打开"],"Click the computer to turn it on":["Klicken Sie auf den Computer, um ihn einzuschalten","Клацніть на комп'ютер, щоб увімкнути його","点击电脑把它打开"],"Skip intro":["Intro überspringen","Пропустити вступ","跳过开场"],"tap to skip":["tippen zum Überspringen","торкніться, щоб пропустити","点击跳过"],"click or press any key to skip":["klicken oder beliebige Taste zum Überspringen","клацніть або натисніть будь-яку клавішу, щоб пропустити","点击或按任意键跳过"],"Pushed {n} commit(s) to {repo}":["{n} Commit(s) nach {repo} gepusht","Запушено {n} коміт(и) у {repo}","向 {repo} 推送了 {n} 个提交"],"Pushed to {repo}":["Nach {repo} gepusht","Запушено в {repo}","推送到 {repo}"],"Created the repository {repo}":["Repository {repo} erstellt","Створено репозиторій {repo}","创建了仓库 {repo}"],"Created a branch in {repo}":["Branch in {repo} erstellt","Створено гілку в {repo}","在 {repo} 中创建了分支"],"Made {repo} public":["{repo} veröffentlicht","{repo} зроблено публічним","将 {repo} 设为公开"],"Starred {repo}":["{repo} mit Stern markiert","Поставлено зірку {repo}","收藏了 {repo}"],"Forked {repo}":["{repo} geforkt","Зроблено форк {repo}","复刻了 {repo}"],"Pull request in {repo}":["Pull Request in {repo}","Pull request у {repo}","{repo} 中的拉取请求"],"Issue in {repo}":["Issue in {repo}","Issue у {repo}","{repo} 中的议题"],"Published a release of {repo}":["Release von {repo} veröffentlicht","Опубліковано реліз {repo}","发布了 {repo} 的新版本"],"Activity in {repo}":["Aktivität in {repo}","Активність у {repo}","{repo} 中的动态"],"Loading live data from GitHub…":["Lade Live-Daten von GitHub…","Завантажую живі дані з GitHub…","正在从 GitHub 加载实时数据…"],"GitHub did not answer. It allows 60 requests an hour per visitor, so please try again a bit later.":["GitHub hat nicht geantwortet. Pro Besucher sind 60 Anfragen pro Stunde erlaubt, bitte versuchen Sie es etwas später erneut.","GitHub не відповів. Він дозволяє 60 запитів на годину для одного відвідувача, тож спробуйте трохи пізніше.","GitHub 没有响应。每位访客每小时只能请求 60 次，请稍后再试。"],"Try again":["Erneut versuchen","Спробувати ще","重试"],"On GitHub since {y}":["Auf GitHub seit {y}","На GitHub з {y}","{y} 年加入 GitHub"],"last push {t}":["letzter Push {t}","останній push {t}","最近推送：{t}"],"public repositories":["öffentliche Repositories","публічних репозиторіїв","公开仓库"],"languages":["Sprachen","мов","种语言"],"stars":["Sterne","зірок","星标"],"followers":["Follower","підписників","关注者"],"Languages in my repositories":["Sprachen in meinen Repositories","Мови в моїх репозиторіях","我的仓库中的语言"],"Recent activity":["Letzte Aktivität","Остання активність","最近动态"],"No public activity in the last 90 days.":["Keine öffentliche Aktivität in den letzten 90 Tagen.","Немає публічної активності за останні 90 днів.","过去 90 天没有公开动态。"],"Repositories":["Repositories","Репозиторії","仓库"],"Live data from the GitHub API, updated {t}":["Live-Daten aus der GitHub-API, aktualisiert {t}","Живі дані з GitHub API, оновлено о {t}","来自 GitHub API 的实时数据，更新于 {t}"],"Refresh":["Aktualisieren","Оновити","刷新"],"The coolest things on this site":["Die coolsten Sachen auf dieser Seite","Найкрутіше на цьому сайті","本站最酷的东西"],"My resume":["Mein Lebenslauf","Моє резюме","我的简历"],"Build a PC":["Einen PC bauen","Зібрати ПК","装一台电脑"],"Something unusual":["Etwas Ungewöhnliches","Щось незвичайне","来点不一样的"],"What would you like to see?":["Was möchten Sie sehen?","Що хочете подивитися?","你想看什么？"],"Next ›":["Weiter ›","Далі ›","下一步 ›"],"Back to menu":["Zurück zum Menü","Назад до меню","返回菜单"],"Got it":["Verstanden","Зрозуміло","明白了"],"Later":["Später","Пізніше","以后再说"],"Show me":["Zeig mal","Покажи","带我看看"],"Encore!":["Zugabe!","Ще раз!","再来一首！"],"Hi! I'm Applecat, Denys's assistant.":["Hi! Ich bin Applecat, Denys' Assistent.","Привіт! Я Applecat, помічник Дениса.","嗨！我是 Applecat，Denys 的助手。"],"This whole site is one big resume. Every icon and window here is a piece of his work: projects, skills, even the games.":["Diese ganze Seite ist ein großer Lebenslauf. Jedes Symbol und jedes Fenster hier ist ein Stück seiner Arbeit: Projekte, Fähigkeiten, sogar die Spiele.","Увесь цей сайт — одне велике резюме. Кожна іконка й кожне вікно тут — частина його роботи: проєкти, навички, навіть ігри.","整个网站就是一份大简历。这里的每个图标和窗口都是他的作品：项目、技能，甚至游戏。"],"Click me any time. I can show you the best parts, open the resume or help you build a PC.":["Klicken Sie mich jederzeit an. Ich zeige Ihnen das Beste, öffne den Lebenslauf oder helfe beim PC-Bauen.","Клацайте на мене будь-коли. Я покажу найцікавіше, відкрию резюме або допоможу зібрати ПК.","随时点我。我可以带你看精华、打开简历，或者帮你装一台电脑。"],"This isn't a normal portfolio. It's a tiny operating system, and Denys built every part of it himself.":["Das ist kein normales Portfolio. Es ist ein kleines Betriebssystem, und Denys hat jedes Teil selbst gebaut.","Це не звичайне портфоліо. Це маленька операційна система, і Денис зробив кожну її частину сам.","这不是普通的作品集，而是一个迷你操作系统，每个部分都是 Denys 亲手做的。"],"PC Builder: 134 real parts, live compatibility checks, a 3D model that rebuilds from your choice and an estimated benchmark.":["PC-Konfigurator: 134 echte Teile, Live-Kompatibilitätsprüfung, ein 3D-Modell, das sich nach Ihrer Auswahl neu aufbaut, und ein geschätzter Benchmark.","Конфігуратор ПК: 134 реальні деталі, перевірка сумісності наживо, 3D-модель, що перебудовується за вашим вибором, і орієнтовний бенчмарк.","电脑装机：134 款真实配件、实时兼容性检查、随你的选择重建的 3D 模型，以及估算跑分。"],"Did you notice the BIOS when the site started? It listed YOUR build from the PC Builder.":["Haben Sie das BIOS beim Start bemerkt? Es hat IHREN Build aus dem PC-Konfigurator angezeigt.","Помітили BIOS під час запуску? Він показав ВАШУ збірку з конфігуратора ПК.","注意到开机时的 BIOS 了吗？它列出的是你在装机里选的配置。"],"Bug Hunter: a fake shop hides 6 bugs. Find them in 60 seconds. That's QA, but as a game.":["Bug Hunter: Ein Fake-Shop versteckt 6 Bugs. Finden Sie sie in 60 Sekunden. Das ist QA, aber als Spiel.","Мисливець на баги: у фейковому магазині сховано 6 багів. Знайдіть їх за 60 секунд. Це QA, але у вигляді гри.","捉虫游戏：一个假网店里藏着 6 个缺陷，60 秒内把它们找出来。这就是游戏化的 QA。"],"Open the Terminal and type help. Then try hack.":["Öffnen Sie das Terminal und geben Sie help ein. Dann probieren Sie hack.","Відкрийте Термінал і введіть help. Потім спробуйте hack.","打开终端输入 help，然后试试 hack。"],"Leave the site alone for 2 minutes and a hacker shows up. He has some trouble with keyboard layouts.":["Lassen Sie die Seite 2 Minuten in Ruhe, dann taucht ein Hacker auf. Er hat ein paar Probleme mit Tastaturlayouts.","Залиште сайт на 2 хвилини — і з'явиться хакер. У нього є певні проблеми з розкладками клавіатури.","让网站闲置 2 分钟，就会冒出一个黑客。他切换键盘布局有点困难。"],"And in the top-right corner: Minesweeper, Solitaire and Paint, just like the old days.":["Und oben rechts: Minesweeper, Solitär und Paint, wie in alten Zeiten.","А в правому верхньому куті: Сапер, Пасьянс і Paint, як у старі добрі часи.","右上角还有：扫雷、纸牌和画图，就像从前一样。"],"Here's Denys's resume.":["Hier ist Denys' Lebenslauf.","Ось резюме Дениса.","这是 Denys 的简历。"],"Short version: AI automation, prompt engineering, Java backends and the tests around them.":["Kurzfassung: KI-Automatisierung, Prompt Engineering, Java-Backends und die Tests drumherum.","Коротко: AI-автоматизація, промпт-інжиніринг, Java-бекенди й тести до них.","简而言之：AI 自动化、提示词工程、Java 后端及其测试。"],"Want to talk to him? Double-click Contact on the desktop, or use the email in the resume.":["Möchten Sie mit ihm sprechen? Doppelklicken Sie auf dem Desktop auf Kontakt oder nutzen Sie die E-Mail im Lebenslauf.","Хочете з ним поговорити? Двічі клацніть «Контакт» на робочому столі або скористайтеся email із резюме.","想联系他？双击桌面上的“联系”，或使用简历里的邮箱。"],"This is the PC Builder. Pick a part in each category, or start from a preset like Sweet spot 1440p.":["Das ist der PC-Konfigurator. Wählen Sie in jeder Kategorie ein Teil oder starten Sie mit einer Vorlage wie Sweet Spot 1440p.","Це конфігуратор ПК. Оберіть деталь у кожній категорії або почніть із готової збірки, наприклад «Золота середина 1440p».","这里是电脑装机。在每个类别中选一个配件，或者从“甜点级 1440p”这样的预设开始。"],"Every change rebuilds the 3D model: GPU length, cooler type, RAM height, even the colour of the case.":["Jede Änderung baut das 3D-Modell neu: GPU-Länge, Kühlertyp, RAM-Höhe, sogar die Gehäusefarbe.","Кожна зміна перебудовує 3D-модель: довжина відеокарти, тип кулера, висота пам'яті, навіть колір корпусу.","每次改动都会重建 3D 模型：显卡长度、散热器类型、内存高度，甚至机箱颜色。"],"If something doesn't fit (socket, case size, power supply), you get a warning right away.":["Wenn etwas nicht passt (Sockel, Gehäusegröße, Netzteil), gibt es sofort eine Warnung.","Якщо щось не підходить (сокет, розмір корпусу, блок живлення), ви одразу отримаєте попередження.","如果有不兼容（插槽、机箱尺寸、电源），会立刻提示。"],"Press Build it step by step to put the PC together in the real order, one part at a time.":["Drücken Sie „Schritt für Schritt bauen“, um den PC in der echten Reihenfolge Teil für Teil zusammenzusetzen.","Натисніть «Зібрати крок за кроком», щоб зібрати ПК у реальному порядку, деталь за деталлю.","点击“逐步装机”，按真实顺序一件一件地装好电脑。"],"Then press Run benchmark for estimated FPS in 5 games. Estimated, not measured: Denys is honest like that.":["Dann drücken Sie „Benchmark starten“ für geschätzte FPS in 5 Spielen. Geschätzt, nicht gemessen: So ehrlich ist Denys.","Потім натисніть «Запустити бенчмарк», щоб побачити орієнтовний FPS у 5 іграх. Орієнтовний, а не виміряний: Денис чесний.","然后点击“运行跑分”，查看 5 款游戏的估算帧数。是估算不是实测：Denys 就是这么诚实。"],"Thank you, thank you! I'm here all week.":["Danke, danke! Ich bin die ganze Woche hier.","Дякую, дякую! Я тут цілий тиждень.","谢谢，谢谢！我整周都在这儿演出。"],"I'd sing for you, but the sound is off. Turn it on with ♪ above and try again.":["Ich würde singen, aber der Ton ist aus. Schalten Sie ihn oben mit ♪ ein und versuchen Sie es noch einmal.","Я б заспівав, але звук вимкнено. Увімкніть його кнопкою ♪ вгорі й спробуйте ще раз.","我很想唱，但声音关了。点上面的 ♪ 打开再试一次。"],"Leave me alone for a second.":["Lass mich kurz in Ruhe.","Дай мені хвилинку.","让我静一静。"],"Not talking to you.":["Ich rede nicht mit dir.","Я з тобою не розмовляю.","不跟你说话。"],"Hmph.":["Pff.","Хмф.","哼。"],"Wheee!":["Juhuu!","Ііііі!","呜呼！"],"Whoa!":["Wow!","Ого!","哇！"],"I can fly!":["Ich kann fliegen!","Я вмію літати!","我会飞了！"],"Again? Okay...":["Nochmal? Na gut...","Ще раз? Ну добре...","还来？好吧……"],"Hey! Stop poking me!":["Hey! Hör auf, mich zu piksen!","Гей! Перестань мене тицяти!","喂！别戳我了！"],"I'm not a button!":["Ich bin kein Knopf!","Я не кнопка!","我不是按钮！"],"Ouch. My face is not a touchscreen.":["Autsch. Mein Gesicht ist kein Touchscreen.","Ой. Моє обличчя — не сенсорний екран.","哎哟。我的脸不是触摸屏。"],"Hey! I'm not a ball!":["Hey! Ich bin kein Ball!","Гей! Я не м'ячик!","喂！我不是球！"],"Careful! I'm an apple, I bruise easily.":["Vorsicht! Ich bin ein Apfel, ich bekomme schnell Druckstellen.","Обережно! Я яблуко, на мені легко лишаються синці.","小心！我是苹果，很容易磕坏的。"],"Stop throwing me around!":["Hör auf, mich herumzuwerfen!","Перестань мене кидати!","别再扔我了！"],"Hmph. That's it. I'm not talking to you for a couple of minutes.":["Pff. Das reicht. Ich rede ein paar Minuten nicht mit dir.","Хмф. Усе. Я не розмовляю з тобою кілька хвилин.","哼。够了。我几分钟不理你了。"],"...okay, fine. I forgive you.":["...na gut. Ich verzeihe dir.","...ну гаразд. Я тебе пробачаю.","……好吧。我原谅你了。"],"...sorry. But please stop it.":["...Entschuldigung. Aber bitte hör auf.","...вибач. Але, будь ласка, припини.","……对不起。但请别这样了。"],"Ow!! You can't throw me like that... That really hurt.":["Au!! So darfst du mich nicht werfen... Das hat echt wehgetan.","Ай!! Так мене кидати не можна... Це було дуже боляче.","哎哟！！不能这样扔我……真的好疼。"],"DENYS AVLASTYMOV AI Automation & Prompt Engineering slekktt@gmail.com · github.com/me1atoninvomne EXPERIENCE 2026 – now AI Prompt Engineer · AI Automation Specialist Independent AI projects: prompts for ChatGPT, Claude, DeepSeek and Qwen; AI assistants for business workflows; automation with n8n, Make and AI APIs; LLM evaluation. 2025 SQL Analyst & Manual QA Functional testing, bug reports in Jira, API testing in Postman, SQL reporting. 2024 – 2026 Shift Manager, Woltmarket Deliveries and invoice checks, shift planning, daily sales reports, refunds, Excel and Google Sheets. The store reached the global top 15 of the chain and held it for 3 months. 2023 – 2024 Grocery Associate + online customer support EDUCATION 2026 Bachelor's in Applied Economics, Comenius University in Bratislava SKILLS AI prompt engineering, LLM evaluation, AI assistants Automation n8n, Make, OpenAI-compatible APIs, Google Sheets, Slack Code Java (main), Spring Boot, SQL, C++, Rust QA functional testing, Postman, Jira, Playwright LANGUAGES Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1":["DENYS AVLASTYMOV\nKI-Automatisierung & Prompt Engineering\nslekktt@gmail.com · github.com/me1atoninvomne\n\nBERUFSERFAHRUNG\n2026 – heute  AI Prompt Engineer · AI Automation Specialist\n              Eigene KI-Projekte: Prompts für ChatGPT, Claude,\n              DeepSeek und Qwen; KI-Assistenten für Geschäftsprozesse;\n              Automatisierung mit n8n, Make und KI-APIs; LLM-Bewertung.\n2025          SQL-Analyst & manueller Tester\n              Funktionstests, Bug-Reports in Jira, API-Tests in\n              Postman, SQL-Reporting.\n2024 – 2026   Schichtleiter, Woltmarket\n              Warenannahme und Rechnungsprüfung, Schichtplanung,\n              tägliche Verkaufsberichte, Rückerstattungen, Excel und\n              Google Sheets. Der Markt erreichte die weltweiten Top 15\n              der Kette und hielt sich dort 3 Monate.\n2023 – 2024   Verkäufer im Lebensmittelhandel + Online-Kundensupport\n\nAUSBILDUNG\n2026          Bachelor in Angewandter Ökonomie,\n              Comenius-Universität Bratislava\n\nFÄHIGKEITEN\nKI            Prompt Engineering, LLM-Bewertung, KI-Assistenten\nAutomation    n8n, Make, OpenAI-kompatible APIs, Google Sheets, Slack\nCode          Java (Hauptsprache), Spring Boot, SQL, C++, Rust\nQA            Funktionstests, Postman, Jira, Playwright\n\nSPRACHEN\nUkrainisch (Muttersprache) · Slowakisch B2 · Russisch B2 ·\nEnglisch B1 · Deutsch A1\n","DENYS AVLASTYMOV (ДЕНИС АВЛАСТИМОВ)\nAI-автоматизація та промпт-інжиніринг\nslekktt@gmail.com · github.com/me1atoninvomne\n\nДОСВІД\n2026 – дотепер  AI Prompt Engineer · AI Automation Specialist\n                Власні AI-проєкти: промпти для ChatGPT, Claude,\n                DeepSeek і Qwen; AI-асистенти для бізнес-процесів;\n                автоматизація з n8n, Make та AI API; оцінювання LLM.\n2025            SQL-аналітик і мануальний тестувальник\n                Функціональне тестування, баг-репорти в Jira,\n                API-тестування в Postman, SQL-звітність.\n2024 – 2026     Керівник зміни, Woltmarket\n                Приймання товару й перевірка накладних, планування\n                змін, щоденні звіти про продажі, повернення, Excel і\n                Google Sheets. Магазин увійшов до світового топ-15\n                мережі й утримувався там 3 місяці.\n2023 – 2024     Продавець-консультант + онлайн-підтримка клієнтів\n\nОСВІТА\n2026            Бакалавр прикладної економіки,\n                Університет Коменського в Братиславі\n\nНАВИЧКИ\nШІ              промпт-інжиніринг, оцінювання LLM, AI-асистенти\nАвтоматизація   n8n, Make, OpenAI-сумісні API, Google Sheets, Slack\nКод             Java (основна), Spring Boot, SQL, C++, Rust\nQA              функціональне тестування, Postman, Jira, Playwright\n\nМОВИ\nУкраїнська (рідна) · словацька B2 · російська B2 ·\nанглійська B1 · німецька A1\n","DENYS AVLASTYMOV\nAI 自动化与提示词工程\nslekktt@gmail.com · github.com/me1atoninvomne\n\n工作经历\n2026 – 至今    AI 提示词工程师 · AI 自动化专员\n               独立 AI 项目：为 ChatGPT、Claude、DeepSeek 和 Qwen\n               编写提示词；为业务流程打造 AI 助手；使用 n8n、Make\n               和 AI API 做自动化；LLM 评估。\n2025           SQL 分析师与手工测试\n               功能测试、在 Jira 中提交缺陷、用 Postman 做 API 测试、\n               SQL 报表。\n2024 – 2026    值班经理，Woltmarket\n               到货与发票核对、排班、每日销售报表、退款、Excel 和\n               Google Sheets。门店进入全连锁全球前 15 名并保持 3 个月。\n2023 – 2024    超市店员 + 在线客服\n\n教育背景\n2026           应用经济学学士，布拉迪斯拉发夸美纽斯大学\n\n技能\nAI             提示词工程、LLM 评估、AI 助手\n自动化         n8n、Make、兼容 OpenAI 的 API、Google Sheets、Slack\n编程           Java（主力）、Spring Boot、SQL、C++、Rust\nQA             功能测试、Postman、Jira、Playwright\n\n语言\n乌克兰语（母语）· 斯洛伐克语 B2 · 俄语 B2 · 英语 B1 · 德语 A1\n"],"DENYS AVLASTYMOV AI Automation &amp; Prompt Engineering slekktt@gmail.com · github.com/me1atoninvomne EXPERIENCE 2026 – now AI Prompt Engineer · AI Automation Specialist Independent AI projects: prompts for ChatGPT, Claude, DeepSeek and Qwen; AI assistants for business workflows; automation with n8n, Make and AI APIs; LLM evaluation. 2025 SQL Analyst &amp; Manual QA Functional testing, bug reports in Jira, API testing in Postman, SQL reporting. 2024 – 2026 Shift Manager, Woltmarket Deliveries and invoice checks, shift planning, daily sales reports, refunds, Excel and Google Sheets. The store reached the global top 15 of the chain and held it for 3 months. 2023 – 2024 Grocery Associate + online customer support EDUCATION 2026 Bachelor's in Applied Economics, Comenius University in Bratislava SKILLS AI prompt engineering, LLM evaluation, AI assistants Automation n8n, Make, OpenAI-compatible APIs, Google Sheets, Slack Code Java (main), Spring Boot, SQL, C++, Rust QA functional testing, Postman, Jira, Playwright LANGUAGES Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1":["DENYS AVLASTYMOV\nKI-Automatisierung &amp; Prompt Engineering\nslekktt@gmail.com · github.com/me1atoninvomne\n\nBERUFSERFAHRUNG\n2026 – heute  AI Prompt Engineer · AI Automation Specialist\n              Eigene KI-Projekte: Prompts für ChatGPT, Claude,\n              DeepSeek und Qwen; KI-Assistenten für Geschäftsprozesse;\n              Automatisierung mit n8n, Make und KI-APIs; LLM-Bewertung.\n2025          SQL-Analyst &amp; manueller Tester\n              Funktionstests, Bug-Reports in Jira, API-Tests in\n              Postman, SQL-Reporting.\n2024 – 2026   Schichtleiter, Woltmarket\n              Warenannahme und Rechnungsprüfung, Schichtplanung,\n              tägliche Verkaufsberichte, Rückerstattungen, Excel und\n              Google Sheets. Der Markt erreichte die weltweiten Top 15\n              der Kette und hielt sich dort 3 Monate.\n2023 – 2024   Verkäufer im Lebensmittelhandel + Online-Kundensupport\n\nAUSBILDUNG\n2026          Bachelor in Angewandter Ökonomie,\n              Comenius-Universität Bratislava\n\nFÄHIGKEITEN\nKI            Prompt Engineering, LLM-Bewertung, KI-Assistenten\nAutomation    n8n, Make, OpenAI-kompatible APIs, Google Sheets, Slack\nCode          Java (Hauptsprache), Spring Boot, SQL, C++, Rust\nQA            Funktionstests, Postman, Jira, Playwright\n\nSPRACHEN\nUkrainisch (Muttersprache) · Slowakisch B2 · Russisch B2 ·\nEnglisch B1 · Deutsch A1\n","DENYS AVLASTYMOV (ДЕНИС АВЛАСТИМОВ)\nAI-автоматизація та промпт-інжиніринг\nslekktt@gmail.com · github.com/me1atoninvomne\n\nДОСВІД\n2026 – дотепер  AI Prompt Engineer · AI Automation Specialist\n                Власні AI-проєкти: промпти для ChatGPT, Claude,\n                DeepSeek і Qwen; AI-асистенти для бізнес-процесів;\n                автоматизація з n8n, Make та AI API; оцінювання LLM.\n2025            SQL-аналітик і мануальний тестувальник\n                Функціональне тестування, баг-репорти в Jira,\n                API-тестування в Postman, SQL-звітність.\n2024 – 2026     Керівник зміни, Woltmarket\n                Приймання товару й перевірка накладних, планування\n                змін, щоденні звіти про продажі, повернення, Excel і\n                Google Sheets. Магазин увійшов до світового топ-15\n                мережі й утримувався там 3 місяці.\n2023 – 2024     Продавець-консультант + онлайн-підтримка клієнтів\n\nОСВІТА\n2026            Бакалавр прикладної економіки,\n                Університет Коменського в Братиславі\n\nНАВИЧКИ\nШІ              промпт-інжиніринг, оцінювання LLM, AI-асистенти\nАвтоматизація   n8n, Make, OpenAI-сумісні API, Google Sheets, Slack\nКод             Java (основна), Spring Boot, SQL, C++, Rust\nQA              функціональне тестування, Postman, Jira, Playwright\n\nМОВИ\nУкраїнська (рідна) · словацька B2 · російська B2 ·\nанглійська B1 · німецька A1\n","DENYS AVLASTYMOV\nAI 自动化与提示词工程\nslekktt@gmail.com · github.com/me1atoninvomne\n\n工作经历\n2026 – 至今    AI 提示词工程师 · AI 自动化专员\n               独立 AI 项目：为 ChatGPT、Claude、DeepSeek 和 Qwen\n               编写提示词；为业务流程打造 AI 助手；使用 n8n、Make\n               和 AI API 做自动化；LLM 评估。\n2025           SQL 分析师与手工测试\n               功能测试、在 Jira 中提交缺陷、用 Postman 做 API 测试、\n               SQL 报表。\n2024 – 2026    值班经理，Woltmarket\n               到货与发票核对、排班、每日销售报表、退款、Excel 和\n               Google Sheets。门店进入全连锁全球前 15 名并保持 3 个月。\n2023 – 2024    超市店员 + 在线客服\n\n教育背景\n2026           应用经济学学士，布拉迪斯拉发夸美纽斯大学\n\n技能\nAI             提示词工程、LLM 评估、AI 助手\n自动化         n8n、Make、兼容 OpenAI 的 API、Google Sheets、Slack\n编程           Java（主力）、Spring Boot、SQL、C++、Rust\nQA             功能测试、Postman、Jira、Playwright\n\n语言\n乌克兰语（母语）· 斯洛伐克语 B2 · 俄语 B2 · 英语 B1 · 德语 A1\n"],"Sections":["Abschnitte","Розділи","栏目"],"benchmark":["Benchmark","бенчмарк","跑分"],"← home":["← Startseite","← на головну","← 主页"],"// pc builder · 134 real parts":["// PC-Konfigurator · 134 echte Teile","// конфігуратор ПК · 134 реальні деталі","// 电脑装机 · 134 款真实配件"],"Build a PC, assemble it, test it.":["PC zusammenstellen, aufbauen, testen.","Зберіть ПК, складіть його, протестуйте.","选配、组装、测试一台电脑。"],"Pick real components, check that they fit, put them together step by step, down to the thermal paste and the cables, then run an estimated benchmark. Your build is saved in this browser and shows up on the home page too.":["Wählen Sie echte Komponenten, prüfen Sie, ob sie passen, bauen Sie sie Schritt für Schritt zusammen, bis hin zur Wärmeleitpaste und den Kabeln, und starten Sie dann einen geschätzten Benchmark. Ihr Build wird in diesem Browser gespeichert und erscheint auch auf der Startseite.","Обирайте реальні комплектуючі, перевіряйте сумісність, збирайте крок за кроком — аж до термопасти й кабелів, а потім запустіть орієнтовний бенчмарк. Ваша збірка зберігається в цьому браузері й показується також на головній.","挑选真实配件，检查兼容性，一步步组装到导热硅脂和线缆，然后运行估算跑分。你的配置会保存在此浏览器中，也会显示在主页上。"],"Interactive 3D model of the PC you are building. Drag to rotate, click a part to pull it out.":["Interaktives 3D-Modell des PCs, den Sie bauen. Ziehen zum Drehen, auf ein Teil klicken, um es herauszunehmen.","Інтерактивна 3D-модель ПК, який ви збираєте. Потягніть, щоб обертати, клацніть на деталь, щоб витягти її.","你正在组装的电脑的交互式 3D 模型。拖动旋转，点击部件将其取出。"],"Build it step by step":["Schritt für Schritt bauen","Зібрати крок за кроком","逐步装机"],"Reset view":["Ansicht zurücksetzen","Скинути вигляд","重置视图"],"Assembly":["Zusammenbau","Складання","组装"],"Install next part":["Nächstes Teil einbauen","Встановити наступну деталь","安装下一个部件"],"Exit":["Beenden","Вийти","退出"],"Start again":["Neu beginnen","Почати знову","重新开始"],"Components":["Komponenten","Комплектуючі","配件"],"example prices · EUR":["Beispielpreise · EUR","приклади цін · EUR","示例价格 · 欧元"],"Ready-made builds":["Fertige Builds","Готові збірки","预设配置"],"Budget 1080p":["Budget 1080p","Бюджетна 1080p","入门 1080p"],"Sweet spot 1440p":["Sweet Spot 1440p","Золота середина 1440p","甜点级 1440p"],"All white":["Ganz in Weiß","Уся біла","全白主题"],"Flagship 4K":["Flaggschiff 4K","Флагман 4K","旗舰 4K"],"CPU cooler":["CPU-Kühler","Кулер CPU","CPU 散热器"],"Graphics card":["Grafikkarte","Відеокарта","显卡"],"Memory":["Arbeitsspeicher","Пам'ять","内存"],"Storage":["Speicher","Накопичувач","存储"],"Power supply":["Netzteil","Блок живлення","电源"],"Processor":["Prozessor","Процесор","处理器"],"Thermal paste":["Wärmeleitpaste","Термопаста","导热硅脂"],"NVMe SSD":["NVMe-SSD","NVMe SSD","NVMe 固态硬盘"],"Power cables":["Stromkabel","Кабелі живлення","电源线"],"Side panel":["Seitenteil","Бічна панель","侧板"],"total price, €":["Gesamtpreis, €","загальна ціна, €","总价，€"],"estimated peak load":["geschätzte Spitzenlast","орієнтовне пікове навантаження","估算峰值功耗"],"recommended PSU":["empfohlenes Netzteil","рекомендований БЖ","建议电源"],"PSU load at peak":["Netzteillast bei Spitze","навантаження БЖ на піку","峰值时电源负载"],"ok":["ok","ок","正常"],"check":["prüfen","перевірити","注意"],"fail":["Fehler","помилка","失败"],"CPU and GPU are in a balanced class.":["CPU und GPU sind gut aufeinander abgestimmt.","CPU і GPU одного класу, збірка збалансована.","CPU 与 GPU 档次均衡。"],"Strong CPU for this GPU: fine for work, less so for gaming value.":["Starke CPU für diese GPU: gut für die Arbeit, weniger fürs Preis-Leistungs-Gaming.","Сильний CPU для цієї відеокарти: добре для роботи, гірше за співвідношенням ціни для ігор.","相对这块显卡来说 CPU 很强：适合工作，但玩游戏性价比不高。"],"Peak load = CPU max power + GPU board power + 60 W. Sizes are approximate; the 3D model follows the real products in shape and colour.":["Spitzenlast = maximale CPU-Leistung + GPU-Boardleistung + 60 W. Maße sind ungefähr; das 3D-Modell folgt den echten Produkten in Form und Farbe.","Пікове навантаження = максимальна потужність CPU + потужність відеокарти + 60 Вт. Розміри приблизні; 3D-модель повторює реальні товари за формою й кольором.","峰值功耗 = CPU 最大功耗 + 显卡整卡功耗 + 60 W。尺寸为近似值；3D 模型在外形和颜色上参照真实产品。"],"Benchmark":["Benchmark","Бенчмарк","跑分"],"Runs five games and three synthetic tests on the build above. The numbers are <b>estimates</b> from rough relative performance figures, not real measurements.":["Führt fünf Spiele und drei synthetische Tests mit dem Build oben aus. Die Zahlen sind <b>Schätzungen</b> aus groben relativen Leistungswerten, keine echten Messungen.","Запускає п'ять ігор і три синтетичні тести на збірці вище. Цифри — це <b>оцінки</b> за приблизними відносними показниками продуктивності, а не реальні вимірювання.","在上方配置上运行五款游戏和三项基准测试。数字是根据大致相对性能数据得出的<b>估算</b>，并非实测。"],"Resolution":["Auflösung","Роздільна здатність","分辨率"],"Run benchmark":["Benchmark starten","Запустити бенчмарк","运行跑分"],"Run again":["Nochmal starten","Запустити знову","再跑一次"],"ready":["bereit","готово","就绪"],"done":["fertig","завершено","完成"],"build changed · run again":["Build geändert · nochmal starten","збірку змінено · запустіть знову","配置已更改 · 请重新运行"],"cannot start: incompatible parts":["Start nicht möglich: inkompatible Teile","неможливо запустити: несумісні деталі","无法启动：配件不兼容"],"Animated benchmark scene":["Animierte Benchmark-Szene","Анімована сцена бенчмарку","跑分动画场景"],"fps (est.)":["fps (geschätzt)","fps (оцінка)","帧数（估算）"],"Synthetic":["Synthetisch","Синтетичні","基准测试"],"Compared with":["Im Vergleich mit","Порівняно з","对比"],"Max settings, no upscaling, no frame generation. Real results depend on the exact game version, drivers, settings and the scene.":["Maximale Einstellungen, kein Upscaling, keine Frame-Generierung. Echte Ergebnisse hängen von Spielversion, Treibern, Einstellungen und Szene ab.","Максимальні налаштування, без апскейлінгу й генерації кадрів. Реальні результати залежать від версії гри, драйверів, налаштувань і сцени.","最高画质，无超分辨率，无帧生成。实际结果取决于游戏版本、驱动、设置和场景。"],"← back to the home page":["← zurück zur Startseite","← назад на головну","← 返回主页"],"CPU single-thread":["CPU Single-Thread","CPU, один потік","CPU 单线程"],"CPU multi-thread":["CPU Multi-Thread","CPU, багато потоків","CPU 多线程"],"GPU graphics":["GPU-Grafik","Графіка GPU","GPU 图形"],"Overall bench score":["Gesamtpunktzahl","Загальний бал","综合跑分"],"Budget 1080p preset":["Vorlage Budget 1080p","Збірка «Бюджетна 1080p»","入门 1080p 预设"],"Sweet spot preset":["Vorlage Sweet Spot","Збірка «Золота середина»","甜点级预设"],"Flagship preset":["Vorlage Flaggschiff","Збірка «Флагман»","旗舰预设"],"A pea-sized dot of thermal paste in the middle of the CPU. The cooler pressure spreads it into a thin layer.":["Ein erbsengroßer Punkt Wärmeleitpaste in die Mitte der CPU. Der Druck des Kühlers verteilt sie zu einer dünnen Schicht.","Крапля термопасти розміром з горошину посередині процесора. Тиск кулера розподілить її тонким шаром.","在 CPU 中央点一粒豌豆大小的导热硅脂，散热器的压力会把它压成薄层。"],"The pump block goes on the CPU with four screws, the radiator is screwed under the top panel with the fans blowing out.":["Der Pumpenblock kommt mit vier Schrauben auf die CPU, der Radiator wird unter dem Deckel verschraubt, die Lüfter blasen nach außen.","Помпа кріпиться на процесор чотирма гвинтами, радіатор — під верхньою панеллю, вентилятори дують назовні.","水泵头用四颗螺丝固定在 CPU 上，冷排装在顶板下方，风扇向外排风。"],"The tower cooler is screwed onto its mounting bar. The fan clips onto the fins and blows towards the back of the case.":["Der Turmkühler wird an seiner Halterung verschraubt. Der Lüfter wird an die Lamellen geklipst und bläst zur Rückseite.","Баштовий кулер прикручується до кріпильної планки. Вентилятор клацає на ребра й дує до задньої стінки корпусу.","塔式散热器拧在扣具横梁上。风扇卡在鳍片上，朝机箱后方吹风。"],"Two sticks go into slots A2 and B2 (the 2nd and 4th from the CPU). Press until both clips click.":["Zwei Riegel kommen in die Steckplätze A2 und B2 (der 2. und 4. von der CPU aus). Drücken, bis beide Clips einrasten.","Дві планки встановлюються в слоти A2 і B2 (2-й і 4-й від процесора). Натискайте, доки обидві засувки не клацнуть.","两根内存插到 A2 和 B2 插槽（离 CPU 第 2 和第 4 个），按到两侧卡扣都咔哒扣上。"],"The drive slides into the M.2 slot at an angle, then is pressed down and held by one small screw.":["Das Laufwerk wird schräg in den M.2-Steckplatz geschoben, dann heruntergedrückt und mit einer kleinen Schraube gehalten.","Накопичувач вставляється в слот M.2 під кутом, потім притискається й фіксується одним маленьким гвинтом.","硬盘斜着插入 M.2 插槽，再压平并用一颗小螺丝固定。"],"The PSU slides into the bottom compartment with its fan facing down and is screwed from the back.":["Das Netzteil wird mit dem Lüfter nach unten ins untere Fach geschoben und von hinten verschraubt.","Блок живлення вставляється в нижній відсік вентилятором донизу й прикручується ззаду.","电源风扇朝下推入底部仓位，并从背面拧紧。"],"The intake fans mount on the front panel and pull cool air in; the rear fan that came with the case blows it out. Each fan plugs into a header on the board.":["Die Einlasslüfter sitzen an der Front und ziehen kühle Luft hinein; der mitgelieferte Hecklüfter bläst sie hinaus. Jeder Lüfter wird an einen Anschluss am Mainboard gesteckt.","Вентилятори на вдув кріпляться до передньої панелі й затягують прохолодне повітря; задній вентилятор, що йде з корпусом, видуває його. Кожен вентилятор підключається до роз'єму на платі.","进风风扇装在前面板吸入冷空气，机箱自带的后部风扇把热风排出。每个风扇都接到主板的插针上。"],"Close the case with the tempered glass panel and its four thumb screws. Done!":["Das Gehäuse mit dem Glasseitenteil und seinen vier Rändelschrauben schließen. Fertig!","Закрийте корпус панеллю із загартованого скла та чотирма гвинтами-барашками. Готово!","装上钢化玻璃侧板并拧好四颗手拧螺丝。完成！"],"Excellent":["Exzellent","Відмінно","极佳"],"Smooth":["Flüssig","Плавно","流畅"],"Playable":["Spielbar","Можна грати","可玩"],"Too heavy":["Zu schwer","Заважко","带不动"],"high refresh rates even in the heaviest game here":["hohe Bildraten selbst im anspruchsvollsten Spiel hier","висока частота кадрів навіть у найважчій грі тут","即使在这里最吃配置的游戏中也有高刷新率"],"60+ fps at max settings in the heaviest game here":["60+ fps bei maximalen Einstellungen im anspruchsvollsten Spiel hier","60+ fps на максимальних налаштуваннях у найважчій грі тут","在这里最吃配置的游戏中最高画质 60+ 帧"],"turn on upscaling or lower a few settings for 60 fps":["Upscaling einschalten oder ein paar Einstellungen senken für 60 fps","увімкніть апскейлінг або знизьте кілька налаштувань для 60 fps","开启超分辨率或降低几项设置即可达到 60 帧"],"lower the resolution or the settings, or pick a faster graphics card":["Auflösung oder Einstellungen senken oder eine schnellere Grafikkarte wählen","знизьте роздільну здатність чи налаштування або оберіть швидшу відеокарту","降低分辨率或画质，或换一块更快的显卡"],"Most games are limited by the graphics card, so a faster GPU helps most.":["Die meisten Spiele werden von der Grafikkarte begrenzt, eine schnellere GPU hilft also am meisten.","Більшість ігор упирається у відеокарту, тож найбільше допоможе швидша GPU.","大多数游戏受显卡限制，换更快的 GPU 提升最大。"],"Most games are limited by the processor here, so a faster CPU (an X3D chip, for example) helps most.":["Die meisten Spiele werden hier vom Prozessor begrenzt, eine schnellere CPU (zum Beispiel ein X3D-Chip) hilft also am meisten.","Тут більшість ігор упирається в процесор, тож найбільше допоможе швидший CPU (наприклад, чип X3D).","这里大多数游戏受处理器限制，换更快的 CPU（例如 X3D 芯片）提升最大。"]};
+window.I18N_PATTERNS = [["^Socket match: (\\S+) CPU on an \\S+ board\\.$",["Sockel passt: $1-CPU auf einem $1-Mainboard.","Сокет збігається: процесор $1 на платі $1.","插槽匹配：$1 CPU 配 $1 主板。"]],["^Socket mismatch: the (.+) needs (\\S+), the (.+) is (\\S+)\\.$",["Sockel passt nicht: $1 braucht $2, $3 hat $4.","Сокет не збігається: $1 потребує $2, а $3 має $4.","插槽不匹配：$1 需要 $2，而 $3 是 $4。"]],["^The (.+) only takes Micro-ATX boards; the (.+) is full ATX\\.$",["$1 nimmt nur Micro-ATX-Boards auf; $2 ist ein volles ATX.","$1 вміщує лише плати Micro-ATX, а $2 — повний ATX.","$1 只能装 Micro-ATX 主板，而 $2 是标准 ATX。"]],["^GPU does not fit: about (\\d+) mm long, the case takes up to about (\\d+) mm\\.$",["GPU passt nicht: etwa $1 mm lang, das Gehäuse fasst bis etwa $2 mm.","Відеокарта не влазить: довжина близько $1 мм, корпус вміщує до $2 мм.","显卡装不下：长约 $1 mm，机箱最多约 $2 mm。"]],["^GPU fits: about (\\d+) mm of about (\\d+) mm space\\.$",["GPU passt: etwa $1 mm von etwa $2 mm Platz.","Відеокарта влазить: близько $1 мм із приблизно $2 мм місця.","显卡可装下：约 $1 mm，可用空间约 $2 mm。"]],["^Cooler too tall: about (\\d+) mm, the case allows about (\\d+) mm\\.$",["Kühler zu hoch: etwa $1 mm, das Gehäuse erlaubt etwa $2 mm.","Кулер зависокий: близько $1 мм, корпус дозволяє близько $2 мм.","散热器太高：约 $1 mm，机箱限高约 $2 mm。"]],["^The (.+) is on the small side for (\\d+) W; expect throttling under long all-core loads\\.$",["$1 ist für $2 W eher knapp; bei langer Volllast ist Drosselung zu erwarten.","$1 замалий для $2 Вт; під тривалим навантаженням на всі ядра можливе тротлінг.","$1 压 $2 W 偏吃力；长时间全核负载可能降频。"]],["^Cooler is strong enough for the CPU's (\\d+) W peak\\.$",["Der Kühler reicht für die $1 W Spitze der CPU.","Кулер достатньо потужний для пікових $1 Вт процесора.","散热器足以应对 CPU $1 W 的峰值功耗。"]],["^Power supply too weak: (\\d+) W for a (\\d+) W peak\\.$",["Netzteil zu schwach: $1 W bei $2 W Spitze.","Блок живлення заслабкий: $1 Вт при піку $2 Вт.","电源功率不足：$1 W 带 $2 W 峰值。"]],["^Low headroom: works, but (\\d+) W or more is safer\\.$",["Wenig Reserve: funktioniert, aber $1 W oder mehr ist sicherer.","Малий запас: працюватиме, але $1 Вт або більше надійніше.","余量不足：能用，但 $1 W 或以上更稳妥。"]],["^Power supply has (\\d+)% headroom at peak\\.$",["Das Netzteil hat bei Spitze $1 % Reserve.","Блок живлення має $1% запасу на піку.","电源在峰值时还有 $1% 余量。"]],["^The CPU may hold back the (.+) at high frame rates\\.$",["Die CPU kann die $1 bei hohen Bildraten bremsen.","Процесор може гальмувати $1 при високій частоті кадрів.","高帧率时 CPU 可能拖累 $1。"]],["^running (\\d+) / (\\d+)$",["läuft $1 / $2","виконується $1 / $2","运行中 $1 / $2"]],["^Install: (.+)$",["Einbauen: {t1}","Встановити: {t1}","安装：{t1}"]],["^Step (\\d+): (.+) Click the glowing part or press the button\\.$",["Schritt $1: {t2} Klicken Sie auf das leuchtende Teil oder drücken Sie den Knopf.","Крок $1: {t2} Клацніть на деталь, що світиться, або натисніть кнопку.","第 $1 步：{t2} 点击发光的部件或按下按钮。"]],["^The board sits on the standoffs in the case and is held by (\\d+) screws\\. The rear I/O lines up with the opening at the back\\.$",["Das Mainboard sitzt auf den Abstandshaltern im Gehäuse und wird von $1 Schrauben gehalten. Die I/O-Blende passt in die Öffnung hinten.","Плата стоїть на стійках у корпусі й тримається на $1 гвинтах. Задня панель роз'ємів збігається з отвором ззаду.","主板放在机箱的铜柱上，用 $1 颗螺丝固定，背部 I/O 对准机箱后部开口。"]],["^Lift the socket lever, match the small gold triangle on the (.+) with the mark on the socket, lay it in without pressure and close the lever\\.$",["Sockelhebel anheben, das kleine goldene Dreieck auf dem $1 an der Markierung am Sockel ausrichten, ohne Druck einlegen und den Hebel schließen.","Підніміть важіль сокета, сумістіть маленький золотий трикутник на $1 із міткою на сокеті, покладіть без тиску й закрийте важіль.","抬起插槽拉杆，将 $1 上的金色小三角对准插槽标记，无压力放入后合上拉杆。"]],["^Remove two slot covers at the back, push the card into the top PCIe x16 slot until it clicks and screw the bracket\\. This card is about (\\d+) mm long\\.$",["Zwei Slotblenden hinten entfernen, die Karte in den oberen PCIe-x16-Steckplatz drücken, bis sie einrastet, und die Blende verschrauben. Diese Karte ist etwa $1 mm lang.","Зніміть дві заглушки ззаду, вставте карту у верхній слот PCIe x16 до клацання й прикрутіть планку. Ця карта завдовжки близько $1 мм.","拆下后部两个挡板，把显卡插入最上方的 PCIe x16 插槽直到卡扣扣上，再拧紧挡片。这块显卡长约 $1 mm。"]],["^Connect the 24-pin to the board, the 8-pin EPS at the top for the CPU, and (.+) to the graphics card\\.$",["Den 24-Pin ans Mainboard, den 8-Pin-EPS oben für die CPU und {t1} an die Grafikkarte anschließen.","Під'єднайте 24-pin до плати, 8-pin EPS зверху для процесора і {t1} до відеокарти.","把 24 针接到主板，顶部 8 针 EPS 接 CPU，再把{t1}接到显卡。"]],["^the 12V-2x6 cable$",["das 12V-2x6-Kabel","кабель 12V-2x6"," 12V-2x6 线"]],["^one 8-pin cable$",["ein 8-Pin-Kabel","один 8-pin кабель","一根 8 针线"]],["^two 8-pin cables$",["zwei 8-Pin-Kabel","два 8-pin кабелі","两根 8 针线"]],["^the hidden power connector$",["den versteckten Stromanschluss","прихований роз'єм живлення","隐藏式供电接口"]],["^Done! This build costs about €([\\d,]+) and draws up to (\\d+) W\\. Run the benchmark below to see what it can do\\.$",["Fertig! Dieser Build kostet etwa €$1 und zieht bis zu $2 W. Starten Sie unten den Benchmark, um zu sehen, was er kann.","Готово! Ця збірка коштує близько €$1 і споживає до $2 Вт. Запустіть бенчмарк нижче, щоб побачити, на що вона здатна.","完成！这套配置约 €$1，最高功耗 $2 W。运行下方跑分看看它的实力。"]],["^Not yet: the (.+) comes later\\. First: (.+)\\.$",["Noch nicht: {t1} kommt später. Zuerst: {t2}.","Ще не час: {t1} — пізніше. Спочатку: {t2}.","还没到：{t1}稍后再装。先装：{t2}。"]],["^<b>(\\S+(?: \\S+)?) at (\\S+)</b><span>(.+?)\\. (.+)</span>$",["<b>{t1} bei $2</b><span>{t3}. {t4}</span>","<b>{t1} у $2</b><span>{t3}. {t4}</span>","<b>$2 下{t1}</b><span>{t3}。{t4}</span>"]],["^Moves: (\\d+)$",["Züge: $1","Ходів: $1","步数：$1"]],["^You won in (\\d+) moves!$",["Gewonnen in $1 Zügen!","Перемога за $1 ходів!","你用 $1 步赢了！"]],["^new best (\\d+)s!$",["neuer Rekord $1 s!","новий рекорд $1 с!","新纪录 $1 秒！"]],["^Time is up: (\\d+) of (\\d+) bugs found$",["Zeit ist um: $1 von $2 Bugs gefunden","Час вийшов: знайдено $1 з $2 багів","时间到：找到 $1 / $2 个缺陷"]],["^All (\\d+) bugs found! \\+(\\d+) time bonus$",["Alle $1 Bugs gefunden! +$2 Zeitbonus","Усі $1 багів знайдено! +$2 бонус за час","全部 $1 个缺陷都找到了！时间奖励 +$2"]],["^Score (\\d+)\\. Missed bugs are outlined in the shop\\. Every round hides a new set\\.$",["Punkte: $1. Übersehene Bugs sind im Shop markiert. Jede Runde versteckt neue.","Рахунок $1. Пропущені баги обведені в магазині. Кожен раунд ховає новий набір.","得分 $1。漏掉的缺陷已在网店中标出。每轮都会藏一组新的。"]],["^Bug reported: (.+) \\(\\+100\\)$",["Bug gemeldet: $1 (+100)","Баг зареєстровано: $1 (+100)","已提交缺陷：$1（+100）"]],["^Works as intended \\(−25\\)$",["Funktioniert wie vorgesehen (−25)","Працює як задумано (−25)","这是正常行为（−25）"]],["^Selected, press Ctrl\\+C$",["Markiert, Strg+C drücken","Виділено, натисніть Ctrl+C","已选中，请按 Ctrl+C"]],["^Still angry\\. (\\d+:\\d+) left\\.$",["Immer noch sauer. Noch $1.","Досі ображений. Лишилося $1.","还在生气。还剩 $1。"]],["^(\\d+) objects$",["$1 Objekte","$1 об'єктів","$1 个对象"]]];
+
+</script>
+<script>
+/* Avlastymov XP translations: English is the source, every other language is a dictionary keyed by
+   the English text. Text in the page is translated block by block (a paragraph with its links and
+   bold words is one unit), JS strings go through I18N.t(). */
+(() => {
+  "use strict";
+  const LANGS = ["uk", "en", "de", "zh"];
+  const NAMES = { uk: "Українська", en: "English", de: "Deutsch", zh: "中文" };
+  const SHORT = { uk: "УК", en: "EN", de: "DE", zh: "中" };
+  const IDX = { de: 0, uk: 1, zh: 2 };
+  const D = window.I18N_DICT || {};          // { "English": ["Deutsch", "Українська", "中文"] }
+  const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } } };
+
+  function guess() {
+    const saved = store.get("denis.lang");
+    if (LANGS.includes(saved)) return saved;
+    for (const l of navigator.languages || [navigator.language || "en"]) {
+      const c = String(l).toLowerCase().slice(0, 2);
+      if (c === "uk" || c === "ru") return "uk";
+      if (c === "de") return "de";
+      if (c === "zh") return "zh";
+      if (c === "en") return "en";
+    }
+    return "en";
+  }
+  let lang = guess();
+  const norm = (s) => s.replace(/\s+/g, " ").trim();
+  // text with numbers in it ("Moves: 12") is matched by patterns; {t1} means "translate group 1 too"
+  const PATS = (window.I18N_PATTERNS || []).map(([rx, vals]) => [new RegExp(rx), vals]);
+  function lookup(key, l) {
+    const i = IDX[l];
+    let row = D[key];
+    if (row && row[i]) return row[i];
+    if (/^[a-z]/.test(key)) {   // "graphics card" inside a sentence -> "Graphics card"
+      row = D[key[0].toUpperCase() + key.slice(1)];
+      if (row && row[i]) return l === "de" ? row[i] : row[i][0].toLocaleLowerCase(l) + row[i].slice(1);
+    }
+    for (const [re, vals] of PATS) {
+      const m = key.match(re);
+      if (m && vals[i]) return vals[i].replace(/\{t(\d)\}/g, (x, n) => lookup(norm(m[n] || ""), l) ?? m[n]).replace(/\$(\d)/g, (x, n) => m[n] || "");
+    }
+    return null;
+  }
+  function t(en, l = lang) {
+    if (l === "en" || en == null) return en;
+    const r = lookup(norm(String(en)), l);
+    return r == null ? en : r;
+  }
+  // t() with {placeholders}
+  function tf(en, vars, l) { return t(en, l).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m)); }
+
+  /* ---------- the page ---------- */
+  const INLINE = new Set(["A", "B", "I", "EM", "STRONG", "SPAN", "CODE", "SMALL", "BR", "KBD", "SUP", "SUB", "U", "MARK", "ABBR", "Q", "S"]);
+  const SKIP = new Set(["SCRIPT", "STYLE", "SVG", "CANVAS", "TEXTAREA", "INPUT", "SELECT", "OPTION", "IFRAME", "NOSCRIPT", "IMG"]);
+  const ATTRS = ["title", "placeholder", "aria-label", "alt"];
+  const hasLetters = (s) => /\p{L}{2}/u.test(s);
+  const isLeaf = (el) => {
+    let text = false;
+    for (const n of el.childNodes) {
+      if (n.nodeType === 3) { if (hasLetters(n.nodeValue)) text = true; }
+      else if (n.nodeType === 1) { if (!INLINE.has(n.tagName) || n.hasAttribute("data-ico") || n.querySelector("svg, canvas, img, div, p, ul, ol, li, table, button")) return false; }
+    }
+    return text;
+  };
+  let applying = false;
+  function doEl(el) {
+    const cur = el.innerHTML;
+    if (el.__i18nSrc === undefined || cur !== el.__i18nLast) el.__i18nSrc = cur;   // first time, or JS changed it since
+    const out = lang === "en" ? el.__i18nSrc : (lookup(norm(el.__i18nSrc), lang) ?? el.__i18nSrc);
+    // the browser may re-serialise our string slightly differently, so remember what we set
+    if (out !== cur && !(out === el.__i18nOut && cur === el.__i18nLast)) el.innerHTML = out;
+    el.__i18nOut = out;
+    el.__i18nLast = el.innerHTML;
+  }
+  function doText(n) {
+    const cur = n.nodeValue;
+    if (n.__i18nSrc === undefined || cur !== n.__i18nLast) n.__i18nSrc = cur;
+    const src = n.__i18nSrc, core = norm(src);
+    if (!hasLetters(core)) return;
+    const tr = t(core);
+    const out = tr === core ? src : src.replace(core, tr);
+    if (out !== cur) n.nodeValue = out;
+    n.__i18nLast = n.nodeValue;
+  }
+  function doAttrs(el) {
+    for (const a of ATTRS) {
+      if (!el.hasAttribute(a)) continue;
+      const key = "__i18n_" + a;
+      const cur = el.getAttribute(a);
+      if (el[key] === undefined || cur !== el[key + "_last"]) el[key] = cur;
+      const out = t(el[key]);
+      if (out !== cur) el.setAttribute(a, out);
+      el[key + "_last"] = el.getAttribute(a);
+    }
+  }
+  function walk(el) {
+    if (el.nodeType !== 1 || el.hasAttribute("data-no-i18n")) return;
+    doAttrs(el);
+    if (SKIP.has(el.tagName)) return;
+    if (isLeaf(el)) { doEl(el); return; }
+    for (const n of el.childNodes) {
+      if (n.nodeType === 3) doText(n);
+      else if (n.nodeType === 1) walk(n);
+    }
+  }
+  function apply(root = document.body) {
+    if (!root) return;
+    applying = true;
+    try {
+      // an element inside a [data-no-i18n] area is left alone even if it is the root of a mutation
+      if (root.nodeType === 1 && root.closest && root.closest("[data-no-i18n]")) return;
+      walk(root);
+    } finally { applying = false; }
+  }
+  // content added later (windows filled in by JS, the assistant's bubble...) gets translated too
+  let mo = null;
+  function observe() {
+    if (mo || !window.MutationObserver) return;
+    mo = new MutationObserver((recs) => {
+      if (applying || lang === "en") return;
+      const seen = new Set();
+      for (const r of recs) {
+        const el = r.target.nodeType === 1 ? r.target : r.target.parentElement;
+        if (!el || seen.has(el)) continue;
+        seen.add(el);
+        let unit = el;   // if the change happened inside a translated paragraph, redo the whole paragraph
+        for (let e = el.parentElement; e && e !== document.body; e = e.parentElement) if (isLeaf(e)) unit = e;
+        apply(unit);
+      }
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
+
+  const listeners = [];
+  function set(l, save = true) {
+    if (!LANGS.includes(l)) return;
+    lang = l;
+    if (save) store.set("denis.lang", l);
+    document.documentElement.lang = l === "zh" ? "zh-CN" : l;
+    apply();
+    listeners.forEach((fn) => { try { fn(l); } catch (e) { /* keep going */ } });
+  }
+  // the PC Builder in its iframe follows the language of the desktop
+  window.addEventListener("storage", (e) => { if (e.key === "denis.lang" && LANGS.includes(e.newValue) && e.newValue !== lang) set(e.newValue, false); });
+
+  window.I18N = {
+    LANGS, NAMES, SHORT,
+    get lang() { return lang; },
+    t, tf, set, apply,
+    onChange(fn) { listeners.push(fn); },
+    start() { document.documentElement.lang = lang === "zh" ? "zh-CN" : lang; if (lang !== "en") apply(); observe(); },
+    has(en) { return lookup(norm(en), "de") != null; },
+  };
+})();
+
+</script>
+<script>
 /* Avlastymov XP intro: a retro desk in a dark room. The PC powers on, the CRT runs a POST
    that lists the visitor's own build from the PC Builder, then the camera flies into the screen. */
 (() => {
   "use strict";
-  function run(done) {
+  // opts.idle: start with the computer switched off and wait for the visitor to press the power button
+  function run(done, opts = {}) {
     const wrap = document.getElementById("intro");
     if (!wrap || !window.THREE) return done();
     let renderer;
@@ -3820,8 +4044,8 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
     scene.add(screenGlow);
 
     // desk + back wall
-    box(16, 0.3, 7, M(0x3a2a1c, { roughness: 0.55 }), 0, -0.15, 0.6);
-    box(30, 16, 0.2, M(0x101318), 0, 7, -3.4);
+    const desk = box(16, 0.3, 7, M(0x3a2a1c, { roughness: 0.55 }), 0, -0.15, 0.6);
+    const wall = box(30, 16, 0.2, M(0x101318), 0, 7, -3.4);
     // CRT monitor (beige)
     const beige = M(0xd8d0b8, { roughness: 0.6 });
     box(4.1, 3.5, 0.45, beige, 0, 2.15, 0);
@@ -4071,33 +4295,83 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
     const ease = (k) => k * k * (3 - 2 * k);
     const easeSine = (k) => (1 - Math.cos(Math.PI * k)) / 2;
     const fade = document.getElementById("introFade");
-    const T_END = 7.0, FADE_IN = 0.9, FADE_OUT = 0.9;
-    let t0 = null, finished = false, raf = 0;
+    const T_END = 7.0, FADE_IN = 0.9, FADE_OUT = 0.9, T_POWER = 0.55;
+    let phase = opts.idle ? "idle" : "on", startedIdle = !!opts.idle;
+    let t0 = null, tIdle0 = null, poweredAt = 0, finished = false, raf = 0, paused = false;
     function finish() {
       if (finished) return;
       finished = true;
       cancelAnimationFrame(raf);
       removeEventListener("resize", size);
-      removeEventListener("keydown", skip);
+      removeEventListener("keydown", onKey);
       const already = parseFloat(fade.style.opacity || "0") > 0.98;
       fade.style.transition = "opacity .45s ease";
       fade.style.opacity = "1";
       setTimeout(() => {
         wrap.hidden = true;
+        fade.style.transition = "";
         try { renderer.dispose(); } catch (e) { /* ignore */ }
         scene.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) [].concat(o.material).forEach((m) => { if (m.map) m.map.dispose(); m.dispose(); }); });
         done();
       }, already ? 60 : 480);
     }
-    const skip = () => finish();
-    wrap.addEventListener("click", skip);
-    addEventListener("keydown", skip);
+    // click on the tower or the monitor to switch the computer on
+    const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+    const canvasEl = renderer.domElement;
+    function overComputer(e) {
+      const r = canvasEl.getBoundingClientRect();
+      ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+      ray.setFromCamera(ndc, camera);
+      const hit = ray.intersectObjects(scene.children, true).find((h) => h.object !== desk && h.object !== wall && !h.object.isSprite);
+      if (!hit) return false;
+      let o = hit.object;
+      while (o) { if (o === tower) return true; o = o.parent; }
+      const pt = hit.point;
+      return Math.abs(pt.x) < 2.2 && pt.y > 0.3 && pt.z < 0.6;
+    }
+    function powerOn() {
+      if (phase !== "idle" || finished) return;
+      phase = "on";
+      poweredAt = performance.now();
+      canvasEl.style.cursor = "";
+      if (opts.onPower) opts.onPower();
+    }
+    canvasEl.addEventListener("pointermove", (e) => { if (phase === "idle") canvasEl.style.cursor = overComputer(e) ? "pointer" : ""; });
+    wrap.addEventListener("click", (e) => {
+      if (e.target.closest("button, a, .intro-ui")) return;
+      if (phase === "idle") { if (overComputer(e)) powerOn(); return; }
+      if (performance.now() - poweredAt > 500) finish();   // skip the rest of the flight
+    });
+    const onKey = (e) => {
+      if (paused || e.target.closest && e.target.closest("input, textarea, select")) return;
+      if (phase === "idle") { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); powerOn(); } else if (e.key === "Escape") finish(); return; }
+      finish();
+    };
+    addEventListener("keydown", onKey);
     function frame(ts) {
       raf = requestAnimationFrame(frame);
+      if (paused) return;
       try { step(ts); } catch (e) { finish(); }
     }
     function step(ts) {
-      if (t0 === null) t0 = ts;
+      if (tIdle0 === null) tIdle0 = ts;
+      const ti = (ts - tIdle0) / 1000;
+      if (phase === "idle") {
+        // computer off: the camera breathes a little, the power button glows so you know where to click
+        camera.position.copy(from).add(tmpV.set(Math.sin(ti * 0.31) * 0.18, Math.sin(ti * 0.23) * 0.1, 0));
+        camera.lookAt(look0);
+        pwr.material.color.set(0x14100a); monLed.material.color.set(0x1a2a1a);
+        const k = (Math.sin(ti * 3.2) + 1) / 2;
+        btn.material.emissive.setRGB(0.05 + 0.25 * k, 0.6 * k, 0.25 * k);
+        monLed.material.color.setRGB(0.15 + 0.6 * k, 0.05, 0.03);
+        screenGlow.intensity = 0;
+        animSmoke(ti);
+        drawScreen(0);
+        fade.style.opacity = ti < FADE_IN ? String(1 - ease(ti / FADE_IN)) : "0";
+        renderer.render(scene, camera);
+        return;
+      }
+      if (t0 === null) { t0 = ts - (startedIdle ? T_POWER * 1000 : 0); btn.material.emissive.setRGB(0, 0, 0); }
       const t = (ts - t0) / 1000;
       // camera: one eased glide along the spline, the look target follows the same curve
       const u = easeSine(Math.min(1, t / T_END));
@@ -4112,16 +4386,453 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
       hdd.material.color.set(busy && Math.sin(t * 37) * Math.sin(t * 13) > 0.1 ? 0xffa21a : 0x14100a);
       fdd.material.color.set(t > 1.0 && t < 1.9 ? 0x5be07e : 0x14100a);
       screenGlow.intensity = mOn ? Math.min(0.9, (t - 1.15) * 1.5) : 0;
-      animSmoke(t);
+      animSmoke(ti);
       drawScreen(t);
-      fade.style.opacity = t < FADE_IN ? String(1 - ease(t / FADE_IN)) : t > T_END - FADE_OUT ? String(ease(Math.min(1, (t - (T_END - FADE_OUT)) / FADE_OUT))) : "0";
+      const fin = t < FADE_IN && !startedIdle ? 1 - ease(t / FADE_IN) : 0;
+      fade.style.opacity = t > T_END - FADE_OUT ? String(ease(Math.min(1, (t - (T_END - FADE_OUT)) / FADE_OUT))) : String(fin);
       renderer.render(scene, camera);
       if (t >= T_END) finish();
     }
+    const tmpV = new THREE.Vector3();
     raf = requestAnimationFrame(frame);
-    setTimeout(finish, (T_END + 3) * 1000);   // safety net
+    if (!opts.idle) setTimeout(finish, (T_END + 3) * 1000);   // safety net
+    return {
+      powerOn,
+      finish,
+      pause() { paused = true; },
+      resume() { paused = false; },
+    };
   }
   window.XPIntro = { run };
+})();
+
+</script>
+<script>
+/* The way into Avlastymov XP: "are you a recruiter?" -> (recruiter view) or a dark desk where you
+   switch the computer on yourself -> the camera flies into the screen -> choose a language -> boot. */
+(() => {
+  "use strict";
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const T = (s) => (window.I18N ? I18N.t(s) : s);
+  const css = `
+.flow{position:fixed;inset:0;z-index:2300;pointer-events:none;font:13px/1.45 Tahoma,"Segoe UI",Verdana,sans-serif}
+.flow>*{pointer-events:auto}
+.fl-back{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .5s}
+.fl-back.on{opacity:1}
+.fl-dlg{position:absolute;left:50%;top:50%;width:min(520px,calc(100vw - 24px));transform:translate(-50%,-46%) scale(.97);opacity:0;transition:opacity .45s ease,transform .45s cubic-bezier(.2,.9,.3,1.1);background:#ECE9D8;border:3px solid #0831D9;border-top:0;border-radius:8px 8px 0 0;box-shadow:3px 6px 30px rgba(0,0,0,.6)}
+.fl-dlg.on{opacity:1;transform:translate(-50%,-50%)}
+.fl-dt{height:30px;display:flex;align-items:center;gap:6px;padding:0 8px;margin:0 -3px;border-radius:8px 8px 0 0;color:#fff;font:700 13px Tahoma,sans-serif;text-shadow:1px 1px #0F1089;background:linear-gradient(180deg,#0997FF 0%,#0053EE 9%,#0050EE 18%,#06F 38%,#0066FF 64%,#005BFF 82%,#003DD7 100%)}
+.fl-db{padding:18px 18px 16px;display:grid;gap:14px}
+.fl-q{display:flex;gap:14px;align-items:flex-start}
+.fl-q i{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:700 22px Tahoma,sans-serif;font-style:normal;color:#fff;background:radial-gradient(circle at 35% 30%,#7DB0FF,#1F57D6 70%);box-shadow:0 2px 3px rgba(0,0,0,.35)}
+.fl-q h2{margin:0;font:700 16px Tahoma,sans-serif;color:#0A2A6B}
+.fl-q p{margin:4px 0 0;color:#333}
+.fl-ch{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fl-c{display:grid;gap:4px;justify-items:start;text-align:left;padding:12px 14px;border:1px solid #003C74;border-radius:4px;background:linear-gradient(#FFF,#ECE9D8);cursor:pointer;font:12px Tahoma,sans-serif;color:#333}
+.fl-c:hover,.fl-c:focus-visible{box-shadow:inset 0 0 0 2px #F8B636;outline:none}
+.fl-c b{font-size:14px;color:#0A2A6B}
+.fl-c span.ic{font-size:24px;line-height:1}
+.fl-c.hr{background:linear-gradient(#F4FFF2,#D9F0D2);border-color:#2E8B2A}
+.fl-hint{position:absolute;left:50%;bottom:26px;transform:translate(-50%,10px);display:flex;align-items:center;gap:12px;padding:9px 16px;border-radius:22px;background:rgba(8,12,18,.78);border:1px solid rgba(120,255,160,.35);color:#C9FFD8;font:13px Tahoma,sans-serif;box-shadow:0 0 22px rgba(60,255,120,.18);opacity:0;transition:opacity .5s,transform .5s;white-space:nowrap}
+.fl-hint.on{opacity:1;transform:translate(-50%,0)}
+.fl-hint b{color:#7CFF9F;animation:flPulse 1.4s ease-in-out infinite}
+@keyframes flPulse{50%{opacity:.35}}
+.fl-hint button{border:0;background:none;color:#8a96a8;font:12px Tahoma,sans-serif;cursor:pointer;text-decoration:underline;padding:0}
+.fl-hint.skip{border-color:rgba(255,255,255,.12);box-shadow:none;color:#8a96a8;background:rgba(0,0,0,.4)}
+/* language choice, styled like the XP log-on screen */
+.fl-lang{position:absolute;inset:0;display:grid;grid-template-rows:12% 1fr 12%;background:#5A7EDC;opacity:0;transition:opacity .6s ease}
+.fl-lang.on{opacity:1}
+.fl-lang .top,.fl-lang .bot{background:#00309C}
+.fl-lang .top{border-bottom:2px solid transparent;border-image:linear-gradient(90deg,transparent,#fff 30%,#fff 70%,transparent) 1}
+.fl-lang .bot{border-top:2px solid transparent;border-image:linear-gradient(90deg,transparent,#F08A24 30%,#F08A24 70%,transparent) 1;display:flex;align-items:center;padding:0 4%;color:#C9D8FF;font-size:12px}
+.fl-mid{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;background:radial-gradient(ellipse at 20% 30%,#7C9EEE,#5A7EDC 60%)}
+.fl-brand{justify-self:end;padding-right:42px;text-align:right;color:#fff}
+.fl-brand .logo{font:700 italic 42px/1 Tahoma,sans-serif;letter-spacing:-.02em;text-shadow:0 2px 6px rgba(0,0,0,.25)}
+.fl-brand .logo sup{font-size:20px;color:#FF8A1E;font-style:normal;margin-left:3px}
+.fl-brand p{margin:14px 0 0;font-size:15px;line-height:1.6;color:#E8EEFF}
+.fl-sep{width:2px;height:62%;background:linear-gradient(transparent,#fff 30%,#fff 70%,transparent)}
+.fl-users{padding-left:38px;display:grid;gap:10px;justify-items:start}
+.fl-u{display:flex;align-items:center;gap:14px;padding:6px 18px 6px 6px;border:0;border-radius:8px;background:transparent;color:#fff;font:15px Tahoma,sans-serif;cursor:pointer;text-align:left;min-width:250px}
+.fl-u:hover,.fl-u:focus-visible{background:linear-gradient(90deg,#003399,rgba(0,51,153,0));outline:none}
+.fl-u .pic{width:52px;height:52px;border:2px solid #fff;border-radius:6px;display:grid;place-items:center;font:700 19px Tahoma,sans-serif;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,.3)}
+.fl-u small{display:block;font-size:11.5px;color:#C9D8FF}
+@media (max-width:760px){.fl-mid{grid-template-columns:1fr;grid-template-rows:auto auto;align-content:center;gap:22px}.fl-brand{justify-self:center;text-align:center;padding:0}.fl-sep{display:none}.fl-users{padding:0;justify-self:center}.fl-ch{grid-template-columns:1fr}.fl-hint{white-space:normal;width:calc(100vw - 30px);justify-content:center;text-align:center}}
+`;
+  const PICS = { uk: "linear-gradient(#2E6FD8 50%,#F2C230 50%)", en: "linear-gradient(135deg,#1F3F8F,#C8102E)", de: "linear-gradient(#222 33%,#D00 33% 66%,#F5C400 66%)", zh: "linear-gradient(135deg,#D7261E,#F2A900)" };
+  const HEAD = { uk: "Оберіть мову", en: "Choose your language", de: "Sprache wählen", zh: "选择语言" };
+
+  let root, back;
+  function el(tag, cls, html) { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+  function build() {
+    const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+    root = el("div", "flow"); root.id = "flow";
+    back = el("div", "fl-back"); back.hidden = true;
+    root.appendChild(back);
+    document.body.appendChild(root);
+  }
+  const show = (e) => { e.hidden = false; requestAnimationFrame(() => requestAnimationFrame(() => e.classList.add("on"))); };
+  const hide = (e, ms = 450) => { e.classList.remove("on"); setTimeout(() => { e.remove(); }, ms); };
+
+  function ask(cb) {
+    show(back);
+    const d = el("div", "fl-dlg");
+    d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true");
+    d.innerHTML = `<div class="fl-dt">Avlastymov XP</div>
+      <div class="fl-db">
+        <div class="fl-q"><i>?</i><div><h2>${T("Welcome! Who are you?")}</h2><p>${T("This site is my portfolio and my resume at the same time. Choose how you want to see it.")}</p></div></div>
+        <div class="fl-ch">
+          <button class="fl-c hr" type="button" data-v="hr"><span class="ic">💼</span><b>${T("I'm a recruiter / HR")}</b><span>${T("The resume on one page, in a minute")}</span></button>
+          <button class="fl-c" type="button" data-v="visit"><span class="ic">🖥</span><b>${T("I'm just visiting")}</b><span>${T("Turn on the computer and explore")}</span></button>
+        </div>
+      </div>`;
+    d.addEventListener("keydown", (e) => e.stopPropagation());   // Enter here must not also press the power button
+    root.appendChild(d);
+    show(d);
+    d.querySelector('[data-v="hr"]').focus({ preventScroll: true });
+    d.querySelectorAll(".fl-c").forEach((b) => b.addEventListener("click", () => {
+      hide(d);
+      back.classList.remove("on");
+      setTimeout(() => { back.hidden = true; }, 500);
+      cb(b.dataset.v);
+    }));
+  }
+  let hint = null;
+  function setHint(kind, onSkip) {
+    if (hint) { const h = hint; hint = null; hide(h, 500); }
+    if (!kind) return;
+    hint = el("div", "fl-hint" + (kind === "skip" ? " skip" : ""));
+    const coarse = matchMedia("(pointer: coarse)").matches;
+    hint.innerHTML = kind === "power"
+      ? `<b>⏻</b><span>${T(coarse ? "Tap the computer to turn it on" : "Click the computer to turn it on")}</span><button type="button">${T("Skip intro")}</button>`
+      : `<span>${T(coarse ? "tap to skip" : "click or press any key to skip")}</span>`;
+    const b = hint.querySelector("button");
+    if (b && onSkip) b.addEventListener("click", onSkip);
+    root.appendChild(hint);
+    show(hint);
+  }
+  function pickLanguage(cb) {
+    const p = el("div", "fl-lang");
+    p.setAttribute("role", "dialog"); p.setAttribute("aria-label", "Choose your language");
+    const cur = window.I18N ? I18N.lang : "en";
+    const langs = window.I18N ? I18N.LANGS : ["en"];
+    p.innerHTML = `<div class="top"></div>
+      <div class="fl-mid">
+        <div class="fl-brand"><div class="logo">Avlastymov<sup>XP</sup></div><p>${langs.map((l) => HEAD[l]).join("<br>")}</p></div>
+        <div class="fl-sep"></div>
+        <div class="fl-users">${langs.map((l) => `<button class="fl-u" type="button" data-l="${l}"><span class="pic" style="background:${PICS[l]}">${window.I18N ? I18N.SHORT[l] : l}</span><span>${window.I18N ? I18N.NAMES[l] : l}<small>${HEAD[l]}</small></span></button>`).join("")}</div>
+      </div>
+      <div class="bot">Denys Avlastymov · me1atoninvomne.github.io</div>`;
+    p.addEventListener("keydown", (e) => e.stopPropagation());
+    root.appendChild(p);
+    show(p);
+    const btns = [...p.querySelectorAll(".fl-u")];
+    (btns.find((b) => b.dataset.l === cur) || btns[0]).focus({ preventScroll: true });
+    p.addEventListener("keydown", (e) => {
+      const i = btns.indexOf(document.activeElement);
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); btns[(i + (e.key === "ArrowDown" ? 1 : btns.length - 1)) % btns.length].focus(); }
+    });
+    btns.forEach((b) => b.addEventListener("click", () => {
+      if (window.I18N) I18N.set(b.dataset.l);
+      cb();                        // the boot logo starts underneath...
+      setTimeout(() => hide(p, 650), 120);   // ...and the log-on screen fades away over it
+    }));
+  }
+
+  function start({ logoBoot }) {
+    build();
+    const intro = document.getElementById("intro");
+    let api = null, introFailed = false, asked = false, introDone = false;
+    const afterIntro = () => {
+      if (!asked) { introFailed = true; return; }   // no WebGL: we'll go straight to the language
+      if (introDone) return;
+      introDone = true;
+      setHint(null);
+      pickLanguage(logoBoot);
+    };
+    if (window.XPIntro && !reduceMotion) {
+      try { api = XPIntro.run(afterIntro, { idle: true, onPower: () => setHint("skip") }); } catch (e) { introFailed = true; }
+    } else introFailed = true;
+    const explore = () => {
+      if (introFailed || !api) { if (intro) intro.hidden = true; introDone = true; pickLanguage(logoBoot); return; }
+      api.resume();
+      setHint("power", () => api.finish());
+    };
+    ask((v) => {
+      asked = true;
+      if (v === "hr" && window.XPRecruiter) {
+        if (api) api.pause();
+        XPRecruiter.open({ onExplore: explore });
+      } else explore();
+    });
+  }
+  window.XPFlow = { start, pickLanguage };
+})();
+
+</script>
+<script>
+/* Recruiter mode: the whole resume on one page, in an XP window, ready to print or save as PDF. */
+(() => {
+  "use strict";
+  const GH = "https://github.com/me1atoninvomne/";
+  const css = `
+.rc{position:fixed;inset:0;z-index:2600;display:flex;flex-direction:column;background:#ECE9D8;font:13px/1.5 Tahoma,"Segoe UI",Verdana,sans-serif;color:#1d2433;opacity:0;transition:opacity .35s ease}
+.rc.on{opacity:1}
+.rc[hidden]{display:none}
+.rc-title{flex:none;height:32px;display:flex;align-items:center;gap:8px;padding:0 6px 0 10px;color:#fff;font:700 13px Tahoma,sans-serif;text-shadow:1px 1px #0F1089;background:linear-gradient(180deg,#0997FF 0%,#0053EE 9%,#0050EE 18%,#06F 38%,#0066FF 64%,#005BFF 82%,#003DD7 100%)}
+.rc-title b{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc-x{width:22px;height:22px;border-radius:3px;border:1px solid #fff;cursor:pointer;position:relative;padding:0;background:linear-gradient(180deg,#F2876B,#D7462A 55%,#C6361C)}
+.rc-x::before,.rc-x::after{content:"";position:absolute;left:50%;top:50%;width:3px;height:14px;margin:-7px 0 0 -1.5px;background:#fff;border-radius:1px}
+.rc-x::before{transform:rotate(45deg)}.rc-x::after{transform:rotate(-45deg)}
+.rc-bar{flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px 10px;border-bottom:1px solid #D0CCB8;background:linear-gradient(#F7F6EF,#ECE9D8)}
+.rc-btn{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border:1px solid #003C74;border-radius:3px;background:linear-gradient(#FFF,#ECE9D8);font:12px Tahoma,sans-serif;color:#000;cursor:pointer;text-decoration:none}
+.rc-btn:hover{box-shadow:inset 0 0 0 1px #F8B636}
+.rc-btn.go{background:linear-gradient(#5FB65A,#2E8B2A);color:#fff;border-color:#1F6B1C;font-weight:700;text-shadow:0 1px 0 rgba(0,0,0,.3)}
+.rc-langs{display:flex;gap:2px;margin-left:auto}
+.rc-langs button{min-width:34px;padding:3px 7px;border:1px solid #9A9A8A;border-radius:3px;background:#fff;font:12px Tahoma,sans-serif;cursor:pointer}
+.rc-langs button[aria-pressed="true"]{background:#316AC5;color:#fff;border-color:#1F4FA0}
+.rc-scroll{flex:1;overflow:auto;padding:22px 14px 40px}
+.rc-paper{max-width:900px;margin:0 auto;background:#fff;border:1px solid #B5B1A0;box-shadow:2px 3px 12px rgba(0,0,0,.18);padding:34px 40px}
+.rc-head{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;border-bottom:3px solid #0A4CC4;padding-bottom:18px}
+.rc-head h1{margin:0;font:700 34px/1.1 Tahoma,sans-serif;color:#0A2A6B;letter-spacing:-.01em}
+.rc-role{margin:6px 0 0;font:700 16px Tahoma,sans-serif;color:#E2670F}
+.rc-sub{margin:6px 0 0;color:#4a5468}
+.rc-contact{display:grid;gap:5px;font-size:13px;min-width:230px}
+.rc-contact a{color:#0A4CC4;text-decoration:none}.rc-contact a:hover{text-decoration:underline}
+.rc-contact span{display:flex;gap:8px;align-items:center}
+.rc-contact i{font-style:normal;width:18px;text-align:center}
+.rc h2{margin:26px 0 10px;font:700 15px Tahoma,sans-serif;color:#0A2A6B;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:10px}
+.rc h2::after{content:"";flex:1;height:1px;background:#D7DCE6}
+.rc-lead{margin:0;font-size:14px}
+.rc-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rc-card{border:1px solid #C9D3E6;border-radius:6px;padding:12px 14px;background:linear-gradient(#FBFCFF,#F1F5FD)}
+.rc-card h3{margin:0 0 6px;font:700 14px Tahoma,sans-serif;color:#0A2A6B}
+.rc-card p{margin:0;color:#3b4457;font-size:12.5px}
+.rc-tag{display:inline-block;margin-bottom:6px;padding:1px 7px;border-radius:9px;font:700 10.5px Tahoma,sans-serif;letter-spacing:.04em;color:#fff;background:#0A4CC4}
+.rc-tag.qa{background:#2E8B2A}.rc-tag.sql{background:#B4541A}.rc-tag.web{background:#6B3FA0}
+.rc-proj{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.rc-proj a{display:block;text-decoration:none;color:inherit}
+.rc-proj a:hover .rc-card{border-color:#316AC5;box-shadow:0 0 0 2px rgba(49,106,197,.15)}
+.rc-proj code{font:12px "JetBrains Mono","Courier New",monospace;color:#0A2A6B}
+.rc-job{display:grid;grid-template-columns:120px 1fr;gap:4px 18px;margin-bottom:12px}
+.rc-job b{color:#0A2A6B}
+.rc-job .when{color:#6b7488;font-size:12.5px;padding-top:1px}
+.rc-job p{margin:2px 0 0;color:#3b4457}
+.rc-chips{display:flex;flex-wrap:wrap;gap:6px}
+.rc-chips span{padding:3px 10px;border-radius:12px;background:#EEF3FC;border:1px solid #C9D3E6;font-size:12.5px}
+.rc-foot{margin-top:28px;padding-top:12px;border-top:1px solid #D7DCE6;color:#6b7488;font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (max-width:760px){.rc-head{grid-template-columns:1fr}.rc-paper{padding:22px 18px}.rc-cols,.rc-proj{grid-template-columns:1fr}.rc-job{grid-template-columns:1fr}.rc-contact{margin-left:0}.rc-head h1{font-size:28px}}
+@media print{
+  body>*:not(.rc){display:none!important}
+  html,body{background:#fff!important;overflow:visible!important;height:auto!important}
+  .rc{position:static;opacity:1!important;display:block;background:#fff}
+  .rc-title,.rc-bar{display:none!important}
+  .rc-scroll{overflow:visible;padding:0}
+  .rc-paper{border:0;box-shadow:none;max-width:none;padding:0}
+  .rc-proj a{break-inside:avoid}.rc-card{break-inside:avoid}
+}`;
+
+  const html = `
+  <div class="rc-title"><b>Recruiter view - Denys Avlastymov</b><button class="rc-x" type="button" aria-label="Close"></button></div>
+  <div class="rc-bar">
+    <button class="rc-btn go" type="button" data-rc="explore">▶ <span>Explore the full site</span></button>
+    <button class="rc-btn" type="button" data-rc="print">🖨 <span>Print or save as PDF</span></button>
+    <a class="rc-btn" href="mailto:slekktt@gmail.com">✉ <span>Email me</span></a>
+    <div class="rc-langs" data-no-i18n></div>
+  </div>
+  <div class="rc-scroll"><article class="rc-paper">
+    <header class="rc-head">
+      <div>
+        <h1 data-no-i18n>Denys Avlastymov</h1>
+        <p class="rc-role">AI Automation · QA · SQL</p>
+        <p class="rc-sub">Junior specialist · Bachelor's in Applied Economics, Comenius University in Bratislava (2026) · Open to remote work</p>
+      </div>
+      <div class="rc-contact" data-no-i18n>
+        <span><i>✉</i><a href="mailto:slekktt@gmail.com">slekktt@gmail.com</a></span>
+        <span><i>☎</i><a href="tel:+380666442068">+380 66 644 2068</a></span>
+        <span><i>⌂</i><a href="https://github.com/me1atoninvomne" target="_blank" rel="noopener">github.com/me1atoninvomne</a></span>
+        <span><i>◉</i><a href="https://me1atoninvomne.github.io" target="_blank" rel="noopener">me1atoninvomne.github.io</a></span>
+      </div>
+    </header>
+
+    <h2>In short</h2>
+    <p class="rc-lead">I connect language models to everyday work: support tickets, reports, stock checks. I write and test prompts, build automations in n8n and Make, and check that the result is right, with the eye of a QA tester and the numbers of an SQL analyst.</p>
+
+    <h2>What I can do for your team</h2>
+    <div class="rc-cols">
+      <div class="rc-card"><span class="rc-tag">AI</span><h3>AI automation and prompts</h3><p>Prompts for ChatGPT, Claude, DeepSeek and Qwen, AI assistants for business workflows, n8n and Make automations, checking LLM answers.</p></div>
+      <div class="rc-card"><span class="rc-tag qa">QA</span><h3>Testing</h3><p>Test plans and test cases, clear bug reports in Jira, API tests in Postman and Newman, UI tests with Playwright.</p></div>
+      <div class="rc-card"><span class="rc-tag sql">SQL</span><h3>Data and reports</h3><p>SQL queries that answer business questions: revenue, top products, refunds, delivery problems. Excel and Google Sheets.</p></div>
+    </div>
+
+    <h2>Best projects</h2>
+    <div class="rc-proj">
+      <a href="${GH}ai-support-ticket-triage" target="_blank" rel="noopener"><div class="rc-card"><span class="rc-tag">AI</span><h3><code>ai-support-ticket-triage</code></h3><p>n8n workflow: an LLM sorts support messages in any language by topic and urgency, validates its own JSON, drafts replies and alerts Slack.</p></div></a>
+      <a href="${GH}llm-prompt-benchmark" target="_blank" rel="noopener"><div class="rc-card"><span class="rc-tag">AI</span><h3><code>llm-prompt-benchmark</code></h3><p>Sends the same prompts to DeepSeek, Qwen, GPT and Claude, checks every answer automatically and compares prompt versions.</p></div></a>
+      <a href="${GH}manual-qa-portfolio" target="_blank" rel="noopener"><div class="rc-card"><span class="rc-tag qa">QA</span><h3><code>manual-qa-portfolio</code></h3><p>Full test cycle for a demo shop: test plan, 37 test cases, Jira-style bug reports and a summary report, plus a Postman API suite.</p></div></a>
+      <a href="${GH}saucedemo-automation" target="_blank" rel="noopener"><div class="rc-card"><span class="rc-tag qa">QA</span><h3><code>saucedemo-automation</code></h3><p>The manual test plan turned into code: Playwright + TypeScript with Page Objects, 3 browsers, and CI on every push.</p></div></a>
+      <a href="${GH}retail-sql-analytics" target="_blank" rel="noopener"><div class="rc-card"><span class="rc-tag sql">SQL</span><h3><code>retail-sql-analytics</code></h3><p>A simulated grocery chain database and six business questions: revenue, top products, refunds, delivery discrepancies, customer segments.</p></div></a>
+      <a href="https://github.com/me1atoninvomne/me1atoninvomne.github.io" target="_blank" rel="noopener"><div class="rc-card"><span class="rc-tag web">WEB</span><h3><code>this website</code></h3><p>A retro operating system built from scratch in plain JavaScript: a 3D PC builder, games, a desktop assistant and four languages.</p></div></a>
+    </div>
+
+    <h2>Experience</h2>
+    <div class="rc-job"><span class="when">2026 – now</span><div><b>AI Prompt Engineer · AI Automation Specialist</b><p>Independent AI projects: prompts for ChatGPT, Claude, DeepSeek and Qwen; AI assistants for business workflows; automation with n8n, Make and AI APIs; LLM evaluation.</p></div></div>
+    <div class="rc-job"><span class="when">2025</span><div><b>SQL Analyst &amp; Manual QA</b><p>Functional testing, bug reports in Jira, API testing in Postman, SQL reporting.</p></div></div>
+    <div class="rc-job"><span class="when">2024 – 2026</span><div><b>Shift Manager, Woltmarket</b><p>Deliveries and invoice checks, shift planning, daily sales reports, refunds, Excel and Google Sheets. The store reached the global top 15 of the chain and held it for 3 months.</p></div></div>
+    <div class="rc-job"><span class="when">2023 – 2024</span><div><b>Grocery Associate and online customer support</b></div></div>
+
+    <h2>Education</h2>
+    <div class="rc-job"><span class="when">2026</span><div><b>Bachelor's in Applied Economics</b><p>Comenius University in Bratislava, Faculty of Social and Economic Sciences</p></div></div>
+
+    <h2>Skills</h2>
+    <div class="rc-chips" data-no-i18n><span>Prompt engineering</span><span>LLM evaluation</span><span>n8n</span><span>Make</span><span>OpenAI-compatible APIs</span><span>Java</span><span>Spring Boot</span><span>SQL</span><span>C++</span><span>Rust</span><span>Postman</span><span>Jira</span><span>Playwright</span><span>Excel</span><span>Google Sheets</span><span>Slack</span></div>
+
+    <h2>Languages</h2>
+    <p class="rc-lead">Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1</p>
+
+    <footer class="rc-foot"><span>References available on request.</span><span>me1atoninvomne.github.io</span></footer>
+  </article></div>`;
+
+  let root = null, onExplore = null;
+  function paintLangs() {
+    const box = root.querySelector(".rc-langs");
+    box.innerHTML = "";
+    I18N.LANGS.forEach((l) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.textContent = I18N.SHORT[l]; b.title = I18N.NAMES[l];
+      b.setAttribute("aria-pressed", String(l === I18N.lang));
+      b.addEventListener("click", () => { I18N.set(l); paintLangs(); });
+      box.appendChild(b);
+    });
+  }
+  function build() {
+    const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
+    root = document.createElement("div");
+    root.className = "rc"; root.hidden = true;
+    root.setAttribute("role", "dialog"); root.setAttribute("aria-label", "Recruiter view");
+    root.innerHTML = html;
+    document.body.appendChild(root);
+    root.querySelector(".rc-x").addEventListener("click", () => close(true));
+    root.querySelector('[data-rc="explore"]').addEventListener("click", () => close(true));
+    root.querySelector('[data-rc="print"]').addEventListener("click", () => window.print());
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape" && root && !root.hidden) close(true); });
+  }
+  function open(opts = {}) {
+    if (!root) build();
+    onExplore = opts.onExplore || null;
+    paintLangs();
+    root.hidden = false;
+    if (window.I18N) I18N.apply(root);
+    requestAnimationFrame(() => root.classList.add("on"));
+    root.querySelector(".rc-scroll").scrollTop = 0;
+  }
+  function close(explore) {
+    if (!root || root.hidden) return;
+    root.classList.remove("on");
+    setTimeout(() => { root.hidden = true; }, 350);
+    const fn = onExplore; onExplore = null;
+    if (explore && fn) fn();
+  }
+  window.XPRecruiter = { open, close, get isOpen() { return !!root && !root.hidden; } };
+})();
+
+</script>
+<script>
+/* GitHub Activity window: live public data from the GitHub API (no token), cached for 30 minutes. */
+(() => {
+  "use strict";
+  const USER = "me1atoninvomne";
+  const API = "https://api.github.com/users/" + USER;
+  const KEY = "denis.gh.cache.v1", TTL = 30 * 60 * 1000;
+  const T = (s, v) => (window.I18N ? (v ? I18N.tf(s, v) : I18N.t(s)) : s.replace(/\{(\w+)\}/g, (m, k) => (v && k in v ? v[k] : m)));
+  const COLORS = { Java: "#B07219", JavaScript: "#E2C33A", TypeScript: "#3178C6", Python: "#3572A5", Rust: "#DEA584", "C++": "#F34B7D", HTML: "#E34C26", CSS: "#563D7C", Shell: "#89E051" };
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const store = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* ignore */ } } };
+  const lang = () => (window.I18N ? I18N.lang : "en");
+  const loc = () => ({ uk: "uk", en: "en", de: "de", zh: "zh-CN" }[lang()] || "en");
+  function ago(iso) {
+    const s = (new Date(iso).getTime() - Date.now()) / 1000;
+    const rtf = new Intl.RelativeTimeFormat(loc(), { numeric: "auto" });
+    const steps = [["year", 31536000], ["month", 2592000], ["week", 604800], ["day", 86400], ["hour", 3600], ["minute", 60]];
+    for (const [u, n] of steps) if (Math.abs(s) >= n) return rtf.format(Math.round(s / n), u);
+    return rtf.format(0, "minute");
+  }
+
+  let data = null, loading = false;
+  async function fetchAll() {
+    const get = (u) => fetch(u, { headers: { Accept: "application/vnd.github+json" } }).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+    const [user, repos, events] = await Promise.all([get(API), get(API + "/repos?per_page=100&sort=pushed"), get(API + "/events/public?per_page=40").catch(() => [])]);
+    return { at: Date.now(), user, repos, events };
+  }
+  function eventLine(e) {
+    const repo = (e.repo && e.repo.name || "").replace(USER + "/", "");
+    const r = `<a href="https://github.com/${esc(e.repo.name)}" target="_blank" rel="noopener">${esc(repo)}</a>`;
+    const p = e.payload || {};
+    switch (e.type) {
+      case "PushEvent": {
+        const n = p.size || (p.commits && p.commits.length) || 0;
+        return n ? T("Pushed {n} commit(s) to {repo}", { n, repo: r }) : T("Pushed to {repo}", { repo: r });
+      }
+      case "CreateEvent": return p.ref_type === "repository" ? T("Created the repository {repo}", { repo: r }) : T("Created a branch in {repo}", { repo: r });
+      case "PublicEvent": return T("Made {repo} public", { repo: r });
+      case "WatchEvent": return T("Starred {repo}", { repo: r });
+      case "ForkEvent": return T("Forked {repo}", { repo: r });
+      case "PullRequestEvent": return T("Pull request in {repo}", { repo: r });
+      case "IssuesEvent": return T("Issue in {repo}", { repo: r });
+      case "ReleaseEvent": return T("Published a release of {repo}", { repo: r });
+      default: return T("Activity in {repo}", { repo: r });
+    }
+  }
+  function render() {
+    const box = document.getElementById("ghBody");
+    if (!box) return;
+    if (!data) {
+      box.innerHTML = `<div class="gh-msg">${loading ? T("Loading live data from GitHub…") : T("GitHub did not answer. It allows 60 requests an hour per visitor, so please try again a bit later.")}${loading ? "" : `<br><button class="xp-btn" data-gh="reload">${T("Try again")}</button>`}</div>`;
+      return;
+    }
+    const { user, repos, events } = data;
+    const own = repos.filter((r) => !r.fork);
+    const langs = {};
+    own.forEach((r) => { if (r.language) langs[r.language] = (langs[r.language] || 0) + 1; });
+    const total = Object.values(langs).reduce((a, b) => a + b, 0) || 1;
+    const sorted = Object.entries(langs).sort((a, b) => b[1] - a[1]);
+    const stars = own.reduce((a, r) => a + r.stargazers_count, 0);
+    const nf = new Intl.NumberFormat(loc());
+    const since = new Date(user.created_at).getFullYear();
+    const lastPush = own.length ? own.map((r) => r.pushed_at).sort().pop() : null;
+    box.innerHTML = `
+      <div class="gh-top">
+        <img class="gh-ava" src="${esc(user.avatar_url)}&s=96" alt="" width="64" height="64">
+        <div><b class="gh-name" data-no-i18n>Denys Avlastymov</b><a class="gh-login" href="${esc(user.html_url)}" target="_blank" rel="noopener" data-no-i18n>@${esc(user.login)}</a>
+          <div class="gh-sub">${T("On GitHub since {y}", { y: since })}${lastPush ? " · " + T("last push {t}", { t: ago(lastPush) }) : ""}</div></div>
+      </div>
+      <div class="gh-kpis">
+        <div><b>${nf.format(user.public_repos)}</b><span>${T("public repositories")}</span></div>
+        <div><b>${nf.format(sorted.length)}</b><span>${T("languages")}</span></div>
+        <div><b>${nf.format(stars)}</b><span>${T("stars")}</span></div>
+        <div><b>${nf.format(user.followers)}</b><span>${T("followers")}</span></div>
+      </div>
+      <h4>${T("Languages in my repositories")}</h4>
+      <div class="gh-bar">${sorted.map(([l, n]) => `<i style="width:${(n / total) * 100}%;background:${COLORS[l] || "#8A94A6"}" title="${esc(l)} ${n}"></i>`).join("")}</div>
+      <div class="gh-legend" data-no-i18n>${sorted.map(([l, n]) => `<span><i style="background:${COLORS[l] || "#8A94A6"}"></i>${esc(l)} <small>${Math.round((n / total) * 100)}%</small></span>`).join("")}</div>
+      <div class="gh-cols">
+        <div><h4>${T("Recent activity")}</h4><ul class="gh-feed">${events.length ? events.slice(0, 9).map((e) => `<li><span>${eventLine(e)}</span><small>${ago(e.created_at)}</small></li>`).join("") : `<li><span>${T("No public activity in the last 90 days.")}</span></li>`}</ul></div>
+        <div><h4>${T("Repositories")}</h4><ul class="gh-repos">${own.slice(0, 12).map((r) => `<li><a href="${esc(r.html_url)}" target="_blank" rel="noopener" data-no-i18n>${esc(r.name)}</a><small><i style="background:${COLORS[r.language] || "#8A94A6"}"></i>${esc(r.language || "–")} · ${ago(r.pushed_at)}${r.stargazers_count ? " · ★ " + r.stargazers_count : ""}</small></li>`).join("")}</ul></div>
+      </div>
+      <div class="gh-foot"><span>${T("Live data from the GitHub API, updated {t}", { t: new Date(data.at).toLocaleTimeString(loc(), { hour: "2-digit", minute: "2-digit" }) })}</span><button class="xp-btn" data-gh="reload">↻ ${T("Refresh")}</button></div>`;
+  }
+  async function load(force) {
+    if (loading) return;
+    const cached = store.get(KEY);
+    if (!force && cached && Date.now() - cached.at < TTL) { data = cached; render(); return; }
+    if (cached && !force) data = cached;   // show the old numbers while new ones load
+    loading = true; render();
+    try { data = await fetchAll(); store.set(KEY, data); }
+    catch (e) { if (!data) data = null; }
+    loading = false; render();
+  }
+  document.addEventListener("click", (e) => { const b = e.target.closest('[data-gh="reload"]'); if (b) load(true); });
+  if (window.I18N) I18N.onChange(() => render());
+  window.XPGitHub = { load };
 })();
 
 </script>
@@ -4213,6 +4924,7 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
     }
     root = document.createElement("div");
     root.className = "hk";
+    root.setAttribute("data-no-i18n", "");
     root.setAttribute("aria-hidden", "true");
     root.innerHTML = `
       <canvas></canvas>
@@ -4533,7 +5245,7 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
     root.className = "cat";
     root.hidden = true;
     root.innerHTML = `
-      <div class="cat-bubble" role="dialog" aria-live="polite" hidden>
+      <div class="cat-bubble" role="dialog" aria-live="polite" data-no-i18n hidden>
         <div class="cat-head"><span>${NAME}</span><button class="cat-snd" type="button"></button><button class="cat-x" type="button" aria-label="Close">✕</button></div>
         <div class="cat-text"></div><div class="cat-menu"></div><div class="cat-next"></div>
       </div>
@@ -4585,7 +5297,9 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
     o.connect(g).connect(a.destination);
     o.start(t); o.stop(t + 0.07);
   }
+  const T = (s) => (window.I18N ? I18N.t(s) : s);
   function say(text, id, speed = 24) {
+    text = T(text);
     return new Promise((resolve) => {
       menuEl.innerHTML = ""; nextEl.innerHTML = "";
       bubble.hidden = false;
@@ -4611,7 +5325,7 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
       nextEl.innerHTML = "";
       list.forEach(([label, value]) => {
         const b = document.createElement("button");
-        b.type = "button"; b.textContent = label;
+        b.type = "button"; b.textContent = T(label);
         b.addEventListener("click", (e) => { e.stopPropagation(); resolve(value); });
         nextEl.appendChild(b);
       });
@@ -4658,7 +5372,7 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
       MENU.forEach(([ico, label, fn]) => {
         const b = document.createElement("button");
         b.type = "button";
-        b.innerHTML = `<b>${ico}</b>${label}`;
+        b.innerHTML = `<b>${ico}</b>${T(label)}`;
         b.addEventListener("click", (e) => { e.stopPropagation(); fn(); });
         menuEl.appendChild(b);
       });
@@ -5054,6 +5768,11 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
 
 </script>
 <script>
+/* generated by gen_pix.py: pixel-art desktop icons as plain SVG (no canvas, so they never get wiped) */
+window.PIX_ICONS = {"bin":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M4 2h12v1H4zM3 3h1v1H3zM16 3h1v1H16zM2 4h1v1H2zM17 4h1v1H17zM3 5h1v1H3zM16 5h1v1H16zM4 6h1v1H4zM15 6h1v1H15zM4 7h1v1H4zM15 7h1v1H15zM4 8h1v1H4zM15 8h1v1H15zM4 9h1v1H4zM15 9h1v1H15zM4 10h1v1H4zM15 10h1v1H15zM4 11h1v1H4zM15 11h1v1H15zM4 12h1v1H4zM15 12h1v1H15zM4 13h1v1H4zM15 13h1v1H15zM4 14h1v1H4zM15 14h1v1H15zM5 15h1v1H5zM14 15h1v1H14zM5 16h1v1H5zM14 16h1v1H14zM5 17h1v1H5zM14 17h1v1H14zM5 18h1v1H5zM14 18h1v1H14zM6 19h8v1H6z\"/><path fill=\"#8080a8\" d=\"M4 3h12v1H4zM3 4h1v1H3zM16 4h1v1H16zM5 10h1v1H5zM14 10h1v1H14zM5 11h1v1H5zM14 11h1v1H14zM5 12h1v1H5zM14 12h1v1H14zM5 13h1v1H5zM14 13h1v1H14zM5 14h1v1H5zM14 14h1v1H14zM6 17h1v1H6zM13 17h1v1H13zM6 18h8v1H6z\"/><path fill=\"#a8d0d0\" d=\"M4 4h1v1H4zM15 4h1v1H15zM9 10h2v1H9zM8 11h4v1H8zM7 12h4v1H7zM12 12h1v1H12zM6 13h8v1H6zM7 14h6v1H7zM7 15h1v1H7zM12 15h1v1H12zM7 16h6v1H7z\"/><path fill=\"#d0d0d0\" d=\"M5 4h10v1H5zM7 7h1v1H7zM12 7h1v1H12zM9 8h2v1H9zM6 12h1v1H6zM11 12h1v1H11zM13 12h1v1H13z\"/><path fill=\"#80a8a8\" d=\"M4 5h12v1H4zM5 9h1v1H5zM14 9h1v1H14z\"/><path fill=\"#a8a8d0\" d=\"M5 6h1v1H5zM14 6h1v1H14zM5 7h1v1H5zM14 7h1v1H14zM7 8h1v1H7zM12 8h1v1H12zM7 9h1v1H7zM12 9h1v1H12zM7 10h1v1H7zM12 10h1v1H12zM7 11h1v1H7zM12 11h1v1H12zM6 14h1v1H6zM13 14h1v1H13zM6 15h1v1H6zM8 15h4v1H8zM13 15h1v1H13zM6 16h1v1H6zM13 16h1v1H13zM7 17h6v1H7z\"/><path fill=\"#d0d0f8\" d=\"M6 6h8v1H6zM9 7h2v1H9zM6 10h1v1H6zM13 10h1v1H13zM6 11h1v1H6zM13 11h1v1H13z\"/><path fill=\"#f8f8f8\" d=\"M6 7h1v1H6zM8 7h1v1H8zM11 7h1v1H11zM13 7h1v1H13z\"/><path fill=\"#a8a8a8\" d=\"M5 8h1v1H5zM14 8h1v1H14z\"/><path fill=\"#d0f8f8\" d=\"M6 8h1v1H6zM8 8h1v1H8zM11 8h1v1H11zM13 8h1v1H13zM6 9h1v1H6zM13 9h1v1H13z\"/><path fill=\"#a8d0a8\" d=\"M8 9h1v1H8zM11 9h1v1H11z\"/><path fill=\"#30a858\" d=\"M9 9h2v1H9z\"/><path fill=\"#58a858\" d=\"M8 10h1v1H8zM11 10h1v1H11z\"/></svg>","brief":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M8 1h4v1H8zM6 2h2v1H6zM12 2h2v1H12zM5 3h1v1H5zM14 3h1v1H14zM3 4h3v1H3zM8 4h4v1H8zM14 4h3v1H14zM2 5h1v1H2zM17 5h1v1H17zM1 6h1v1H1zM18 6h1v1H18zM0 7h1v1H0zM19 7h1v1H19zM0 8h1v1H0zM19 8h1v1H19zM0 9h1v1H0zM19 9h1v1H19zM0 10h1v1H0zM19 10h1v1H19zM0 11h1v1H0zM19 11h1v1H19zM0 12h1v1H0zM19 12h1v1H19zM0 13h1v1H0zM19 13h1v1H19zM0 14h1v1H0zM19 14h1v1H19zM1 15h1v1H1zM18 15h1v1H18zM1 16h1v1H1zM18 16h1v1H18zM2 17h16v1H2z\"/><path fill=\"#583008\" d=\"M8 2h4v1H8zM6 3h8v1H6zM6 4h2v1H6zM12 4h2v1H12z\"/><path fill=\"#805830\" d=\"M3 5h14v1H3zM2 6h1v1H2zM17 6h1v1H17zM1 7h1v1H1zM18 7h1v1H18zM1 8h1v1H1zM18 8h1v1H18zM1 9h7v1H1zM12 9h7v1H12zM1 10h7v1H1zM12 10h7v1H12zM1 11h1v1H1zM18 11h1v1H18zM1 12h1v1H1zM2 14h1v1H2zM17 14h1v1H17zM2 15h1v1H2zM17 15h1v1H17zM2 16h16v1H2z\"/><path fill=\"#d08058\" d=\"M3 6h14v1H3zM3 7h14v1H3zM3 8h5v1H3zM12 8h5v1H12z\"/><path fill=\"#a88030\" d=\"M2 7h1v1H2zM17 7h1v1H17zM2 8h1v1H2zM8 8h4v1H8zM17 8h1v1H17zM8 9h1v1H8zM11 9h1v1H11zM8 10h1v1H8zM11 10h1v1H11zM3 11h14v1H3zM3 12h14v1H3zM3 13h14v1H3z\"/><path fill=\"#f8d080\" d=\"M9 9h2v1H9zM9 10h2v1H9z\"/><path fill=\"#a85830\" d=\"M2 11h1v1H2zM17 11h1v1H17zM2 12h1v1H2zM17 12h1v1H17zM2 13h1v1H2zM17 13h1v1H17zM3 14h14v1H3zM3 15h14v1H3z\"/><path fill=\"#805808\" d=\"M18 12h1v1H18zM1 13h1v1H1zM18 13h1v1H18zM1 14h1v1H1zM18 14h1v1H18z\"/></svg>","bug":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M7 0h1v1H7zM12 0h1v1H12zM6 1h1v1H6zM8 1h1v1H8zM11 1h1v1H11zM13 1h1v1H13zM7 2h1v1H7zM9 2h2v1H9zM12 2h1v1H12zM7 3h1v1H7zM12 3h1v1H12zM7 4h1v1H7zM12 4h1v1H12zM7 5h1v1H7zM12 5h1v1H12zM3 6h1v1H3zM6 6h1v1H6zM13 6h1v1H13zM16 6h1v1H16zM2 7h1v1H2zM4 7h2v1H4zM14 7h2v1H14zM17 7h1v1H17zM3 8h1v1H3zM16 8h1v1H16zM4 9h1v1H4zM15 9h1v1H15zM2 10h3v1H2zM15 10h3v1H15zM1 11h1v1H1zM18 11h1v1H18zM2 12h3v1H2zM15 12h3v1H15zM5 13h1v1H5zM14 13h1v1H14zM4 14h2v1H4zM14 14h2v1H14zM3 15h1v1H3zM5 15h2v1H5zM13 15h2v1H13zM16 15h1v1H16zM2 16h1v1H2zM4 16h1v1H4zM7 16h1v1H7zM12 16h1v1H12zM15 16h1v1H15zM17 16h1v1H17zM3 17h1v1H3zM8 17h4v1H8zM16 17h1v1H16z\"/><path fill=\"#308030\" d=\"M7 1h1v1H7zM12 1h1v1H12zM8 2h1v1H8zM11 2h1v1H11zM8 3h1v1H8zM11 3h1v1H11zM3 7h1v1H3zM16 7h1v1H16zM4 8h2v1H4zM14 8h2v1H14zM14 9h1v1H14zM2 11h4v1H2zM14 11h4v1H14zM5 12h1v1H5zM14 12h1v1H14zM6 14h1v1H6zM13 14h1v1H13zM4 15h1v1H4zM15 15h1v1H15zM3 16h1v1H3zM8 16h1v1H8zM10 16h2v1H10zM16 16h1v1H16z\"/><path fill=\"#308058\" d=\"M9 3h2v1H9zM8 4h1v1H8zM11 4h1v1H11zM8 5h1v1H8zM11 5h1v1H11zM7 6h6v1H7zM5 9h1v1H5zM5 10h1v1H5zM14 10h1v1H14zM7 15h1v1H7zM12 15h1v1H12zM9 16h1v1H9z\"/><path fill=\"#30a858\" d=\"M9 4h2v1H9zM9 5h2v1H9zM6 13h1v1H6zM9 13h2v1H9zM13 13h1v1H13zM9 14h2v1H9zM8 15h4v1H8z\"/><path fill=\"#58a858\" d=\"M6 7h1v1H6zM9 7h2v1H9zM13 7h1v1H13zM6 8h1v1H6zM13 8h1v1H13zM9 9h2v1H9zM9 10h2v1H9zM9 11h2v1H9zM6 12h1v1H6zM9 12h2v1H9zM13 12h1v1H13zM7 13h2v1H7zM11 13h2v1H11zM7 14h2v1H7zM11 14h2v1H11z\"/><path fill=\"#58d080\" d=\"M7 7h1v1H7zM12 7h1v1H12zM7 9h2v1H7zM11 9h2v1H11zM6 10h3v1H6zM11 10h3v1H11zM6 11h3v1H6zM11 11h3v1H11zM7 12h2v1H7zM11 12h2v1H11z\"/><path fill=\"#80d080\" d=\"M8 7h1v1H8zM11 7h1v1H11zM7 8h2v1H7zM11 8h2v1H11z\"/><path fill=\"#58a880\" d=\"M9 8h2v1H9zM6 9h1v1H6zM13 9h1v1H13z\"/></svg>","cards":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M9 1h2v1H9zM5 2h4v1H5zM11 2h6v1H11zM2 3h3v1H2zM17 3h1v1H17zM1 4h1v1H1zM18 4h1v1H18zM0 5h1v1H0zM18 5h1v1H18zM0 6h1v1H0zM18 6h1v1H18zM0 7h1v1H0zM18 7h1v1H18zM1 8h1v1H1zM18 8h1v1H18zM1 9h1v1H1zM17 9h1v1H17zM1 10h1v1H1zM17 10h1v1H17zM1 11h1v1H1zM17 11h1v1H17zM2 12h1v1H2zM17 12h1v1H17zM2 13h1v1H2zM17 13h1v1H17zM2 14h1v1H2zM16 14h1v1H16zM2 15h1v1H2zM16 15h1v1H16zM2 16h1v1H2zM16 16h1v1H16zM3 17h1v1H3zM6 17h10v1H6zM4 18h2v1H4z\"/><path fill=\"#808080\" d=\"M9 2h2v1H9zM5 3h1v1H5zM1 5h1v1H1zM1 6h1v1H1zM17 6h1v1H17zM1 7h1v1H1zM17 7h1v1H17zM17 8h1v1H17zM2 10h1v1H2zM2 11h1v1H2zM16 12h1v1H16zM16 13h1v1H16zM3 15h1v1H3zM3 16h1v1H3zM9 16h4v1H9zM5 17h1v1H5z\"/><path fill=\"#8080a8\" d=\"M6 3h2v1H6zM14 3h3v1H14zM2 4h1v1H2zM17 4h1v1H17zM16 11h1v1H16zM8 16h1v1H8zM15 16h1v1H15z\"/><path fill=\"#80a8a8\" d=\"M8 3h1v1H8zM13 16h1v1H13zM4 17h1v1H4z\"/><path fill=\"#f8f8f8\" d=\"M9 3h2v1H9zM6 4h2v1H6zM9 4h8v1H9zM2 5h5v1H2zM9 5h8v1H9zM2 6h5v1H2zM9 6h8v1H9zM3 7h4v1H3zM8 7h1v1H8zM11 7h6v1H11zM3 8h4v1H3zM11 8h2v1H11zM14 8h2v1H14zM3 9h4v1H3zM3 10h4v1H3zM8 10h2v1H8zM12 10h1v1H12zM3 11h3v1H3zM8 11h2v1H8zM12 11h1v1H12zM15 11h1v1H15zM4 12h2v1H4zM8 12h8v1H8zM4 13h2v1H4zM7 13h9v1H7zM4 14h2v1H4zM7 14h8v1H7zM4 15h3v1H4zM11 15h4v1H11zM5 16h1v1H5z\"/><path fill=\"#d0d0d0\" d=\"M11 3h1v1H11zM4 4h2v1H4zM7 5h2v1H7zM7 6h2v1H7zM2 8h1v1H2zM16 8h1v1H16zM16 9h1v1H16zM6 11h2v1H6zM3 12h1v1H3zM6 12h2v1H6zM15 14h1v1H15zM9 15h2v1H9zM15 15h1v1H15zM4 16h1v1H4zM6 16h1v1H6z\"/><path fill=\"#a8d0d0\" d=\"M12 3h1v1H12zM3 13h1v1H3z\"/><path fill=\"#a8a8a8\" d=\"M13 3h1v1H13zM3 4h1v1H3zM8 4h1v1H8zM17 5h1v1H17zM7 8h1v1H7zM2 9h1v1H2zM7 9h1v1H7zM16 10h1v1H16zM6 13h1v1H6zM3 14h1v1H3zM6 14h1v1H6zM7 15h1v1H7zM14 16h1v1H14z\"/><path fill=\"#d0d0f8\" d=\"M2 7h1v1H2z\"/><path fill=\"#a8a8d0\" d=\"M7 7h1v1H7zM8 15h1v1H8zM7 16h1v1H7z\"/><path fill=\"#f8a8a8\" d=\"M9 7h1v1H9zM13 8h1v1H13zM12 9h1v1H12zM15 10h1v1H15zM10 11h2v1H10zM13 11h2v1H13z\"/><path fill=\"#d05858\" d=\"M10 7h1v1H10zM15 9h1v1H15zM13 10h1v1H13z\"/><path fill=\"#f8d0d0\" d=\"M8 8h2v1H8zM9 9h1v1H9zM11 9h1v1H11zM11 10h1v1H11z\"/><path fill=\"#d03030\" d=\"M10 8h1v1H10zM13 9h2v1H13zM14 10h1v1H14z\"/><path fill=\"#d08080\" d=\"M8 9h1v1H8zM7 10h1v1H7zM10 10h1v1H10z\"/><path fill=\"#d05830\" d=\"M10 9h1v1H10z\"/></svg>","chart":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M2 1h16v1H2zM1 2h1v1H1zM18 2h1v1H18zM1 3h1v1H1zM18 3h1v1H18zM0 4h1v1H0zM19 4h1v1H19zM0 5h1v1H0zM19 5h1v1H19zM0 6h1v1H0zM19 6h1v1H19zM0 7h1v1H0zM19 7h1v1H19zM0 8h1v1H0zM19 8h1v1H19zM0 9h1v1H0zM19 9h1v1H19zM0 10h1v1H0zM19 10h1v1H19zM0 11h1v1H0zM19 11h1v1H19zM0 12h1v1H0zM19 12h1v1H19zM0 13h1v1H0zM19 13h1v1H19zM0 14h1v1H0zM19 14h1v1H19zM0 15h1v1H0zM19 15h1v1H19zM1 16h1v1H1zM18 16h1v1H18zM1 17h1v1H1zM18 17h1v1H18zM2 18h16v1H2z\"/><path fill=\"#585858\" d=\"M2 2h16v1H2zM18 8h1v1H18zM1 9h1v1H1zM18 9h1v1H18zM1 10h1v1H1zM18 10h1v1H18zM1 11h1v1H1zM18 11h1v1H18zM1 12h1v1H1zM18 12h1v1H18zM1 13h1v1H1zM18 13h1v1H18zM1 14h1v1H1zM18 14h1v1H18zM1 15h1v1H1zM18 15h1v1H18zM2 17h16v1H2z\"/><path fill=\"#303058\" d=\"M2 3h1v1H2zM17 3h1v1H17z\"/><path fill=\"#303030\" d=\"M3 3h14v1H3zM2 4h16v1H2zM2 5h9v1H2zM12 5h4v1H12zM2 6h9v1H2zM13 6h2v1H13zM17 6h1v1H17zM2 7h8v1H2zM16 7h2v1H16zM2 8h8v1H2zM12 8h1v1H12zM16 8h2v1H16zM2 9h1v1H2zM5 9h1v1H5zM13 9h1v1H13zM17 9h1v1H17zM2 10h1v1H2zM4 10h1v1H4zM10 10h1v1H10zM17 10h1v1H17zM2 11h1v1H2zM6 11h1v1H6zM17 11h1v1H17zM2 12h1v1H2zM9 12h1v1H9zM17 12h1v1H17zM2 13h1v1H2zM4 13h1v1H4zM17 13h1v1H17zM2 14h1v1H2zM17 14h1v1H17zM2 15h16v1H2zM2 16h1v1H2zM17 16h1v1H17z\"/><path fill=\"#585880\" d=\"M1 4h1v1H1zM18 4h1v1H18zM1 5h1v1H1zM18 5h1v1H18zM1 6h1v1H1zM18 6h1v1H18zM1 7h1v1H1zM18 7h1v1H18zM1 8h1v1H1z\"/><path fill=\"#305858\" d=\"M11 5h1v1H11zM17 5h1v1H17z\"/><path fill=\"#58d080\" d=\"M16 5h1v1H16zM11 6h2v1H11zM11 7h1v1H11zM13 7h1v1H13zM15 7h1v1H15zM10 8h1v1H10zM5 10h1v1H5zM3 13h1v1H3z\"/><path fill=\"#58a880\" d=\"M15 6h1v1H15zM12 7h1v1H12zM13 8h1v1H13zM4 12h1v1H4z\"/><path fill=\"#308058\" d=\"M16 6h1v1H16zM10 7h1v1H10zM14 7h1v1H14zM6 9h1v1H6zM14 9h1v1H14zM3 12h1v1H3zM8 12h1v1H8z\"/><path fill=\"#305830\" d=\"M11 8h1v1H11zM15 8h1v1H15zM8 10h1v1H8z\"/><path fill=\"#58f880\" d=\"M14 8h1v1H14zM6 10h1v1H6zM9 10h1v1H9zM8 11h1v1H8z\"/><path fill=\"#083030\" d=\"M3 9h2v1H3zM7 9h2v1H7zM11 9h2v1H11zM15 9h2v1H15zM3 10h1v1H3zM11 10h6v1H11zM3 11h1v1H3zM10 11h7v1H10zM5 12h3v1H5zM10 12h7v1H10zM6 13h1v1H6zM10 13h1v1H10zM14 13h1v1H14z\"/><path fill=\"#58a858\" d=\"M9 9h2v1H9zM7 10h1v1H7zM4 11h2v1H4zM7 11h1v1H7zM9 11h1v1H9z\"/><path fill=\"#080830\" d=\"M5 13h1v1H5zM7 13h3v1H7zM11 13h3v1H11zM15 13h2v1H15zM3 14h14v1H3zM3 16h14v1H3z\"/></svg>","cmd":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M2 2h16v1H2zM1 3h1v1H1zM18 3h1v1H18zM0 4h1v1H0zM19 4h1v1H19zM0 5h1v1H0zM19 5h1v1H19zM0 6h1v1H0zM19 6h1v1H19zM0 7h1v1H0zM19 7h1v1H19zM0 8h1v1H0zM19 8h1v1H19zM0 9h1v1H0zM19 9h1v1H19zM0 10h1v1H0zM19 10h1v1H19zM0 11h1v1H0zM19 11h1v1H19zM0 12h1v1H0zM19 12h1v1H19zM0 13h1v1H0zM19 13h1v1H19zM0 14h1v1H0zM19 14h1v1H19zM0 15h1v1H0zM19 15h1v1H19zM1 16h1v1H1zM18 16h1v1H18zM2 17h16v1H2z\"/><path fill=\"#3058d0\" d=\"M2 3h16v1H2zM2 4h16v1H2z\"/><path fill=\"#585880\" d=\"M1 4h1v1H1zM18 4h1v1H18zM1 5h1v1H1zM18 5h1v1H18zM4 8h1v1H4z\"/><path fill=\"#3058a8\" d=\"M2 5h16v1H2z\"/><path fill=\"#585858\" d=\"M1 6h1v1H1zM18 6h1v1H18zM1 7h1v1H1zM18 7h1v1H18zM1 8h1v1H1zM18 8h1v1H18zM1 9h1v1H1zM6 9h1v1H6zM18 9h1v1H18zM1 10h1v1H1zM5 10h1v1H5zM18 10h1v1H18zM1 11h1v1H1zM4 11h1v1H4zM18 11h1v1H18zM1 12h1v1H1zM18 12h1v1H18zM1 13h1v1H1zM18 13h1v1H18zM1 14h1v1H1zM18 14h1v1H18zM1 15h1v1H1zM18 15h1v1H18zM2 16h1v1H2zM17 16h1v1H17z\"/><path fill=\"#303030\" d=\"M2 6h1v1H2zM17 6h1v1H17zM2 7h1v1H2zM17 7h1v1H17zM2 8h1v1H2zM5 8h1v1H5zM17 8h1v1H17zM2 9h1v1H2zM17 9h1v1H17zM2 10h1v1H2zM17 10h1v1H17zM2 11h1v1H2zM7 11h6v1H7zM17 11h1v1H17zM2 12h1v1H2zM17 12h1v1H17zM2 13h1v1H2zM17 13h1v1H17zM2 14h1v1H2zM17 14h1v1H17zM2 15h1v1H2zM17 15h1v1H17zM3 16h14v1H3z\"/><path fill=\"#080808\" d=\"M3 6h14v1H3zM3 7h14v1H3zM3 8h1v1H3zM6 8h11v1H6zM3 9h1v1H3zM7 9h10v1H7zM3 10h2v1H3zM8 10h9v1H8zM3 11h1v1H3zM13 11h4v1H13zM3 12h1v1H3zM6 12h2v1H6zM13 12h4v1H13zM3 13h14v1H3zM3 14h14v1H3zM3 15h14v1H3z\"/><path fill=\"#808080\" d=\"M4 9h1v1H4zM7 10h1v1H7zM5 12h1v1H5zM12 12h1v1H12z\"/><path fill=\"#d0f8f8\" d=\"M5 9h1v1H5zM5 11h1v1H5z\"/><path fill=\"#f8f8f8\" d=\"M6 10h1v1H6zM9 12h3v1H9z\"/><path fill=\"#a8a8a8\" d=\"M6 11h1v1H6zM4 12h1v1H4z\"/><path fill=\"#d0d0d0\" d=\"M8 12h1v1H8z\"/></svg>","computer":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M3 2h14v1H3zM2 3h1v1H2zM17 3h1v1H17zM1 4h1v1H1zM18 4h1v1H18zM1 5h1v1H1zM18 5h1v1H18zM1 6h1v1H1zM18 6h1v1H18zM1 7h1v1H1zM18 7h1v1H18zM1 8h1v1H1zM18 8h1v1H18zM1 9h1v1H1zM18 9h1v1H18zM1 10h1v1H1zM18 10h1v1H18zM1 11h1v1H1zM18 11h1v1H18zM1 12h1v1H1zM18 12h1v1H18zM2 13h1v1H2zM17 13h1v1H17zM3 14h5v1H3zM12 14h5v1H12zM4 15h1v1H4zM15 15h1v1H15zM4 16h1v1H4zM15 16h1v1H15zM4 17h1v1H4zM15 17h1v1H15zM5 18h10v1H5z\"/><path fill=\"#a8a8a8\" d=\"M3 3h1v1H3zM16 3h1v1H16zM17 4h1v1H17zM17 12h1v1H17zM3 13h14v1H3zM8 14h4v1H8z\"/><path fill=\"#d0d0a8\" d=\"M4 3h12v1H4zM5 16h1v1H5zM14 16h1v1H14z\"/><path fill=\"#a8a880\" d=\"M2 4h1v1H2zM2 5h1v1H2zM17 5h1v1H17zM2 6h1v1H2zM17 6h1v1H17zM2 7h1v1H2zM17 7h1v1H17zM2 8h1v1H2zM17 8h1v1H17zM2 9h1v1H2zM17 9h1v1H17zM2 10h1v1H2zM17 10h1v1H17zM2 11h1v1H2zM17 11h1v1H17zM2 12h1v1H2zM5 15h10v1H5zM5 17h10v1H5z\"/><path fill=\"#f8f8f8\" d=\"M3 4h14v1H3zM3 5h1v1H3zM16 5h1v1H16zM3 6h1v1H3zM16 6h1v1H16zM3 7h1v1H3zM16 7h1v1H16zM3 8h1v1H3zM16 8h1v1H16zM3 9h1v1H3zM16 9h1v1H16zM3 10h1v1H3zM16 10h1v1H16zM3 11h1v1H3zM16 11h1v1H16zM3 12h14v1H3z\"/><path fill=\"#a8d0f8\" d=\"M4 5h1v1H4zM15 5h1v1H15z\"/><path fill=\"#58a8f8\" d=\"M5 5h10v1H5zM5 6h8v1H5z\"/><path fill=\"#80a8f8\" d=\"M4 6h1v1H4zM15 6h1v1H15zM4 7h1v1H4zM15 7h1v1H15zM4 8h1v1H4zM15 8h1v1H15z\"/><path fill=\"#58d0d0\" d=\"M13 6h1v1H13zM9 8h1v1H9z\"/><path fill=\"#80d0d0\" d=\"M14 6h1v1H14zM8 7h2v1H8zM13 7h1v1H13zM7 8h1v1H7zM10 8h1v1H10zM12 8h1v1H12zM6 9h1v1H6z\"/><path fill=\"#5880f8\" d=\"M5 7h3v1H5zM10 7h2v1H10zM14 7h1v1H14z\"/><path fill=\"#58a8d0\" d=\"M12 7h1v1H12zM8 8h1v1H8zM11 8h1v1H11zM7 9h1v1H7zM10 9h2v1H10z\"/><path fill=\"#3080f8\" d=\"M5 8h2v1H5zM13 8h2v1H13z\"/><path fill=\"#80a8d0\" d=\"M4 9h1v1H4zM15 9h1v1H15zM4 10h1v1H4zM15 10h1v1H15zM4 11h1v1H4zM15 11h1v1H15z\"/><path fill=\"#3080d0\" d=\"M5 9h1v1H5zM8 9h2v1H8zM12 9h3v1H12zM6 10h1v1H6zM5 11h10v1H5z\"/><path fill=\"#80d0a8\" d=\"M5 10h1v1H5z\"/><path fill=\"#3058d0\" d=\"M7 10h8v1H7z\"/><path fill=\"#d0d0d0\" d=\"M6 16h8v1H6z\"/></svg>","doc":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M4 1h10v1H4zM3 2h1v1H3zM14 2h1v1H14zM3 3h1v1H3zM15 3h1v1H15zM3 4h1v1H3zM16 4h1v1H16zM3 5h1v1H3zM17 5h1v1H17zM3 6h1v1H3zM17 6h1v1H17zM3 7h1v1H3zM17 7h1v1H17zM3 8h1v1H3zM17 8h1v1H17zM3 9h1v1H3zM17 9h1v1H17zM3 10h1v1H3zM17 10h1v1H17zM3 11h1v1H3zM17 11h1v1H17zM3 12h1v1H3zM17 12h1v1H17zM3 13h1v1H3zM17 13h1v1H17zM3 14h1v1H3zM17 14h1v1H17zM3 15h1v1H3zM17 15h1v1H17zM3 16h1v1H3zM17 16h1v1H17zM3 17h1v1H3zM17 17h1v1H17zM4 18h1v1H4zM16 18h1v1H16zM5 19h11v1H5z\"/><path fill=\"#a8a8d0\" d=\"M4 2h1v1H4zM13 2h1v1H13zM4 3h1v1H4zM12 3h1v1H12zM14 3h1v1H14zM4 4h1v1H4zM12 4h1v1H12zM15 4h1v1H15zM4 5h1v1H4zM13 5h3v1H13zM4 6h1v1H4zM4 7h1v1H4zM4 8h1v1H4zM4 9h1v1H4zM4 10h1v1H4zM7 10h7v1H7zM4 11h1v1H4zM4 12h1v1H4zM4 13h1v1H4zM4 14h1v1H4zM7 14h4v1H7zM4 15h1v1H4zM4 16h1v1H4zM4 17h1v1H4zM5 18h10v1H5z\"/><path fill=\"#f8f8f8\" d=\"M5 2h7v1H5zM5 3h7v1H5zM13 3h1v1H13zM5 4h7v1H5zM13 4h2v1H13zM5 5h7v1H5zM5 6h11v1H5zM5 7h11v1H5zM5 8h1v1H5zM14 8h2v1H14zM5 9h11v1H5zM5 10h1v1H5zM15 10h1v1H15zM5 11h11v1H5zM5 12h1v1H5zM15 12h1v1H15zM5 13h11v1H5zM5 14h1v1H5zM12 14h4v1H12zM5 15h11v1H5zM5 16h11v1H5zM5 17h10v1H5z\"/><path fill=\"#a8a8a8\" d=\"M12 2h1v1H12zM16 6h1v1H16zM16 7h1v1H16zM16 8h1v1H16zM16 9h1v1H16zM16 10h1v1H16zM16 11h1v1H16zM16 12h1v1H16zM16 13h1v1H16zM16 14h1v1H16zM16 15h1v1H16zM16 16h1v1H16zM16 17h1v1H16zM15 18h1v1H15z\"/><path fill=\"#a8d0d0\" d=\"M12 5h1v1H12z\"/><path fill=\"#80a8a8\" d=\"M16 5h1v1H16z\"/><path fill=\"#d0d0f8\" d=\"M6 8h1v1H6zM14 12h1v1H14z\"/><path fill=\"#a8d0f8\" d=\"M7 8h7v1H7zM6 10h1v1H6zM6 12h1v1H6zM6 14h1v1H6zM11 14h1v1H11z\"/><path fill=\"#d0f8f8\" d=\"M14 10h1v1H14z\"/><path fill=\"#80a8d0\" d=\"M7 12h7v1H7z\"/><path fill=\"#d0d0d0\" d=\"M15 17h1v1H15z\"/></svg>","folder":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M2 4h6v1H2zM1 5h1v1H1zM8 5h1v1H8zM0 6h1v1H0zM8 6h10v1H8zM0 7h1v1H0zM18 7h1v1H18zM0 8h1v1H0zM19 8h1v1H19zM0 9h1v1H0zM19 9h1v1H19zM0 10h1v1H0zM19 10h1v1H19zM0 11h1v1H0zM19 11h1v1H19zM0 12h1v1H0zM19 12h1v1H19zM0 13h1v1H0zM19 13h1v1H19zM0 14h1v1H0zM19 14h1v1H19zM0 15h1v1H0zM19 15h1v1H19zM1 16h1v1H1zM18 16h1v1H18zM2 17h16v1H2z\"/><path fill=\"#a88008\" d=\"M2 5h6v1H2zM1 6h1v1H1zM1 7h1v1H1zM9 7h9v1H9zM1 15h1v1H1zM18 15h1v1H18zM2 16h16v1H2z\"/><path fill=\"#d0a830\" d=\"M2 6h1v1H2zM7 6h1v1H7zM2 7h6v1H2zM2 15h1v1H2zM17 15h1v1H17z\"/><path fill=\"#f8a830\" d=\"M3 6h4v1H3zM2 14h1v1H2zM17 14h1v1H17zM3 15h14v1H3z\"/><path fill=\"#d08030\" d=\"M8 7h1v1H8z\"/><path fill=\"#a88030\" d=\"M1 8h1v1H1zM18 8h1v1H18zM1 9h1v1H1zM18 9h1v1H18zM1 10h1v1H1zM18 10h1v1H18zM1 11h1v1H1zM18 11h1v1H18zM1 12h1v1H1zM18 12h1v1H18zM1 13h1v1H1zM18 13h1v1H18zM1 14h1v1H1zM18 14h1v1H18z\"/><path fill=\"#d0a858\" d=\"M2 8h16v1H2z\"/><path fill=\"#f8d058\" d=\"M2 9h1v1H2zM17 9h1v1H17zM2 10h1v1H2zM17 10h1v1H17zM2 11h1v1H2zM17 11h1v1H17zM2 12h16v1H2zM3 13h14v1H3zM3 14h14v1H3z\"/><path fill=\"#f8f880\" d=\"M3 9h14v1H3z\"/><path fill=\"#f8d080\" d=\"M3 10h14v1H3zM3 11h14v1H3z\"/><path fill=\"#f8a858\" d=\"M2 13h1v1H2zM17 13h1v1H17z\"/></svg>","globe":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M8 1h4v1H8zM6 2h2v1H6zM12 2h2v1H12zM5 3h1v1H5zM14 3h1v1H14zM4 4h1v1H4zM15 4h1v1H15zM3 5h1v1H3zM16 5h1v1H16zM2 6h1v1H2zM17 6h1v1H17zM2 7h1v1H2zM17 7h1v1H17zM1 8h1v1H1zM18 8h1v1H18zM1 9h1v1H1zM18 9h1v1H18zM1 10h1v1H1zM18 10h1v1H18zM1 11h1v1H1zM18 11h1v1H18zM2 12h1v1H2zM17 12h1v1H17zM2 13h1v1H2zM17 13h1v1H17zM3 14h1v1H3zM16 14h1v1H16zM4 15h1v1H4zM15 15h1v1H15zM5 16h1v1H5zM14 16h1v1H14zM6 17h2v1H6zM12 17h2v1H12zM8 18h4v1H8z\"/><path fill=\"#3080d0\" d=\"M8 2h4v1H8zM6 3h1v1H6zM13 3h1v1H13zM5 4h1v1H5zM14 4h1v1H14zM4 5h1v1H4zM15 5h1v1H15zM3 11h1v1H3zM16 11h1v1H16zM3 12h1v1H3zM16 12h1v1H16zM14 14h2v1H14zM14 15h1v1H14zM7 16h6v1H7z\"/><path fill=\"#58a8f8\" d=\"M7 3h2v1H7zM11 3h2v1H11zM5 5h6v1H5zM13 5h2v1H13zM4 6h7v1H4zM14 6h2v1H14zM4 7h1v1H4zM9 7h2v1H9zM15 7h1v1H15zM3 8h2v1H3zM9 8h2v1H9zM15 8h2v1H15zM3 9h2v1H3zM9 9h3v1H9zM15 9h2v1H15zM3 10h2v1H3zM9 10h3v1H9zM14 10h3v1H14zM4 11h1v1H4zM9 11h7v1H9z\"/><path fill=\"#58d0f8\" d=\"M9 3h2v1H9zM8 4h1v1H8zM12 4h1v1H12z\"/><path fill=\"#80d0f8\" d=\"M6 4h2v1H6zM9 4h3v1H9zM13 4h1v1H13z\"/><path fill=\"#58d0a8\" d=\"M11 5h1v1H11zM11 6h1v1H11zM13 6h1v1H13zM5 7h1v1H5zM11 7h1v1H11zM5 8h1v1H5zM8 8h1v1H8zM5 9h1v1H5zM5 10h1v1H5zM8 11h1v1H8zM6 12h1v1H6zM11 13h1v1H11zM11 14h1v1H11z\"/><path fill=\"#58d0d0\" d=\"M12 5h1v1H12zM11 8h1v1H11zM14 8h1v1H14z\"/><path fill=\"#3058d0\" d=\"M3 6h1v1H3zM4 14h1v1H4zM5 15h1v1H5z\"/><path fill=\"#58d080\" d=\"M12 6h1v1H12zM6 7h2v1H6zM12 7h2v1H12zM6 8h2v1H6zM12 8h2v1H12zM6 9h3v1H6zM12 9h2v1H12zM6 10h3v1H6zM6 11h2v1H6zM12 13h1v1H12zM12 14h2v1H12zM12 15h1v1H12z\"/><path fill=\"#3058a8\" d=\"M16 6h1v1H16zM2 8h1v1H2zM17 8h1v1H17zM2 9h1v1H2zM17 9h1v1H17zM2 10h1v1H2zM17 10h1v1H17zM2 11h1v1H2zM17 11h1v1H17zM3 13h1v1H3zM16 13h1v1H16z\"/><path fill=\"#5880d0\" d=\"M3 7h1v1H3zM16 7h1v1H16z\"/><path fill=\"#58a8d0\" d=\"M8 7h1v1H8zM14 7h1v1H14zM14 9h1v1H14zM12 10h2v1H12zM5 11h1v1H5zM13 13h1v1H13z\"/><path fill=\"#3080f8\" d=\"M4 12h2v1H4zM8 12h8v1H8zM4 13h7v1H4zM14 13h2v1H14zM5 14h6v1H5zM6 15h5v1H6z\"/><path fill=\"#58a8a8\" d=\"M7 12h1v1H7zM13 15h1v1H13z\"/><path fill=\"#30a8d0\" d=\"M11 15h1v1H11z\"/><path fill=\"#0858a8\" d=\"M6 16h1v1H6zM13 16h1v1H13zM8 17h4v1H8z\"/></svg>","home":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M10 3h1v1H10zM8 4h2v1H8zM11 4h1v1H11zM7 5h1v1H7zM12 5h2v1H12zM6 6h1v1H6zM14 6h1v1H14zM5 7h1v1H5zM14 7h1v1H14zM4 8h1v1H4zM15 8h1v1H15zM3 9h1v1H3zM16 9h1v1H16zM3 10h1v1H3zM16 10h1v1H16zM4 11h1v1H4zM15 11h1v1H15zM4 12h1v1H4zM15 12h1v1H15zM4 13h1v1H4zM15 13h1v1H15zM4 14h1v1H4zM15 14h1v1H15zM4 15h1v1H4zM15 15h1v1H15zM4 16h1v1H4zM15 16h1v1H15zM5 17h10v1H5z\"/><path fill=\"#a83030\" d=\"M10 4h1v1H10zM8 5h1v1H8zM11 5h1v1H11zM7 6h1v1H7zM6 7h1v1H6zM12 7h1v1H12zM5 8h1v1H5zM13 8h2v1H13zM15 10h1v1H15z\"/><path fill=\"#d05858\" d=\"M9 5h2v1H9z\"/><path fill=\"#d05830\" d=\"M8 6h1v1H8zM11 6h1v1H11zM7 7h1v1H7zM6 8h7v1H6zM6 9h8v1H6z\"/><path fill=\"#f88058\" d=\"M9 6h2v1H9z\"/><path fill=\"#a83008\" d=\"M12 6h2v1H12zM13 7h1v1H13zM4 9h1v1H4zM15 9h1v1H15zM4 10h1v1H4z\"/><path fill=\"#f85830\" d=\"M8 7h4v1H8z\"/><path fill=\"#a85830\" d=\"M5 9h1v1H5zM14 9h1v1H14z\"/><path fill=\"#a88080\" d=\"M5 10h1v1H5zM14 10h1v1H14zM5 16h1v1H5z\"/><path fill=\"#d0d0d0\" d=\"M6 10h8v1H6zM12 12h1v1H12zM12 13h1v1H12zM12 14h1v1H12zM12 15h1v1H12z\"/><path fill=\"#a8a880\" d=\"M5 11h1v1H5zM14 11h1v1H14zM5 12h1v1H5zM14 12h1v1H14zM5 13h1v1H5zM14 13h1v1H14zM5 14h1v1H5zM14 14h1v1H14zM5 15h1v1H5zM14 15h1v1H14zM14 16h1v1H14z\"/><path fill=\"#f8f8f8\" d=\"M6 11h8v1H6zM6 12h2v1H6zM13 12h1v1H13zM6 13h2v1H6zM13 13h1v1H13z\"/><path fill=\"#80a8d0\" d=\"M8 12h1v1H8z\"/><path fill=\"#5880d0\" d=\"M9 12h2v1H9zM8 14h1v1H8zM8 15h1v1H8z\"/><path fill=\"#3080a8\" d=\"M11 12h1v1H11z\"/><path fill=\"#8080d0\" d=\"M8 13h1v1H8z\"/><path fill=\"#3080f8\" d=\"M9 13h1v1H9zM9 14h1v1H9zM9 15h1v1H9z\"/><path fill=\"#5880f8\" d=\"M10 13h1v1H10zM10 14h1v1H10zM10 15h1v1H10z\"/><path fill=\"#3080d0\" d=\"M11 13h1v1H11zM11 14h1v1H11zM11 15h1v1H11zM9 16h2v1H9z\"/><path fill=\"#f8f8d0\" d=\"M6 14h2v1H6zM13 14h1v1H13zM6 15h2v1H6zM13 15h1v1H13z\"/><path fill=\"#d0a8a8\" d=\"M6 16h2v1H6zM13 16h1v1H13z\"/><path fill=\"#5880a8\" d=\"M8 16h1v1H8z\"/><path fill=\"#3058a8\" d=\"M11 16h1v1H11z\"/><path fill=\"#a8a8a8\" d=\"M12 16h1v1H12z\"/></svg>","mail":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M14 2h3v1H14zM13 3h1v1H13zM17 3h1v1H17zM2 4h11v1H2zM18 4h1v1H18zM1 5h1v1H1zM19 5h1v1H19zM0 6h1v1H0zM19 6h1v1H19zM0 7h1v1H0zM19 7h1v1H19zM0 8h1v1H0zM19 8h1v1H19zM0 9h1v1H0zM19 9h1v1H19zM0 10h1v1H0zM19 10h1v1H19zM0 11h1v1H0zM19 11h1v1H19zM0 12h1v1H0zM19 12h1v1H19zM0 13h1v1H0zM19 13h1v1H19zM0 14h1v1H0zM19 14h1v1H19zM1 15h1v1H1zM18 15h1v1H18zM2 16h16v1H2z\"/><path fill=\"#d0f8f8\" d=\"M14 3h1v1H14zM15 8h1v1H15z\"/><path fill=\"#80a8f8\" d=\"M15 3h1v1H15zM13 5h1v1H13zM17 6h1v1H17zM16 7h1v1H16z\"/><path fill=\"#d0d0f8\" d=\"M16 3h1v1H16zM13 4h1v1H13zM13 6h1v1H13zM13 7h1v1H13zM17 7h1v1H17z\"/><path fill=\"#3058f8\" d=\"M14 4h3v1H14zM14 5h3v1H14zM14 6h3v1H14z\"/><path fill=\"#a8d0f8\" d=\"M17 4h1v1H17zM14 7h1v1H14z\"/><path fill=\"#d0a8a8\" d=\"M2 5h1v1H2zM5 8h1v1H5z\"/><path fill=\"#d0d0d0\" d=\"M3 5h9v1H3zM18 5h1v1H18zM3 6h1v1H3zM2 8h1v1H2zM2 9h1v1H2zM7 9h1v1H7zM12 9h1v1H12zM17 9h1v1H17zM2 10h1v1H2zM7 10h1v1H7zM12 10h1v1H12zM17 10h1v1H17zM2 11h1v1H2zM17 11h1v1H17zM2 12h1v1H2zM17 12h1v1H17zM2 13h1v1H2zM17 13h1v1H17zM2 14h1v1H2zM17 14h1v1H17z\"/><path fill=\"#f8f8d0\" d=\"M12 5h1v1H12zM6 8h1v1H6zM13 8h1v1H13zM8 11h1v1H8zM11 11h1v1H11zM3 13h14v1H3zM3 14h14v1H3z\"/><path fill=\"#5880f8\" d=\"M17 5h1v1H17zM15 7h1v1H15z\"/><path fill=\"#a8a880\" d=\"M1 6h1v1H1zM1 7h1v1H1zM18 7h1v1H18zM1 8h1v1H1zM18 8h1v1H18zM1 9h1v1H1zM18 9h1v1H18zM1 10h1v1H1zM18 10h1v1H18zM1 11h1v1H1zM18 11h1v1H18zM1 12h1v1H1zM18 12h1v1H18zM1 13h1v1H1zM18 13h1v1H18zM1 14h1v1H1zM18 14h1v1H18zM2 15h1v1H2zM17 15h1v1H17z\"/><path fill=\"#d0d0a8\" d=\"M2 6h1v1H2zM18 6h1v1H18zM4 7h1v1H4zM14 8h1v1H14zM6 9h1v1H6zM13 9h1v1H13zM8 10h1v1H8zM11 10h1v1H11z\"/><path fill=\"#f8f8f8\" d=\"M4 6h9v1H4zM5 7h8v1H5zM3 8h2v1H3zM7 8h6v1H7zM16 8h1v1H16zM3 9h3v1H3zM8 9h4v1H8zM14 9h3v1H14zM3 10h4v1H3zM9 10h2v1H9zM13 10h4v1H13zM3 11h5v1H3zM12 11h5v1H12zM3 12h14v1H3z\"/><path fill=\"#f8d0d0\" d=\"M2 7h2v1H2zM17 8h1v1H17z\"/><path fill=\"#a8a8a8\" d=\"M9 11h2v1H9zM3 15h14v1H3z\"/></svg>","mine":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M13 1h2v1H13zM12 2h1v1H12zM15 2h2v1H15zM9 3h1v1H9zM12 3h1v1H12zM17 3h1v1H17zM8 4h1v1H8zM10 4h1v1H10zM12 4h1v1H12zM15 4h2v1H15zM4 5h2v1H4zM7 5h2v1H7zM10 5h3v1H10zM14 5h1v1H14zM3 6h1v1H3zM6 6h1v1H6zM12 6h1v1H12zM15 6h1v1H15zM4 7h1v1H4zM14 7h1v1H14zM4 8h1v1H4zM14 8h1v1H14zM3 9h1v1H3zM14 9h1v1H14zM2 10h2v1H2zM15 10h2v1H15zM1 11h1v1H1zM17 11h1v1H17zM2 12h2v1H2zM15 12h2v1H15zM4 13h1v1H4zM14 13h1v1H14zM4 14h1v1H4zM14 14h1v1H14zM3 15h1v1H3zM15 15h1v1H15zM3 16h1v1H3zM5 16h3v1H5zM10 16h4v1H10zM15 16h1v1H15zM4 17h1v1H4zM8 17h1v1H8zM10 17h1v1H10zM14 17h1v1H14zM8 18h1v1H8zM10 18h1v1H10zM9 19h1v1H9z\"/><path fill=\"#d03030\" d=\"M13 2h1v1H13zM13 3h1v1H13zM13 4h1v1H13z\"/><path fill=\"#f83030\" d=\"M14 2h1v1H14zM14 3h3v1H14zM14 4h1v1H14z\"/><path fill=\"#303030\" d=\"M9 4h1v1H9zM9 5h1v1H9zM13 5h1v1H13zM4 6h2v1H4zM13 6h2v1H13zM5 7h1v1H5zM13 7h1v1H13zM2 11h2v1H2zM14 11h3v1H14zM14 12h1v1H14zM5 13h9v1H5zM5 14h9v1H5zM4 15h11v1H4zM4 16h1v1H4zM9 16h1v1H9zM14 16h1v1H14zM9 17h1v1H9zM9 18h1v1H9z\"/><path fill=\"#585880\" d=\"M7 6h5v1H7zM6 7h6v1H6z\"/><path fill=\"#585858\" d=\"M12 7h1v1H12zM5 8h1v1H5zM9 8h5v1H9zM4 9h2v1H4zM9 9h5v1H9zM5 10h1v1H5zM9 10h5v1H9z\"/><path fill=\"#a8a8a8\" d=\"M6 8h1v1H6zM8 8h1v1H8z\"/><path fill=\"#f8f8f8\" d=\"M7 8h1v1H7zM6 9h3v1H6z\"/><path fill=\"#305858\" d=\"M4 10h1v1H4z\"/><path fill=\"#808080\" d=\"M6 10h1v1H6zM8 10h1v1H8z\"/><path fill=\"#d0d0d0\" d=\"M7 10h1v1H7z\"/><path fill=\"#303058\" d=\"M14 10h1v1H14zM4 11h10v1H4zM4 12h10v1H4z\"/><path fill=\"#083030\" d=\"M8 16h1v1H8z\"/></svg>","music":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M10 1h1v1H10zM9 2h1v1H9zM11 2h1v1H11zM8 3h1v1H8zM11 3h1v1H11zM8 4h1v1H8zM11 4h1v1H11zM7 5h1v1H7zM11 5h1v1H11zM6 6h1v1H6zM11 6h4v1H11zM6 7h1v1H6zM15 7h1v1H15zM5 8h1v1H5zM15 8h1v1H15zM5 9h1v1H5zM14 9h1v1H14zM4 10h1v1H4zM13 10h1v1H13zM4 11h1v1H4zM13 11h1v1H13zM5 12h4v1H5zM12 12h1v1H12zM8 13h1v1H8zM12 13h1v1H12zM7 14h1v1H7zM11 14h1v1H11zM7 15h1v1H7zM10 15h1v1H10zM7 16h1v1H7zM10 16h1v1H10zM7 17h1v1H7zM9 17h1v1H9zM8 18h1v1H8z\"/><path fill=\"#a85808\" d=\"M10 2h1v1H10zM9 3h1v1H9zM7 6h1v1H7zM11 7h4v1H11zM6 8h1v1H6zM14 8h1v1H14zM5 10h1v1H5zM5 11h4v1H5zM12 11h1v1H12zM11 13h1v1H11zM8 14h1v1H8zM10 14h1v1H10zM8 15h1v1H8zM8 16h2v1H8zM8 17h1v1H8z\"/><path fill=\"#d05830\" d=\"M10 3h1v1H10zM10 4h1v1H10zM10 5h1v1H10zM10 6h1v1H10zM13 9h1v1H13zM9 11h1v1H9zM11 12h1v1H11z\"/><path fill=\"#d08030\" d=\"M9 4h1v1H9zM7 7h1v1H7zM10 7h1v1H10zM6 9h1v1H6zM12 10h1v1H12zM9 12h1v1H9zM9 13h2v1H9zM9 14h1v1H9z\"/><path fill=\"#a85830\" d=\"M8 5h1v1H8z\"/><path fill=\"#f8a858\" d=\"M9 5h1v1H9zM9 6h1v1H9z\"/><path fill=\"#f88030\" d=\"M8 6h1v1H8zM6 10h6v1H6zM10 11h2v1H10zM10 12h1v1H10z\"/><path fill=\"#f8a830\" d=\"M8 7h2v1H8zM7 8h7v1H7zM7 9h6v1H7z\"/><path fill=\"#d05808\" d=\"M9 15h1v1H9z\"/></svg>","paint":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M7 1h6v1H7zM5 2h2v1H5zM13 2h2v1H13zM4 3h1v1H4zM15 3h1v1H15zM3 4h1v1H3zM16 4h1v1H16zM2 5h1v1H2zM17 5h1v1H17zM1 6h1v1H1zM18 6h1v1H18zM1 7h1v1H1zM18 7h1v1H18zM1 8h1v1H1zM18 8h1v1H18zM1 9h1v1H1zM18 9h1v1H18zM1 10h1v1H1zM18 10h1v1H18zM1 11h1v1H1zM17 11h1v1H17zM1 12h1v1H1zM18 12h1v1H18zM1 13h1v1H1zM13 13h2v1H13zM17 13h1v1H17zM2 14h1v1H2zM13 14h1v1H13zM16 14h1v1H16zM3 15h1v1H3zM15 15h1v1H15zM3 16h1v1H3zM14 16h1v1H14zM4 17h2v1H4zM13 17h1v1H13zM6 18h3v1H6zM12 18h1v1H12zM9 19h3v1H9z\"/><path fill=\"#a88058\" d=\"M7 2h6v1H7zM5 3h1v1H5zM14 3h1v1H14zM2 6h1v1H2zM17 6h1v1H17zM17 10h1v1H17zM15 12h1v1H15zM2 13h1v1H2zM12 14h1v1H12zM4 16h1v1H4zM6 17h1v1H6zM9 18h1v1H9z\"/><path fill=\"#d0d0a8\" d=\"M6 3h1v1H6zM13 9h1v1H13zM4 10h1v1H4zM7 11h1v1H7zM15 11h1v1H15zM7 12h1v1H7zM3 13h1v1H3z\"/><path fill=\"#f8d0a8\" d=\"M7 3h1v1H7zM12 3h1v1H12zM8 4h1v1H8zM11 4h1v1H11zM3 6h2v1H3zM15 6h2v1H15zM3 7h1v1H3zM8 7h4v1H8zM16 7h1v1H16zM3 8h2v1H3zM8 8h4v1H8zM15 8h2v1H15zM3 9h10v1H3zM14 9h3v1H14zM3 10h1v1H3zM7 10h10v1H7zM3 11h1v1H3zM8 11h7v1H8zM3 12h1v1H3zM8 12h5v1H8zM7 13h5v1H7zM4 14h7v1H4zM5 15h6v1H5zM7 16h1v1H7zM9 16h1v1H9z\"/><path fill=\"#f8d0d0\" d=\"M8 3h1v1H8zM11 3h1v1H11zM5 4h1v1H5zM14 4h1v1H14zM4 5h4v1H4zM12 5h4v1H12z\"/><path fill=\"#f8f8d0\" d=\"M9 3h2v1H9zM6 4h2v1H6zM12 4h2v1H12z\"/><path fill=\"#d0a880\" d=\"M13 3h1v1H13zM4 4h1v1H4zM15 4h1v1H15zM3 5h1v1H3zM2 7h1v1H2zM17 8h1v1H17zM17 9h1v1H17zM2 10h1v1H2zM2 11h1v1H2zM13 12h1v1H13zM12 13h1v1H12zM3 14h1v1H3zM4 15h1v1H4zM11 15h1v1H11zM5 16h1v1H5zM8 17h2v1H8z\"/><path fill=\"#f8d058\" d=\"M9 4h2v1H9z\"/><path fill=\"#f8d080\" d=\"M8 5h1v1H8zM11 5h1v1H11zM8 6h1v1H8zM11 6h1v1H11zM10 16h1v1H10z\"/><path fill=\"#f8d030\" d=\"M9 5h2v1H9zM9 6h2v1H9z\"/><path fill=\"#a8a880\" d=\"M16 5h1v1H16zM17 7h1v1H17zM16 11h1v1H16zM2 12h1v1H2z\"/><path fill=\"#f85858\" d=\"M5 6h1v1H5z\"/><path fill=\"#f85830\" d=\"M6 6h1v1H6zM7 7h1v1H7z\"/><path fill=\"#f8a880\" d=\"M7 6h1v1H7zM4 7h1v1H4z\"/><path fill=\"#a8d0a8\" d=\"M12 6h1v1H12z\"/><path fill=\"#58a858\" d=\"M13 6h1v1H13zM12 7h1v1H12zM14 8h1v1H14z\"/><path fill=\"#80a880\" d=\"M14 6h1v1H14z\"/><path fill=\"#f83030\" d=\"M5 7h2v1H5zM5 8h2v1H5z\"/><path fill=\"#30a858\" d=\"M13 7h2v1H13zM13 8h1v1H13z\"/><path fill=\"#a8d080\" d=\"M15 7h1v1H15zM12 8h1v1H12z\"/><path fill=\"#d0d080\" d=\"M2 8h1v1H2zM2 9h1v1H2zM11 14h1v1H11zM6 16h1v1H6zM8 16h1v1H8z\"/><path fill=\"#f88080\" d=\"M7 8h1v1H7z\"/><path fill=\"#8080d0\" d=\"M5 10h1v1H5z\"/><path fill=\"#a8a8d0\" d=\"M6 10h1v1H6z\"/><path fill=\"#5880d0\" d=\"M4 11h1v1H4zM4 12h1v1H4z\"/><path fill=\"#3058f8\" d=\"M5 11h2v1H5zM5 12h2v1H5z\"/><path fill=\"#a8a858\" d=\"M14 12h1v1H14zM11 16h1v1H11zM7 17h1v1H7zM10 17h1v1H10z\"/><path fill=\"#805830\" d=\"M16 12h2v1H16zM15 13h2v1H15zM14 14h2v1H14zM12 15h3v1H12zM12 16h2v1H12zM11 17h2v1H11zM10 18h2v1H10z\"/><path fill=\"#d0a8a8\" d=\"M4 13h1v1H4z\"/><path fill=\"#80a8d0\" d=\"M5 13h1v1H5z\"/><path fill=\"#a8a8a8\" d=\"M6 13h1v1H6z\"/></svg>","pc":"<svg class=\"pix\" viewBox=\"0 0 20 20\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><path fill=\"#0e1e2a\" fill-opacity=\"0.92\" d=\"M5 1h10v1H5zM4 2h1v1H4zM15 2h1v1H15zM4 3h1v1H4zM15 3h1v1H15zM4 4h1v1H4zM15 4h1v1H15zM4 5h1v1H4zM15 5h1v1H15zM4 6h1v1H4zM15 6h1v1H15zM4 7h1v1H4zM15 7h1v1H15zM4 8h1v1H4zM15 8h1v1H15zM4 9h1v1H4zM15 9h1v1H15zM4 10h1v1H4zM15 10h1v1H15zM4 11h1v1H4zM15 11h1v1H15zM4 12h1v1H4zM15 12h1v1H15zM4 13h1v1H4zM15 13h1v1H15zM4 14h1v1H4zM15 14h1v1H15zM4 15h1v1H4zM15 15h1v1H15zM4 16h1v1H4zM15 16h1v1H15zM4 17h1v1H4zM15 17h1v1H15zM5 18h2v1H5zM13 18h2v1H13zM7 19h6v1H7z\"/><path fill=\"#303030\" d=\"M5 2h1v1H5zM14 2h1v1H14zM5 3h1v1H5zM14 3h1v1H14zM5 4h1v1H5zM14 4h1v1H14zM5 5h1v1H5zM14 5h1v1H14zM5 6h1v1H5zM14 6h1v1H14zM5 7h1v1H5zM14 7h1v1H14zM5 8h1v1H5zM14 8h1v1H14zM5 9h1v1H5zM14 9h1v1H14zM5 10h1v1H5zM14 10h1v1H14zM5 11h1v1H5zM14 11h1v1H14zM5 12h1v1H5zM14 12h1v1H14zM5 13h2v1H5zM13 13h2v1H13zM6 14h1v1H6zM13 14h1v1H13zM6 15h1v1H6zM13 15h1v1H13zM6 16h3v1H6zM11 16h3v1H11zM6 17h8v1H6z\"/><path fill=\"#303058\" d=\"M6 2h1v1H6zM13 2h1v1H13zM6 8h1v1H6zM6 9h1v1H6zM13 9h1v1H13zM6 10h2v1H6zM12 10h2v1H12zM6 11h8v1H6zM6 12h1v1H6zM13 12h1v1H13z\"/><path fill=\"#585858\" d=\"M7 2h1v1H7zM9 2h1v1H9zM6 3h1v1H6zM13 3h1v1H13zM6 5h3v1H6zM11 5h3v1H11zM7 6h1v1H7zM12 6h1v1H12zM7 12h6v1H7zM7 13h6v1H7z\"/><path fill=\"#305858\" d=\"M8 2h1v1H8zM10 2h3v1H10zM6 6h1v1H6zM13 6h1v1H13zM6 7h1v1H6zM9 7h2v1H9zM13 7h1v1H13zM9 8h2v1H9zM13 8h1v1H13zM7 9h1v1H7zM12 9h1v1H12zM8 10h1v1H8zM11 10h1v1H11zM7 15h6v1H7z\"/><path fill=\"#588080\" d=\"M7 3h6v1H7zM9 5h2v1H9z\"/><path fill=\"#585880\" d=\"M6 4h1v1H6zM13 4h1v1H13zM7 14h6v1H7z\"/><path fill=\"#30d0f8\" d=\"M7 4h6v1H7z\"/><path fill=\"#30a8d0\" d=\"M8 6h1v1H8zM11 6h1v1H11zM8 9h1v1H8zM11 9h1v1H11z\"/><path fill=\"#3080d0\" d=\"M9 6h2v1H9z\"/><path fill=\"#3080a8\" d=\"M7 7h2v1H7zM11 7h2v1H11zM7 8h2v1H7zM11 8h2v1H11zM9 10h2v1H9z\"/><path fill=\"#308080\" d=\"M9 9h2v1H9z\"/><path fill=\"#083030\" d=\"M5 14h1v1H5zM14 14h1v1H14zM5 15h1v1H5zM14 15h1v1H14zM5 16h1v1H5zM14 16h1v1H14zM5 17h1v1H5zM14 17h1v1H14z\"/><path fill=\"#308058\" d=\"M9 16h1v1H9z\"/><path fill=\"#588058\" d=\"M10 16h1v1H10z\"/><path fill=\"#080830\" d=\"M7 18h6v1H7z\"/></svg>"};
+
+</script>
+<script>
 /* Avlastymov XP: boot screen, desktop, window manager, start menu, wallpaper and small apps. */
 (() => {
   "use strict";
@@ -5077,6 +5796,7 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
     music: (u) => `<defs>${G("a" + u, "#FFB24A", "#E3671A")}</defs><path d="M17 3 L8 18 H15 L13 29 L24 12 H17 Z" fill="url(#a${u})" stroke="#9A3E06"/>`,
     bin: (u) => `<defs>${G("t" + u, "#E7EEF8", "#A9B9CF")}</defs><path d="M8 9 H24 L22 29 H10 Z" fill="url(#t${u})" stroke="#56677F"/><rect x="6" y="6" width="20" height="3" rx="1" fill="#C9D4E4" stroke="#56677F"/><path d="M12 12 L13 26 M16 12 V26 M20 12 L19 26" stroke="#7A8BA3"/><path d="M13 18 a3 3 0 1 1 6 0" stroke="#2E9A4C" stroke-width="1.6" fill="none"/>`,
     globe: (u) => `<defs>${G("g" + u, "#6FC3FF", "#1B6CD8")}</defs><circle cx="16" cy="16" r="12" fill="url(#g${u})" stroke="#0E4C9E"/><path d="M8 12 Q12 9 14 13 T12 20 Q10 22 9 18 Z M18 8 Q24 10 23 15 Q21 18 19 15 Q17 12 18 8 Z M18 21 Q22 20 23 24 Q20 27 18 24 Z" fill="#5BD27A"/>`,
+    brief: (u) => `<defs>${G("br" + u, "#C98A4B", "#8A5525")}</defs><rect x="11" y="5" width="10" height="5" rx="1.5" fill="none" stroke="#5E3812" stroke-width="2"/><rect x="3" y="9" width="26" height="18" rx="2.5" fill="url(#br${u})" stroke="#5E3812"/><rect x="3" y="15" width="26" height="2" fill="#6E4318"/><rect x="14" y="13.5" width="4" height="5" rx="1" fill="#F2D27A" stroke="#7A5512"/>`,
     help: () => `<circle cx="16" cy="16" r="12" fill="#2B6CDB" stroke="#fff"/><text x="16" y="21.5" text-anchor="middle" font-family="Tahoma" font-weight="700" font-size="15" fill="#fff">?</text>`,
     mine: (u) => `<defs>${G("mi" + u, "#5A6070", "#15181D")}</defs><circle cx="15" cy="18" r="8.5" fill="url(#mi${u})"/><path d="M15 6 V9.5 M15 26.5 V30 M3 18 H6.5 M23.5 18 H27 M6.5 9.5 L9 12 M21 24 L23.5 26.5 M6.5 26.5 L9 24 M21 12 L23.5 9.5" stroke="#15181D" stroke-width="2"/><circle cx="12" cy="15" r="2.2" fill="#fff"/><path d="M21 3 V11" stroke="#333" stroke-width="1.4"/><path d="M21 3 L28 5.5 L21 8 Z" fill="#E0281C"/>`,
     cards: () => `<rect x="4" y="6" width="15" height="21" rx="2" transform="rotate(-12 11 16)" fill="#fff" stroke="#55606E"/><rect x="12" y="5" width="15" height="21" rx="2" transform="rotate(10 19 15)" fill="#fff" stroke="#55606E"/><text x="19" y="19" text-anchor="middle" font-family="Tahoma" font-weight="700" font-size="11" fill="#C2312F" transform="rotate(10 19 15)">A♥</text>`,
@@ -5095,8 +5815,9 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
 
   /* desktop icons become pixel art so they match the pixelated wallpaper */
   function pixelateDesktopIcons() {
-    const N = 20;
+    const N = 20, PRE = window.PIX_ICONS || {};
     document.querySelectorAll(".dicon [data-ico]").forEach((el) => {
+      if (PRE[el.dataset.ico]) { el.innerHTML = PRE[el.dataset.ico]; return; }   // pre-rendered at build time: plain vector, never wiped
       const svg = el.querySelector("svg");
       if (!svg) return;
       let src = new XMLSerializer().serializeToString(svg);
@@ -5181,8 +5902,10 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
   }
   let activeId = null;
   function open(id) {
+    if (id === "recruiter") { closeStart(); if (window.XPRecruiter) window.XPRecruiter.open(); return; }
     const w = wins[id];
     if (!w) return;
+    if (id === "github" && window.XPGitHub) window.XPGitHub.load();
     closeStart();
     if (!w.placed) place(w);
     clearTimeout(w.el._hideT);
@@ -5612,10 +6335,25 @@ Ukrainian (native) · Slovak B2 · Russian B2 · English B1 · German A1
     boot.addEventListener("click", finish);
     setTimeout(finish, window.XPIntro ? 1800 : 2600);
   }
-  if (wantBoot && !reduceMotion) {
-    if (window.XPIntro) { try { window.XPIntro.run(logoBoot); } catch (e) { $("intro").hidden = true; logoBoot(); } }
-    else logoBoot();
-  } else startDesktop();
+  if (window.I18N) I18N.start();
+  /* language menu in the tray */
+  const trayLang = $("trayLang"), langMenu = $("langMenu");
+  function paintLang() {
+    if (!window.I18N || !trayLang) return;
+    trayLang.textContent = I18N.SHORT[I18N.lang];
+    trayLang.title = I18N.NAMES[I18N.lang];
+    langMenu.innerHTML = I18N.LANGS.map((l) => `<button type="button" data-lang="${l}" aria-pressed="${l === I18N.lang}"><b>${I18N.SHORT[l]}</b>${I18N.NAMES[l]}</button>`).join("");
+  }
+  if (window.I18N && trayLang) {
+    paintLang();
+    I18N.onChange(paintLang);
+    trayLang.addEventListener("click", (e) => { e.stopPropagation(); langMenu.hidden = !langMenu.hidden; });
+    langMenu.addEventListener("click", (e) => { const b = e.target.closest("[data-lang]"); if (b) { I18N.set(b.dataset.lang); langMenu.hidden = true; } });
+    document.addEventListener("pointerdown", (e) => { if (!langMenu.hidden && !e.target.closest("#langMenu, #trayLang")) langMenu.hidden = true; });
+  }
+  if (wantBoot && window.XPFlow) window.XPFlow.start({ logoBoot });
+  else if (wantBoot && !reduceMotion && window.XPIntro) { try { window.XPIntro.run(logoBoot); } catch (e) { $("intro").hidden = true; logoBoot(); } }
+  else startDesktop();
 })();
 
 </script>
