@@ -1086,7 +1086,7 @@ body { background: #ECE9D8; }
     } catch (e) {
       return fail("The 3D model needs WebGL, which is turned off in this browser. Everything else on this page works.");
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));   // 1.5 is plenty for a small model and ~45% fewer pixels on retina
     renderer.outputEncoding = THREE.sRGBEncoding;
 
     const scene = new THREE.Scene();
@@ -2178,10 +2178,19 @@ body { background: #ECE9D8; }
     const tmp = new THREE.Vector3();
     const target = new THREE.Vector3();
     const ease = (k) => k * k * (3 - 2 * k);
+    // only draw when someone can see it: not in a hidden tab, closed/minimised window,
+    // scrolled-away canvas or behind the hacker screensaver
+    let onScreen = true;
+    if (window.IntersectionObserver) new IntersectionObserver((es) => { onScreen = es[es.length - 1].isIntersecting; }).observe(canvas);
+    const paused = () => document.hidden || !onScreen || window.__pc3dPaused || document.documentElement.classList.contains("hk-on");
+    // 60 fps while you drag the model, 30 fps while it just spins on its own
+    let lastInput = 0, frameN = 0;
+    ["pointerdown", "pointermove", "wheel"].forEach((ev) => canvas.addEventListener(ev, () => { lastInput = performance.now(); }, { passive: true }));
     function frame() {
       requestAnimationFrame(frame);
+      if (performance.now() - lastInput > 1500 && (frameN++ & 1)) return;
       const dt = Math.min(clock.getDelta(), 0.05);
-      if (document.hidden) return;
+      if (paused()) return;
       const fast = reduceMotion ? 30 : 6;
 
       if (autoSpin && !inspect) view.targetTheta += dt * 0.25;
