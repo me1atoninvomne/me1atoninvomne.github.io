@@ -2,7 +2,7 @@
 
 **Live site: https://me1atoninvomne.github.io**
 
-My personal portfolio site, built as a small retro operating system: **Avlastimov XP**. It boots, shows a desktop with icons, draggable windows, a taskbar and a start menu. Inside the windows you can build a computer in 3D, run an estimated benchmark, play a QA mini game and look at my projects.
+My personal portfolio site, built as a small retro operating system: **Avlastymov XP**. It boots, shows a desktop with icons, draggable windows, a taskbar and a start menu. Inside the windows you can build a computer in 3D, run an estimated benchmark, play a QA mini game and look at my projects.
 
 ## Why I built it
 
@@ -12,7 +12,7 @@ My personal portfolio site, built as a small retro operating system: **Avlastimo
 
 ## Features
 
-**Avlastimov XP desktop** (`index.html`)
+**Avlastymov XP desktop** (`index.html`)
 - **3D intro**: an old coder's desk (a beige 90s tower with a MHz display and made-up stickers, a made-up local beer, an ashtray, floppy disks and a TODO sticky note) powers on, and the CRT runs a BIOS check that lists the parts of *your* build from the PC Builder (and my skills) before the camera flies into the screen.
 - **Applecat, the desktop assistant** (drawn by me): on the first visit it explains that the whole site is one big resume. Click it for a tour of the best features, the resume, a guided PC Builder walkthrough, or an original song it sings with music synthesised in the browser. You can drag and throw it (it has physics and always lands on the taskbar), but poke or throw it too much and it turns redder, steams and stomps, then sulks or yells gibberish; throw it really hard and it cries and runs away from your cursor.
 - **Hacker mode screensaver**: after 2 minutes without input the screen turns into a movie-style "hack" (code rain, memory dump, trace route). The hacker keeps typing each command in English, then Chinese, then forgets to switch the keyboard layout, and finally gets it right in Ukrainian. Type `hack` in the terminal to start it right away.

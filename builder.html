@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PC Builder · Denis Avlastimov</title>
+<title>PC Builder · Denys Avlastymov</title>
 <meta name="description" content="Build a PC from 134 real components, assemble it step by step in 3D and run an estimated benchmark.">
-<meta property="og:title" content="PC Builder · Denis Avlastimov">
+<meta property="og:title" content="PC Builder · Denys Avlastymov">
 <meta property="og:description" content="Build a PC from 134 real components, assemble it step by step in 3D and run an estimated benchmark.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='6' width='36' height='52' rx='6' fill='%2313171C'/%3E%3Ccircle cx='32' cy='22' r='9' fill='none' stroke='%23FF7A33' stroke-width='4'/%3E%3Crect x='22' y='40' width='20' height='4' rx='2' fill='%23FF7A33'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -529,7 +529,7 @@ a.brand { color: var(--ink); text-decoration: none; }
 
 </style>
 <style>
-/* PC Builder in the Avlastimov XP palette (also used inside the XP window) */
+/* PC Builder in the Avlastymov XP palette (also used inside the XP window) */
 :root, :root:not([data-theme="light"]), :root[data-theme="dark"] {
   --bg: #ECE9D8; --surface: #FFFFFF; --surface-2: #F3F2EC; --stage: #0B1424;
   --ink: #1B1F24; --ink-soft: #3A4350; --muted: #6B7380; --line: #D3CEBB;
@@ -560,7 +560,7 @@ body { background: #ECE9D8; }
 <body>
 <div class="wrap wide">
   <header class="topbar">
-    <a class="brand" href="./"><span class="led" aria-hidden="true"></span>DENIS AVLASTIMOV</a>
+    <a class="brand" href="./"><span class="led" aria-hidden="true"></span>DENYS AVLASTYMOV</a>
     <nav class="nav" aria-label="Sections">
       <a href="#build">build</a>
       <a href="#benchmark">benchmark</a>
@@ -685,7 +685,7 @@ body { background: #ECE9D8; }
   </section>
 
   <footer>
-    <span>denis@bench · pc builder</span>
+    <span>denys@bench · pc builder</span>
     <a href="./">← back to the home page</a>
   </footer>
 </div>
@@ -2286,7 +2286,7 @@ body { background: #ECE9D8; }
   const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const SELECTS = { cpu: "selCpu", cooler: "selCooler", mobo: "selMobo", gpu: "selGpu", ram: "selRam", ssd: "selSsd", psu: "selPsu", case: "selCase" };
 
-  // inside the Avlastimov XP window the page drops its own header and opens links in the main tab
+  // inside the Avlastymov XP window the page drops its own header and opens links in the main tab
   if (window.self !== window.top) {
     document.documentElement.classList.add("embedded");
     document.querySelectorAll('a[href="./"]').forEach((a) => { a.target = "_top"; });
